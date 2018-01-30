@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="co.com.ceiba.parqueadero.ParqueaderoTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2018-01-30T16:22:49" hostname="JULIAN-RINCON" time="0.005">
+  <properties/>
+  <testcase name="sacarCarroTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.001"/>
+  <testcase name="ingresarCarrosMaximosTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.002"/>
+  <testcase name="ingresarCarroConReglaMaravillosaTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
+  <testcase name="calcularHorasConMinutosMax" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
+  <testcase name="calcularHorasConMinutosMin" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
+  <testcase name="calcularHoras" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
+  <testcase name="calcularCobroHoras" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
+  <testcase name="ingresarCarroTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
+  <testcase name="calcularCobroHorasDias" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

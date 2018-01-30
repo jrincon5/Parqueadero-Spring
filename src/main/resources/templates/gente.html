@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Edad</th>
+			</tr>
+		</thead>
+		<tbody th:each="persona : ${gente}">
+			<tr>
+				<!--<th th:text="${persona.nombre}"></th>
+				<th th:text="${persona.edad}"></th>-->
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

@@ -1,7 +1,7 @@
 package co.com.ceiba.parqueadero.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import co.com.ceiba.parqueadero.model.persona;
+//import co.com.ceiba.parqueadero.model.persona;
 
 @Controller
 @RequestMapping("say")
@@ -28,32 +28,33 @@ public class helloController {
 		return new ModelAndView("hello","name","Así paso parametros 2");
 	}
 	
+	/*
 	//Insertar varios datos
 	@GetMapping("/persona1")
 	public String personaDatos(Model model) {
 		model.addAttribute("persona",new persona("Julian",22));
-		return "hello";
+		return "persona";
 	}
 	
 	//Insertar varios datos 2
 	@GetMapping("/persona2")
 	public ModelAndView personaDatosMav() {
-		ModelAndView mav=new ModelAndView("hello");
+		ModelAndView mav=new ModelAndView("persona");
 		mav.addObject("persona",new persona("Sara",34));
 		return mav;
 	}
-	/*
+	
 	//Insertar lista de datos
 	@GetMapping("/gente1")
 	public String genteDatos(Model model) {
 		model.addAttribute("gente",getPeople());
-		return "hello";
+		return "gente";
 	}
 		
 	//Insertar lista de datos 2
 	@GetMapping("/gente2")
 	public ModelAndView genteDatosMav() {
-		ModelAndView mav=new ModelAndView("hello");
+		ModelAndView mav=new ModelAndView("gente");
 		mav.addObject("gente",getPeople());
 		return mav;
 	}
