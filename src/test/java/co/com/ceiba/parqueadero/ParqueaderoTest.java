@@ -27,8 +27,18 @@ public class ParqueaderoTest {
     }
 	
 	@Test
+	public void ingresarMotoTest() {
+        assertTrue(park.ingresarMoto("BSW04D",1000));
+    }
+	
+	@Test
 	public void ingresarCarroConReglaMaravillosaTest() {
         assertFalse(park.ingresarCarro("ASW04D",1000));
+    }
+	
+	@Test
+	public void ingresarMotoConReglaMaravillosaTest() {
+        assertFalse(park.ingresarMoto("ASW04D",1000));
     }
 	
 	@Test
@@ -40,8 +50,21 @@ public class ParqueaderoTest {
     }
 	
 	@Test
+    public void ingresarMotosMaximasTest() {
+        for(int i = 0; i< 20 ; i++) {
+            park.ingresarMoto("WSW04D", 1000);
+        }
+        assertFalse(park.ingresarMoto("WSW04D",1000));
+    }
+	
+	@Test
 	public void sacarCarroTest() {
 		assertFalse(park.sacarCarro("WSW04D"));
+	}
+	
+	@Test
+	public void sacarMotoTest() {
+		assertFalse(park.sacarMoto("WSW04D"));
 	}
 	
 	@Test
@@ -66,16 +89,44 @@ public class ParqueaderoTest {
 	}
 	
 	@Test
-	public void calcularCobroHoras() {
+	public void calcularCobroCarrosHoras() {
 		Fecha entrada = new Fecha(2017, 1, 1, 3, 0);
     	Fecha salida = new Fecha(2017, 1, 1, 7, 59);
 		assertEquals(5000, park.generarCobroCarros(entrada, salida));
 	}
 	
 	@Test
-	public void calcularCobroHorasDias() {
+	public void calcularCobroCarrosDias() {
+		Fecha entrada = new Fecha(2017, 1, 1, 3, 0);
+    	Fecha salida = new Fecha(2017, 1, 1, 15, 00);
+		assertEquals(8000, park.generarCobroCarros(entrada, salida));
+	}
+	
+	@Test
+	public void calcularCobroCarrosHorasDias() {
 		Fecha entrada = new Fecha(2017, 1, 1, 3, 0);
     	Fecha salida = new Fecha(2017, 1, 2, 3, 1);
 		assertEquals(9000, park.generarCobroCarros(entrada, salida));
+	}
+	
+	@Test
+	public void calcularCobroMotosHoras() {
+		Fecha entrada = new Fecha(2017, 1, 1, 3, 0);
+    	Fecha salida = new Fecha(2017, 1, 1, 7, 59);
+		assertEquals(2500, park.generarCobroMotos(entrada, salida));
+	}
+	
+	@Test
+	public void calcularCobroMotosDias() {
+		Fecha entrada = new Fecha(2017, 1, 1, 3, 0);
+    	Fecha salida = new Fecha(2017, 1, 1, 15, 00);
+		assertEquals(4000, park.generarCobroMotos(entrada, salida));
+	}
+	
+	@Test
+	public void calcularCobroMotosHorasDias() {
+		Fecha entrada = new Fecha(2017, 1, 1, 3, 0);
+    	Fecha salida = new Fecha(2017, 1, 2, 3, 1);
+		assertEquals(4500, park.generarCobroMotos(entrada, salida));
 	}
 }
