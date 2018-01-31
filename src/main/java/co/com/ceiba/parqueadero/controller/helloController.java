@@ -1,5 +1,8 @@
 package co.com.ceiba.parqueadero.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //import java.util.ArrayList;
 //import java.util.List;
 
@@ -8,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import co.com.ceiba.parqueadero.model.Vehiculo;
 
 //import co.com.ceiba.parqueadero.model.persona;
 
@@ -28,43 +33,44 @@ public class helloController {
 		return new ModelAndView("hello","name","Así paso parametros 2");
 	}
 	
-	/*
+	
 	//Insertar varios datos
-	@GetMapping("/persona1")
+	@GetMapping("/vehiculo1")
 	public String personaDatos(Model model) {
-		model.addAttribute("persona",new persona("Julian",22));
-		return "persona";
+		model.addAttribute("vehiculo",new Vehiculo("WSW04D",22));
+		return "vehiculo";
 	}
 	
 	//Insertar varios datos 2
-	@GetMapping("/persona2")
+	@GetMapping("/vehiculo2")
 	public ModelAndView personaDatosMav() {
-		ModelAndView mav=new ModelAndView("persona");
-		mav.addObject("persona",new persona("Sara",34));
+		ModelAndView mav=new ModelAndView("vehiculo");
+		mav.addObject("vehiculo",new Vehiculo("ABA95D",22));
 		return mav;
 	}
 	
+	
 	//Insertar lista de datos
-	@GetMapping("/gente1")
+	@GetMapping("/vehiculos1")
 	public String genteDatos(Model model) {
-		model.addAttribute("gente",getPeople());
-		return "gente";
+		model.addAttribute("vehiculos",getVehiculos());
+		return "vehiculos";
 	}
 		
 	//Insertar lista de datos 2
-	@GetMapping("/gente2")
+	@GetMapping("/vehiculos2")
 	public ModelAndView genteDatosMav() {
-		ModelAndView mav=new ModelAndView("gente");
-		mav.addObject("gente",getPeople());
+		ModelAndView mav=new ModelAndView("vehiculos");
+		mav.addObject("vehiculos",getVehiculos());
 		return mav;
 	}
 	
-	private List<persona> getPeople(){
-		List<persona> people= new ArrayList<>();
-		people.add(new persona("Tom",35));
-		people.add(new persona("Martha",40));
-		people.add(new persona("Samantha",32));
-		people.add(new persona("Will",19));
+	private List<Vehiculo> getVehiculos(){
+		List<Vehiculo> people= new ArrayList<>();
+		people.add(new Vehiculo("Tom",35));
+		people.add(new Vehiculo("Martha",40));
+		people.add(new Vehiculo("Samantha",32));
+		people.add(new Vehiculo("Will",19));
 		return people;
-	}*/
+	}
 }

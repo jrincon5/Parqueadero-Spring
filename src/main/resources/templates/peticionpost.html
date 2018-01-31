@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1" />
+<title>Formulario</title>
+</head>
+<body>
+	<form action="#" th:action="@{/pet/post}" th:object="${vehiculosend}" method="post">
+	<p>Placa: <input type="text" th:field="*{placa}"/></p>
+	<p>Cilindraje: <input type="number" th:field="*{cc}"/></p>
+	<p><input type="submit" value="Submit"/></p>
+	</form>
+</body>
+</html>

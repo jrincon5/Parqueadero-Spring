@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="ISO-8859-1" />
 <title>Insert title here</title>
 </head>
 <body>
@@ -12,10 +12,10 @@
 				<th>Edad</th>
 			</tr>
 		</thead>
-		<tbody th:each="persona : ${gente}">
+		<tbody th:each="vehiculo : ${vehiculos}">
 			<tr>
-				<!--<th th:text="${persona.nombre}"></th>
-				<th th:text="${persona.edad}"></th>-->
+				<th th:text="${vehiculo.placa}"></th>
+				<th th:text="${vehiculo.cc}"></th>
 			</tr>
 		</tbody>
 	</table>
