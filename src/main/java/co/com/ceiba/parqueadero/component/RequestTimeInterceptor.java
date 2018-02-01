@@ -10,7 +10,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 @Component("requestTimeInterceptor")
 public class RequestTimeInterceptor extends HandlerInterceptorAdapter{
-	private static final Log LOG = LogFactory.getLog(helloComponent.class);
+	private static final Log LOG = LogFactory.getLog(RequestTimeInterceptor.class);
 
 	//PRIMERO QUE SE EJECUTA ANTES DE LLAMAR EL METODO DEL CONTROLADOR
 	@Override

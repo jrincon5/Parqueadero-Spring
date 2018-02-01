@@ -1,19 +1,19 @@
 package co.com.ceiba.parqueadero.model;
 
 public class Celda {
-    private Vehiculo vehiculo;
+    private VehiculoModel vehiculo;
     private Fecha fecha;
 
-    public Celda(Vehiculo vehiculo, Fecha fecha) {
+    public Celda(VehiculoModel vehiculo, Fecha fecha) {
         this.vehiculo = vehiculo;
         this.fecha = fecha;
     }
 
-    public Vehiculo getVehiculo() {
+    public VehiculoModel getVehiculo() {
         return vehiculo;
     }
 
-    public void setVehiculo(Vehiculo vehiculo) {
+    public void setVehiculo(VehiculoModel vehiculo) {
         this.vehiculo = vehiculo;
     }
 

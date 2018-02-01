@@ -2,10 +2,33 @@
 <html>
 <head>
 <meta charset="ISO-8859-1" />
-<title>Insert title here</title>
+<title>Vehiculos</title>
 </head>
 <body>
-	<h3>Nombre: <span th:text="${vehiculo.placa}"></span>!!!!!</h3>
-	<h4>Edad: <span th:text="${vehiculo.cc}"></span>!!!!!</h4>
+	<table>
+		<thead>
+			<tr>
+				<th>Placa: </th>
+				<th>Cilindraje: </th>
+				<th>Parqueado: </th>
+				<th>Tipo vehiculo: </th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="vehiculo : ${vehiculos}">
+				<th><span th:text="${vehiculo.placa}"></span></th>
+				<th><span th:text="${vehiculo.cilindraje}"></span></th>
+				<th><span th:text="${vehiculo.parqueado}"></span></th>
+				<th><span th:text="${vehiculo.tipo_vehiculo}"></span></th>
+			</tr>
+		</tbody>
+	</table>
+	<form action="#" th:action="@{/vehiculos/addvehiculo}" th:object="${vehiculo}" method="post">
+	<p>Placa: <input type="text" th:field="*{placa}" /></p>
+	<p>Cilindraje: <input type="text" th:field="*{cilindraje}" /></p>
+	<p>Parqueado: <input type="text" th:field="*{parqueado}" /></p>
+	<p>Tipo vehiculo: <input type="text" th:field="*{tipo_vehiculo}" /></p>
+	<p><input type="submit" value="Submit" /></p>
+	</form>
 </body>
 </html>

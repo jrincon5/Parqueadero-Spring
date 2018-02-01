@@ -28,11 +28,16 @@ public class VehiculoController {
 	@GetMapping("/listvehiculos")
 	public ModelAndView listAllVehiculos() {
 		LOG.info("CALL: listAllVehiculos()");
-		return new ModelAndView("vehiculos","vehiculos",vehiculoService.listAllVehiculos());
+		ModelAndView mav= new ModelAndView("vehiculo");
+		mav.addObject("vehiculos",vehiculoService.listAllVehiculos());
+		mav.addObject("vehiculo", new VehiculoEnt());
+		return mav;
 	}
 	
-	@PostMapping("addvehiculo")
+	@PostMapping("/addvehiculo")
 	public String addVehiculo(@ModelAttribute("vehiculo") VehiculoEnt vehiculo) {
+		LOG.info("CALL: addVehiculo()");
+		vehiculoService.addVehiculo(vehiculo);
 		return "redirect:/vehiculos/listvehiculos";
 	}
 

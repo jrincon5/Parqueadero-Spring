@@ -14,20 +14,20 @@ public class VehiculoEnt {
 	String placa;
 	@Column(name="cilindraje")
 	int cilindraje;
-	@Column(name="tipo_vehiculo")
-	String tipo_vehiculo;
 	@Column(name="parqueado")
 	boolean parqueado;
+	@Column(name="tipo_vehiculo")
+	String tipo_vehiculo;	
 	
 	public VehiculoEnt() {		
 	}
 			
-	public VehiculoEnt(String placa, int cilindraje, String tipo_vehiculo, boolean parqueado) {
+	public VehiculoEnt(String placa, int cilindraje, boolean parqueado, String tipo_vehiculo) {
 		super();
 		this.placa = placa;
 		this.cilindraje = cilindraje;
-		this.tipo_vehiculo = tipo_vehiculo;
 		this.parqueado = parqueado;
+		this.tipo_vehiculo = tipo_vehiculo;
 	}
 	
 	public String getPlaca() {
@@ -42,18 +42,16 @@ public class VehiculoEnt {
 	public void setCilindraje(int cilindraje) {
 		this.cilindraje = cilindraje;
 	}
-	public String getTipo_vehiculo() {
-		return tipo_vehiculo;
-	}
-	public void setTipo_vehiculo(String tipo_vehiculo) {
-		this.tipo_vehiculo = tipo_vehiculo;
-	}
 	public boolean isParqueado() {
 		return parqueado;
 	}
 	public void setParqueado(boolean parqueado) {
 		this.parqueado = parqueado;
 	}
-	
-	
+	public String getTipo_vehiculo() {
+		return tipo_vehiculo;
+	}
+	public void setTipo_vehiculo(String tipo_vehiculo) {
+		this.tipo_vehiculo = tipo_vehiculo;
+	}
 }

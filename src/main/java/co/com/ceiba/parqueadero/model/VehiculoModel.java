@@ -4,11 +4,11 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class Vehiculo {
+public class VehiculoModel {
 	
 	@Override
 	public String toString() {
-		return "Vehiculo [placa=" + placa + ", cc=" + cc + "]";
+		return "Vehiculo [placa=" + placa + ", cc=" + cilindraje + "]";
 	}
 	
 	@NotNull
@@ -17,14 +17,14 @@ public class Vehiculo {
 	
 	@NotNull
 	@Min(18)
-    private int cc;
+    private int cilindraje;
     
-    public Vehiculo(String placa, int cc) {
+    public VehiculoModel(String placa, int cilindraje) {
         this.placa = placa;
-        this.cc = cc;
+        this.cilindraje = cilindraje;
     }
     
-    public Vehiculo() {}
+    public VehiculoModel() {}
 
 	public String getPlaca() {
 	    return placa;
@@ -34,12 +34,12 @@ public class Vehiculo {
 	    this.placa = placa;
 	}
 	
-	public int getCc() {
-	    return cc;
+	public int getCilindraje() {
+	    return cilindraje;
 	}
 	
-	public void setCc(int cc) {
-	    this.cc = cc;
+	public void setCilindraje(int cilindraje) {
+	    this.cilindraje = cilindraje;
 	}
 
 }
