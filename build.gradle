@@ -1,13 +1,13 @@
 buildscript {
-ext {
-springBootVersion = '1.5.9.RELEASE'
-}
-repositories {
-mavenCentral()
-}
-dependencies {
-classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-}
+	ext {
+		springBootVersion = '1.5.10.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
 }
 
 apply plugin: 'java'
@@ -15,26 +15,21 @@ apply plugin: 'eclipse'
 apply plugin: 'jacoco'
 apply plugin: 'org.springframework.boot'
 
-group = 'parqueadero'
+group = 'co.com.ceiba'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-mavenCentral()
+	mavenCentral()
 }
 
 
 dependencies {
-compile('org.modelmapper:modelmapper:1.1.0')
-compile('org.springframework.boot:spring-boot-starter-data-jpa')
-compile('org.springframework.boot:spring-boot-starter-web')
-runtime('com.h2database:h2')
-testCompile('org.springframework.boot:spring-boot-starter-test')
-
-compile('org.apache.tomcat.embed:tomcat-embed-jasper')
-compile('javax.servlet:jstl')
-
-compile 'org.hibernate:hibernate-core:5.2.9.Final'
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	runtime('mysql:mysql-connector-java')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
 jar {
@@ -44,9 +39,9 @@ jar {
   }
 }
 
-/*repositories {
+repositories {
   mavenCentral()
-}*/
+}
 
 test {
   // systemProperties 'property': 'value'

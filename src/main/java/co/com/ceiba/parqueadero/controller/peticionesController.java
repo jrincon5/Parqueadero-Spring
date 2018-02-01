@@ -15,6 +15,7 @@ public class peticionesController {
 	//Redireccion numero 1
 	@GetMapping("/1")
 	public String redirect() {
+		int a = 1/0;
 		return "redirect:/pet/get";
 	}
 	

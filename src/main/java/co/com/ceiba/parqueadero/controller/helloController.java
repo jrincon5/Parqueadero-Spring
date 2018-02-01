@@ -3,6 +3,9 @@ package co.com.ceiba.parqueadero.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 //import java.util.ArrayList;
 //import java.util.List;
 
@@ -10,27 +13,33 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.com.ceiba.parqueadero.model.Vehiculo;
+import co.com.ceiba.parqueadero.service.helloService;
 
 //import co.com.ceiba.parqueadero.model.persona;
 
 @Controller
-@RequestMapping("say")
+@RequestMapping("/say")
 public class helloController {
+	
+	@Autowired
+	@Qualifier("helloService")
+	private helloService helloService; // Declarar la interface
 
 	//Llamar una vista (REDIRECCION)
 	@GetMapping("/hello1")
-	public String helloWorld(Model model) {
-		model.addAttribute("name", "Así paso parametros 1");
+	public String helloWorld(/*Model model*/) {
+		//model.addAttribute("name", "Asi paso parametros 1");
 		return "hello";
 	}
 	
 	//Insertar datos en plantillas
 	@GetMapping("/hello2")
 	public ModelAndView exampleMav() {
-		return new ModelAndView("hello","name","Así paso parametros 2");
+		return new ModelAndView("hello","name","Asi paso parametros 2");
 	}
 	
 	
@@ -53,7 +62,7 @@ public class helloController {
 	//Insertar lista de datos
 	@GetMapping("/vehiculos1")
 	public String genteDatos(Model model) {
-		model.addAttribute("vehiculos",getVehiculos());
+		model.addAttribute("vehiculos",helloService.getListVehiculos());
 		return "vehiculos";
 	}
 		
@@ -61,16 +70,8 @@ public class helloController {
 	@GetMapping("/vehiculos2")
 	public ModelAndView genteDatosMav() {
 		ModelAndView mav=new ModelAndView("vehiculos");
-		mav.addObject("vehiculos",getVehiculos());
+		mav.addObject("vehiculos",helloService.getListVehiculos());
 		return mav;
 	}
 	
-	private List<Vehiculo> getVehiculos(){
-		List<Vehiculo> people= new ArrayList<>();
-		people.add(new Vehiculo("Tom",35));
-		people.add(new Vehiculo("Martha",40));
-		people.add(new Vehiculo("Samantha",32));
-		people.add(new Vehiculo("Will",19));
-		return people;
-	}
 }
