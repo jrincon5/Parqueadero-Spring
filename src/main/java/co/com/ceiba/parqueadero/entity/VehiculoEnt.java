@@ -11,13 +11,13 @@ public class VehiculoEnt {
 	
 	@Id
 	@Column(name="placa")
-	String placa;
+	private String placa;
 	@Column(name="cilindraje")
-	int cilindraje;
+	private int cilindraje;
 	@Column(name="parqueado")
-	boolean parqueado;
+	private boolean parqueado;
 	@Column(name="tipo_vehiculo")
-	String tipo_vehiculo;	
+	private String tipo_vehiculo;	
 	
 	public VehiculoEnt() {		
 	}

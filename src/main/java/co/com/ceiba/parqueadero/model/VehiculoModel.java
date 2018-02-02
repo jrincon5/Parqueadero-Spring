@@ -16,7 +16,6 @@ public class VehiculoModel {
 	private String placa;
 	
 	@NotNull
-	@Min(18)
     private int cilindraje;
     
     public VehiculoModel(String placa, int cilindraje) {

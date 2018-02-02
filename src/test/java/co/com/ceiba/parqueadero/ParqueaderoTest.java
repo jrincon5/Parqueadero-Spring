@@ -70,8 +70,8 @@ public class ParqueaderoTest {
 	@Test
 	public void calcularHoras() {
 		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0);
-    	FechaModel salida = new FechaModel(2017, 1, 1, 8, 0);
-		assertEquals(5, park.calcularHorasTotales(entrada, salida));
+    	FechaModel salida = new FechaModel(2017, 1, 5, 8, 0);
+		assertEquals(101, park.calcularHorasTotales(entrada, salida));
 	}
 	
 	@Test

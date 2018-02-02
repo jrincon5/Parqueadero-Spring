@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="co.com.ceiba.parqueadero.ParqueaderoTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2018-02-01T13:21:16" hostname="JULIAN-RINCON" time="0.01">
+<testsuite name="co.com.ceiba.parqueadero.ParqueaderoTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2018-02-02T11:49:44" hostname="JULIAN-RINCON" time="0.009">
   <properties/>
-  <testcase name="sacarCarroTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.003"/>
-  <testcase name="ingresarCarrosMaximosTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.002"/>
-  <testcase name="calcularCobroCarrosHorasDias" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.001"/>
-  <testcase name="ingresarMotoTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
+  <testcase name="sacarCarroTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.001"/>
+  <testcase name="ingresarCarrosMaximosTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.003"/>
+  <testcase name="calcularCobroCarrosHorasDias" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
+  <testcase name="ingresarMotoTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.001"/>
   <testcase name="ingresarCarroConReglaMaravillosaTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
   <testcase name="calcularCobroCarrosHoras" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
   <testcase name="calcularCobroMotosHoras" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
-  <testcase name="calcularHorasConMinutosMax" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
+  <testcase name="calcularHorasConMinutosMax" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.001"/>
   <testcase name="calcularHorasConMinutosMin" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
   <testcase name="ingresarMotosMaximasTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
-  <testcase name="calcularHoras" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.001"/>
+  <testcase name="calcularHoras" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
   <testcase name="calcularCobroCarrosDias" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
   <testcase name="ingresarCarroTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
   <testcase name="ingresarMotoConReglaMaravillosaTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
   <testcase name="calcularCobroMotosHorasDias" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.001"/>
-  <testcase name="sacarMotoTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
-  <testcase name="calcularCobroMotosDias" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.001"/>
+  <testcase name="sacarMotoTest" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.001"/>
+  <testcase name="calcularCobroMotosDias" classname="co.com.ceiba.parqueadero.ParqueaderoTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

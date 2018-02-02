@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import co.com.ceiba.parqueadero.entity.VehiculoEnt;
 
-@Repository("vehiculoJpaRepository")
-public interface VehiculoJpaRepository extends JpaRepository<VehiculoEnt, Serializable>{
+@Repository("parqueaderoJpaRepository")
+public interface ParqueaderoJpaRepository extends JpaRepository<VehiculoEnt, Serializable>{
 	
 	public abstract VehiculoEnt findByPlaca(String placa);
 }

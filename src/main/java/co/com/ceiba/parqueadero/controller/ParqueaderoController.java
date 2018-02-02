@@ -12,24 +12,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.com.ceiba.parqueadero.entity.VehiculoEnt;
-import co.com.ceiba.parqueadero.service.VehiculoService;
+import co.com.ceiba.parqueadero.service.ParqueaderoService;
 
 @Controller
-@RequestMapping("/vehiculos")
-public class VehiculoController {
+@RequestMapping("/parqueadero")
+public class ParqueaderoController {
 	
-	private static final Log LOG = LogFactory.getLog(VehiculoController.class);
+	private static final Log LOG = LogFactory.getLog(ParqueaderoController.class);
 	
 	@Autowired
-	@Qualifier("vehiculoServiceImpl")
-	private VehiculoService vehiculoService;
-	
+	@Qualifier("parqueaderoServiceImpl")
+	private ParqueaderoService parqueaderoService;	
 	
 	@GetMapping("/listvehiculos")
 	public ModelAndView listAllVehiculos() {
 		LOG.info("CALL: listAllVehiculos()");
 		ModelAndView mav= new ModelAndView("vehiculo");
-		mav.addObject("vehiculos",vehiculoService.listAllVehiculos());
+		mav.addObject("vehiculos",parqueaderoService.listAllVehiculos());
 		mav.addObject("vehiculo", new VehiculoEnt());
 		return mav;
 	}
@@ -37,8 +36,8 @@ public class VehiculoController {
 	@PostMapping("/addvehiculo")
 	public String addVehiculo(@ModelAttribute("vehiculo") VehiculoEnt vehiculo) {
 		LOG.info("CALL: addVehiculo()");
-		vehiculoService.addVehiculo(vehiculo);
-		return "redirect:/vehiculos/listvehiculos";
+		parqueaderoService.addVehiculo(vehiculo);
+		return "redirect:/parqueadero/listvehiculos";
 	}
 
 }
