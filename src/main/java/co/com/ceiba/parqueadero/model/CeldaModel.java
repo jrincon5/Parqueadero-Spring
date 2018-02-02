@@ -1,10 +1,10 @@
 package co.com.ceiba.parqueadero.model;
 
-public class Celda {
+public class CeldaModel {
     private VehiculoModel vehiculo;
-    private Fecha fecha;
+    private FechaModel fecha;
 
-    public Celda(VehiculoModel vehiculo, Fecha fecha) {
+    public CeldaModel(VehiculoModel vehiculo, FechaModel fecha) {
         this.vehiculo = vehiculo;
         this.fecha = fecha;
     }
@@ -17,11 +17,11 @@ public class Celda {
         this.vehiculo = vehiculo;
     }
 
-    public Fecha getFecha() {
+    public FechaModel getFecha() {
         return fecha;
     }
 
-    public void setFecha(Fecha fecha) {
+    public void setFecha(FechaModel fecha) {
         this.fecha = fecha;
     }
 }

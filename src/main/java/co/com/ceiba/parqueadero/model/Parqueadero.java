@@ -5,47 +5,47 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Parqueadero{
-    private ArrayList<Celda> celdasCarro = new ArrayList<>();
-    private ArrayList<Celda> celdasMoto = new ArrayList<>();
+    private ArrayList<CeldaModel> celdasCarro = new ArrayList<>();
+    private ArrayList<CeldaModel> celdasMoto = new ArrayList<>();
     static final int HORACARRO=1000;
     static final int HORAMOTO=500;
     static final int DIACARRO=8000;
     static final int DIAMOTO=4000;
     static final int MOTOALTOCILINDRAJE=2000;
     
-    public ArrayList<Celda> getCeldasCarro() {
+    public ArrayList<CeldaModel> getCeldasCarro() {
         return celdasCarro;
     }
 
-    public void setCeldasCarro(ArrayList<Celda> celdasCarro) {
+    public void setCeldasCarro(ArrayList<CeldaModel> celdasCarro) {
         this.celdasCarro = celdasCarro;
     }
 
-    public ArrayList<Celda> getCeldasMoto() {
+    public ArrayList<CeldaModel> getCeldasMoto() {
         return celdasMoto;
     }
 
-    public void setCeldasMoto(ArrayList<Celda> celdasMoto) {
+    public void setCeldasMoto(ArrayList<CeldaModel> celdasMoto) {
         this.celdasMoto = celdasMoto;
     }
     
-    public Fecha getFechaActual() {
+    public FechaModel getFechaActual() {
     	Calendar Cal = Calendar.getInstance();
     	int year=Cal.get(Calendar.YEAR);
     	int mes=Cal.get(Calendar.MONTH);
     	int diaMes=Cal.get(Calendar.DAY_OF_MONTH);
     	int horaDia=Cal.get(Calendar.HOUR_OF_DAY);
     	int minuto=Cal.get(Calendar.MINUTE);
-    	return new Fecha(year,mes,diaMes,horaDia,minuto);
+    	return new FechaModel(year,mes,diaMes,horaDia,minuto);
     }
 
     public boolean ingresarCarro(String placa, int cc){
     	placa=placa.toUpperCase();
         if(celdasCarro.size()<=20){
             if(picoYPlaca(placa))return false;
-            Fecha f = getFechaActual();
-            Carro c = new Carro(placa,cc);
-            Celda celda = new Celda(c,f);
+            FechaModel f = getFechaActual();
+            CarroModel c = new CarroModel(placa,cc);
+            CeldaModel celda = new CeldaModel(c,f);
             celdasCarro.add(celda);
             //System.out.print("Ingreso un carro:");
             return true;
@@ -59,9 +59,9 @@ public class Parqueadero{
     	placa=placa.toUpperCase();
         if(celdasMoto.size()<=10){
             if(picoYPlaca(placa))return false;
-            Fecha f = getFechaActual();
-            Moto c = new Moto(placa,cc);
-            Celda celda = new Celda(c,f);
+            FechaModel f = getFechaActual();
+            MotoModel c = new MotoModel(placa,cc);
+            CeldaModel celda = new CeldaModel(c,f);
             celdasMoto.add(celda);
             //System.out.print("Ingreso un carro:");
             return true;
@@ -94,7 +94,7 @@ public class Parqueadero{
     }
 
   //Metodo que calcula el total a pagar de los carros
-    public int generarCobroCarros(Fecha fechaEntrada, Fecha fechaSalida){
+    public int generarCobroCarros(FechaModel fechaEntrada, FechaModel fechaSalida){
         int horasTotales=(int)calcularHorasTotales(fechaEntrada, fechaSalida);
         int diasAPagar = horasTotales / 24;
         int horasAPagar=0;
@@ -108,7 +108,7 @@ public class Parqueadero{
     }
     
   //Metodo que calcula el total a pagar de las motos
-    public int generarCobroMotos(Fecha fechaEntrada, Fecha fechaSalida){
+    public int generarCobroMotos(FechaModel fechaEntrada, FechaModel fechaSalida){
         int horasTotales=(int)calcularHorasTotales(fechaEntrada, fechaSalida);
         int diasAPagar = horasTotales / 24;
         int horasAPagar=0;
@@ -122,7 +122,7 @@ public class Parqueadero{
     }
     
     //Metodo que calcula la diferencia entre dos fechas y la devuelve en horas
-    public long calcularHorasTotales(Fecha entrada, Fecha salida) {
+    public long calcularHorasTotales(FechaModel entrada, FechaModel salida) {
     	Date d1=entrada.getTime();
     	Date d2=salida.getTime();
     	long dif=(d2.getTime()-d1.getTime()) / (1000 * 60 * 60);
