@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,6 +18,7 @@ import javax.persistence.TemporalType;
 public class FacturaEnt {
 	
 	@Id
+	@GeneratedValue
 	@Column(name="id_factura")
 	private int id_factura;
 	
@@ -87,10 +89,9 @@ public class FacturaEnt {
 		this.placa = placa;
 	}	
 
-	public FacturaEnt(int id_factura, Date fecha_entrada, Date fecha_salida, int total_horas, int total_pagar,
+	public FacturaEnt(Date fecha_entrada, Date fecha_salida, int total_horas, int total_pagar,
 			VehiculoEnt placa) {
 		super();
-		this.id_factura = id_factura;
 		this.fecha_entrada = fecha_entrada;
 		this.fecha_salida = fecha_salida;
 		this.total_horas = total_horas;

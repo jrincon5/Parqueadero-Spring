@@ -7,18 +7,18 @@ import java.util.Date;
 public class Parqueadero{
     private ArrayList<CeldaModel> celdasCarro = new ArrayList<>();
     private ArrayList<CeldaModel> celdasMoto = new ArrayList<>();
-    static final int HORACARRO=1000;
-    static final int HORAMOTO=500;
-    static final int DIACARRO=8000;
-    static final int DIAMOTO=4000;
-    static final int MOTOALTOCILINDRAJE=2000;
+    private static final int HORACARRO=1000;
+    private static final int HORAMOTO=500;
+    private static final int DIACARRO=8000;
+    private static final int DIAMOTO=4000;
+    private static final int MOTOALTOCILINDRAJE=2000;
     
     public ArrayList<CeldaModel> getCeldasCarro() {
         return celdasCarro;
     }
 
-    public void setCeldasCarro(ArrayList<CeldaModel> celdasCarro) {
-        this.celdasCarro = celdasCarro;
+    public void setCeldasCarro(CeldaModel celdaCarro) {
+        this.celdasCarro.add(celdaCarro);
     }
 
     public ArrayList<CeldaModel> getCeldasMoto() {

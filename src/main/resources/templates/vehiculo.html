@@ -11,7 +11,7 @@
 				<th>Placa: </th>
 				<th>Cilindraje: </th>
 				<th>Parqueado: </th>
-				<th>Tipo vehiculo: </th>
+				<th>Tipo Vehiculo: </th>
 			</tr>
 		</thead>
 		<tbody>
@@ -23,12 +23,32 @@
 			</tr>
 		</tbody>
 	</table>
+	
+	<br></br><hr></hr>
+	<table>
+		<thead>
+			<tr>
+				<th>Placa: </th>
+				<th>Cilindraje: </th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="vehiculo : ${vehiculos}">
+				<th><span th:text="${vehiculo.placa}"></span></th>
+				<th><span th:text="${vehiculo.cilindraje}"></span></th>
+			</tr>
+		</tbody>
+	</table>
+	
+	<br></br>
+	
 	<form action="#" th:action="@{/parqueadero/addvehiculo}" th:object="${vehiculo}" method="post">
-	<p>Placa: <input type="text" th:field="*{placa}" /></p>
-	<p>Cilindraje: <input type="text" th:field="*{cilindraje}" /></p>
-	<p>Parqueado: <input type="text" th:field="*{parqueado}" /></p>
-	<p>Tipo vehiculo: <input type="text" th:field="*{tipo_vehiculo}" /></p>
-	<p><input type="submit" value="Submit" /></p>
+		<p>Placa: <input type="text" th:field="*{placa}" /></p>
+		<p>Cilindraje: <input type="text" th:field="*{cilindraje}" /></p>
+		<p>Parqueado: <input type="text" th:field="*{parqueado}" /></p>
+		<p>Tipo vehiculo: <input type="text" th:field="*{tipo_vehiculo}" /></p>
+		<p><input type="submit" value="Enviar"/></p>
 	</form>
+	
 </body>
 </html>
