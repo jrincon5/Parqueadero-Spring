@@ -37,8 +37,8 @@ public class FacturaEnt {
 	private int total_pagar;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "placa",referencedColumnName = "placa")
-	private VehiculoEnt placa;
+	@JoinColumn(name = "placa_fk",referencedColumnName = "placa")
+	private VehiculoEnt placa_fk;
 	
 
 	public int getId_factura() {
@@ -82,11 +82,11 @@ public class FacturaEnt {
 	}	
 
 	public VehiculoEnt getPlaca() {
-		return placa;
+		return placa_fk;
 	}
 
 	public void setPlaca(VehiculoEnt placa) {
-		this.placa = placa;
+		this.placa_fk = placa;
 	}	
 
 	public FacturaEnt(Date fecha_entrada, Date fecha_salida, int total_horas, int total_pagar,
@@ -96,7 +96,7 @@ public class FacturaEnt {
 		this.fecha_salida = fecha_salida;
 		this.total_horas = total_horas;
 		this.total_pagar = total_pagar;
-		this.placa = placa;
+		this.placa_fk = placa;
 	}
 
 	public FacturaEnt() {

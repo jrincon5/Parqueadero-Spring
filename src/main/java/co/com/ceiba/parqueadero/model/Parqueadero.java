@@ -36,7 +36,8 @@ public class Parqueadero{
     	int diaMes=Cal.get(Calendar.DAY_OF_MONTH);
     	int horaDia=Cal.get(Calendar.HOUR_OF_DAY);
     	int minuto=Cal.get(Calendar.MINUTE);
-    	return new FechaModel(year,mes,diaMes,horaDia,minuto);
+    	int second=Cal.get(Calendar.SECOND);
+    	return new FechaModel(year,mes,diaMes,horaDia,minuto,second);
     }
 
     public boolean ingresarCarro(String placa, int cc){

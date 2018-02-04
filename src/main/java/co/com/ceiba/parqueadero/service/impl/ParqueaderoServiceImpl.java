@@ -1,7 +1,11 @@
 package co.com.ceiba.parqueadero.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -25,6 +29,7 @@ import co.com.ceiba.parqueadero.service.ParqueaderoService;
 public class ParqueaderoServiceImpl implements ParqueaderoService{
 	
 	private Parqueadero parqueaderoModel= new Parqueadero();
+	private VehiculoEnt vehiculoEnt=new VehiculoEnt();
 	
 	private static final Log LOG = LogFactory.getLog(ParqueaderoServiceImpl.class);
 	private static final int HORACARRO=1000;
@@ -57,17 +62,16 @@ public class ParqueaderoServiceImpl implements ParqueaderoService{
 
 	@Override
 	public VehiculoEnt addCarro(VehiculoModel vehiculo) {
-		LOG.info("CALL: addCarro()");
-		
+		LOG.info("CALL: addCarro()");		
 		if(parqueaderoModel.getCeldasCarro().size()<=20) {
 			if(picoYPlaca(vehiculo.getPlaca())) {
 				VehiculoEnt vehiculoEnt = vehiculoConverter.model2Entity(vehiculo);
 				vehiculoEnt.setPlaca(vehiculoEnt.getPlaca().toUpperCase());
 				vehiculoEnt.setParqueado(true);
 				vehiculoEnt.setTipo_vehiculo("Carro");
-				FechaModel fechaIngreso = getFechaActual();
-				CeldaModel celda = new CeldaModel(vehiculo,fechaIngreso);
+				CeldaModel celda = new CeldaModel(vehiculo,getFechaActual());
 				parqueaderoModel.setCeldasCarro(celda);
+				this.vehiculoEnt=vehiculoEnt;
 				return parqueaderoJpaRepository.save(vehiculoEnt);
 			}
 		}
@@ -77,10 +81,10 @@ public class ParqueaderoServiceImpl implements ParqueaderoService{
 	public boolean picoYPlaca(String placa) {
     	if(placa.startsWith("A")) {
     		if(Calendar.DAY_OF_WEEK!=0 && Calendar.DAY_OF_WEEK!=1){
-    			return true;
+    			return false;
     		}
     	}
-    	return false;
+    	return true;
     }
 	
 	public FechaModel getFechaActual() {
@@ -90,12 +94,17 @@ public class ParqueaderoServiceImpl implements ParqueaderoService{
     	int diaMes=Cal.get(Calendar.DAY_OF_MONTH);
     	int horaDia=Cal.get(Calendar.HOUR_OF_DAY);
     	int minuto=Cal.get(Calendar.MINUTE);
-    	return new FechaModel(year,mes,diaMes,horaDia,minuto);
+    	int second=Cal.get(Calendar.SECOND);
+    	return new FechaModel(year,mes,diaMes,horaDia,minuto,second);
     }
 
 	@Override
-	public FacturaEnt addFecha(FechaModel fecha, String placa) {
-		//FacturaEnt factura = new FacturaEnt(fecha, null, 0, 0, placa);
-		return null;
+	public FacturaEnt addFecha() {
+		LOG.info("CALL: addFecha()");
+		FacturaEnt factura;
+		int size=parqueaderoModel.getCeldasCarro().size();
+		Date fechaIngreso = parqueaderoModel.getCeldasCarro().get(size-1).getFecha().getTime();
+		factura = new FacturaEnt(fechaIngreso,new Date(),0,0,this.vehiculoEnt);
+		return facturaJpaRepository.save(factura);
 	}
 }

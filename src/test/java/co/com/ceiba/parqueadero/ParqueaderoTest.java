@@ -69,64 +69,64 @@ public class ParqueaderoTest {
 	
 	@Test
 	public void calcularHoras() {
-		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0);
-    	FechaModel salida = new FechaModel(2017, 1, 5, 8, 0);
+		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0,0);
+    	FechaModel salida = new FechaModel(2017, 1, 5, 8, 0,0);
 		assertEquals(101, park.calcularHorasTotales(entrada, salida));
 	}
 	
 	@Test
 	public void calcularHorasConMinutosMax() {
-		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0);
-    	FechaModel salida = new FechaModel(2017, 1, 1, 8, 1);
+		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0,0);
+    	FechaModel salida = new FechaModel(2017, 1, 1, 8, 1,0);
 		assertEquals(6, park.calcularHorasTotales(entrada, salida));
 	}
 	
 	@Test
 	public void calcularHorasConMinutosMin() {
-		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0);
-    	FechaModel salida = new FechaModel(2017, 1, 1, 7, 59);
+		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0,0);
+    	FechaModel salida = new FechaModel(2017, 1, 1, 7, 59,0);
 		assertEquals(5, park.calcularHorasTotales(entrada, salida));
 	}
 	
 	@Test
 	public void calcularCobroCarrosHoras() {
-		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0);
-    	FechaModel salida = new FechaModel(2017, 1, 1, 7, 59);
+		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0,0);
+    	FechaModel salida = new FechaModel(2017, 1, 1, 7, 59,0);
 		assertEquals(5000, park.generarCobroCarros(entrada, salida));
 	}
 	
 	@Test
 	public void calcularCobroCarrosDias() {
-		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0);
-    	FechaModel salida = new FechaModel(2017, 1, 1, 15, 00);
+		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0,0);
+    	FechaModel salida = new FechaModel(2017, 1, 1, 15, 0,0);
 		assertEquals(8000, park.generarCobroCarros(entrada, salida));
 	}
 	
 	@Test
 	public void calcularCobroCarrosHorasDias() {
-		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0);
-    	FechaModel salida = new FechaModel(2017, 1, 2, 3, 1);
+		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0,0);
+    	FechaModel salida = new FechaModel(2017, 1, 2, 3, 1,0);
 		assertEquals(9000, park.generarCobroCarros(entrada, salida));
 	}
 	
 	@Test
 	public void calcularCobroMotosHoras() {
-		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0);
-    	FechaModel salida = new FechaModel(2017, 1, 1, 7, 59);
+		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0,0);
+    	FechaModel salida = new FechaModel(2017, 1, 1, 7, 59,0);
 		assertEquals(2500, park.generarCobroMotos(entrada, salida));
 	}
 	
 	@Test
 	public void calcularCobroMotosDias() {
-		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0);
-    	FechaModel salida = new FechaModel(2017, 1, 1, 15, 00);
+		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0,0);
+    	FechaModel salida = new FechaModel(2017, 1, 1, 15, 0,0);
 		assertEquals(4000, park.generarCobroMotos(entrada, salida));
 	}
 	
 	@Test
 	public void calcularCobroMotosHorasDias() {
-		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0);
-    	FechaModel salida = new FechaModel(2017, 1, 2, 3, 1);
+		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0,0);
+    	FechaModel salida = new FechaModel(2017, 1, 2, 3, 1,0);
 		assertEquals(4500, park.generarCobroMotos(entrada, salida));
 	}
 }

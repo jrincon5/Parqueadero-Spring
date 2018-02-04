@@ -42,6 +42,7 @@ public class ParqueaderoController {
 			return "redirect:/parqueadero/listvehiculos";
 		}else {
 			parqueaderoService.addCarro(vehiculo);
+			parqueaderoService.addFecha();
 			return "redirect:/parqueadero/listvehiculos";
 		}		
 	}

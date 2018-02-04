@@ -8,9 +8,10 @@ public class FechaModel extends GregorianCalendar{
 	private int dayOfMonth;
 	private int hourOfDay;
 	private int minute;
+	private int second;
 	
-	public FechaModel(int year, int month, int dayOfMonth, int hourOfDay, int minute) {
-		super(year,month,dayOfMonth,hourOfDay,minute);
+	public FechaModel(int year, int month, int dayOfMonth, int hourOfDay, int minute, int second) {
+		super(year,month,dayOfMonth,hourOfDay,minute,second);
 	}
 	
 	public int getYear() {
@@ -32,4 +33,13 @@ public class FechaModel extends GregorianCalendar{
 	public int getMinuto() {
 		return minute;
 	}
+
+	public int getSecond() {
+		return second;
+	}
+
+	public void setSecond(int second) {
+		this.second = second;
+	}
+	
 }

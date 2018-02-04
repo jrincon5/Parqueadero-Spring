@@ -15,5 +15,5 @@ public interface ParqueaderoService {
 	
 	public abstract VehiculoEnt addCarro(VehiculoModel vehiculo);
 	
-	public abstract FacturaEnt addFecha(FechaModel fecha, String placa);
+	public abstract FacturaEnt addFecha();
 }
