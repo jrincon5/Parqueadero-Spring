@@ -12,6 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import co.com.ceiba.parqueadero.converter.VehiculoConverter;
@@ -55,10 +56,10 @@ public class ParqueaderoServiceImpl implements ParqueaderoService{
 		return parqueaderoJpaRepository.findAll();
 	}
 
-	@Override
+	/*@Override
 	public VehiculoEnt findByPlaca(String placa) {
 		return parqueaderoJpaRepository.findByPlaca(placa);
-	}
+	}*/
 
 	@Override
 	public VehiculoEnt addCarro(VehiculoModel carro) {
@@ -76,6 +77,45 @@ public class ParqueaderoServiceImpl implements ParqueaderoService{
 			}
 		}
 		return null;		
+	}
+	
+	@Override
+	public VehiculoEnt addMoto(VehiculoModel moto) {
+		LOG.info("CALL: addMoto()");		
+		if(parqueaderoModel.getCeldasMoto().size()<=10) {
+			if(picoYPlaca(moto.getPlaca())) {
+				VehiculoEnt vehiculoEnt = vehiculoConverter.model2Entity(moto);
+				vehiculoEnt.setPlaca(vehiculoEnt.getPlaca().toUpperCase());
+				vehiculoEnt.setParqueado(true);
+				vehiculoEnt.setTipo_vehiculo("Moto");
+				CeldaModel celda = new CeldaModel(moto,getFechaActual());
+				parqueaderoModel.setCeldasMoto(celda);
+				this.vehiculoEnt=vehiculoEnt;
+				//parqueaderoJpaRepository.
+				return parqueaderoJpaRepository.save(vehiculoEnt);
+			}
+		}
+		return null;
+	}	
+
+	@Override
+	public FacturaEnt addFechaCarro() {
+		LOG.info("CALL: addFechaCarro()");
+		FacturaEnt factura;
+		int size=parqueaderoModel.getCeldasCarro().size();
+		Date fechaIngreso = parqueaderoModel.getCeldasCarro().get(size-1).getFecha().getTime();
+		factura = new FacturaEnt(fechaIngreso,null,0,0,this.vehiculoEnt);
+		return facturaJpaRepository.save(factura);
+	}
+	
+	@Override
+	public FacturaEnt addFechaMoto() {
+		LOG.info("CALL: addFechaMoto()");
+		FacturaEnt factura;
+		int size=parqueaderoModel.getCeldasMoto().size();
+		Date fechaIngreso = parqueaderoModel.getCeldasMoto().get(size-1).getFecha().getTime();
+		factura = new FacturaEnt(fechaIngreso,null,0,0,this.vehiculoEnt);
+		return facturaJpaRepository.save(factura);
 	}
 	
 	public boolean picoYPlaca(String placa) {
@@ -99,40 +139,8 @@ public class ParqueaderoServiceImpl implements ParqueaderoService{
     }
 
 	@Override
-	public FacturaEnt addFechaCarro() {
-		LOG.info("CALL: addFechaCarro()");
-		FacturaEnt factura;
-		int size=parqueaderoModel.getCeldasCarro().size();
-		Date fechaIngreso = parqueaderoModel.getCeldasCarro().get(size-1).getFecha().getTime();
-		factura = new FacturaEnt(fechaIngreso,new Date(),0,0,this.vehiculoEnt);
-		return facturaJpaRepository.save(factura);
-	}
-	
-	@Override
-	public FacturaEnt addFechaMoto() {
-		LOG.info("CALL: addFechaMoto()");
-		FacturaEnt factura;
-		int size=parqueaderoModel.getCeldasMoto().size();
-		Date fechaIngreso = parqueaderoModel.getCeldasMoto().get(size-1).getFecha().getTime();
-		factura = new FacturaEnt(fechaIngreso,new Date(),0,0,this.vehiculoEnt);
-		return facturaJpaRepository.save(factura);
-	}
-
-	@Override
-	public VehiculoEnt addMoto(VehiculoModel moto) {
-		LOG.info("CALL: addMoto()");		
-		if(parqueaderoModel.getCeldasMoto().size()<=10) {
-			if(picoYPlaca(moto.getPlaca())) {
-				VehiculoEnt vehiculoEnt = vehiculoConverter.model2Entity(moto);
-				vehiculoEnt.setPlaca(vehiculoEnt.getPlaca().toUpperCase());
-				vehiculoEnt.setParqueado(true);
-				vehiculoEnt.setTipo_vehiculo("Moto");
-				CeldaModel celda = new CeldaModel(moto,getFechaActual());
-				parqueaderoModel.setCeldasMoto(celda);
-				this.vehiculoEnt=vehiculoEnt;
-				return parqueaderoJpaRepository.save(vehiculoEnt);
-			}
-		}
+	public VehiculoEnt findByPlaca(String placa) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

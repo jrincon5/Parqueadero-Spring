@@ -10,5 +10,4 @@ import co.com.ceiba.parqueadero.entity.VehiculoEnt;
 @Repository("parqueaderoJpaRepository")
 public interface ParqueaderoJpaRepository extends JpaRepository<VehiculoEnt, Serializable>{
 	
-	public abstract VehiculoEnt findByPlaca(String placa);
 }
