@@ -61,15 +61,15 @@ public class ParqueaderoServiceImpl implements ParqueaderoService{
 	}
 
 	@Override
-	public VehiculoEnt addCarro(VehiculoModel vehiculo) {
+	public VehiculoEnt addCarro(VehiculoModel carro) {
 		LOG.info("CALL: addCarro()");		
 		if(parqueaderoModel.getCeldasCarro().size()<=20) {
-			if(picoYPlaca(vehiculo.getPlaca())) {
-				VehiculoEnt vehiculoEnt = vehiculoConverter.model2Entity(vehiculo);
+			if(picoYPlaca(carro.getPlaca())) {
+				VehiculoEnt vehiculoEnt = vehiculoConverter.model2Entity(carro);
 				vehiculoEnt.setPlaca(vehiculoEnt.getPlaca().toUpperCase());
 				vehiculoEnt.setParqueado(true);
 				vehiculoEnt.setTipo_vehiculo("Carro");
-				CeldaModel celda = new CeldaModel(vehiculo,getFechaActual());
+				CeldaModel celda = new CeldaModel(carro,getFechaActual());
 				parqueaderoModel.setCeldasCarro(celda);
 				this.vehiculoEnt=vehiculoEnt;
 				return parqueaderoJpaRepository.save(vehiculoEnt);
@@ -99,12 +99,40 @@ public class ParqueaderoServiceImpl implements ParqueaderoService{
     }
 
 	@Override
-	public FacturaEnt addFecha() {
-		LOG.info("CALL: addFecha()");
+	public FacturaEnt addFechaCarro() {
+		LOG.info("CALL: addFechaCarro()");
 		FacturaEnt factura;
 		int size=parqueaderoModel.getCeldasCarro().size();
 		Date fechaIngreso = parqueaderoModel.getCeldasCarro().get(size-1).getFecha().getTime();
 		factura = new FacturaEnt(fechaIngreso,new Date(),0,0,this.vehiculoEnt);
 		return facturaJpaRepository.save(factura);
+	}
+	
+	@Override
+	public FacturaEnt addFechaMoto() {
+		LOG.info("CALL: addFechaMoto()");
+		FacturaEnt factura;
+		int size=parqueaderoModel.getCeldasMoto().size();
+		Date fechaIngreso = parqueaderoModel.getCeldasMoto().get(size-1).getFecha().getTime();
+		factura = new FacturaEnt(fechaIngreso,new Date(),0,0,this.vehiculoEnt);
+		return facturaJpaRepository.save(factura);
+	}
+
+	@Override
+	public VehiculoEnt addMoto(VehiculoModel moto) {
+		LOG.info("CALL: addMoto()");		
+		if(parqueaderoModel.getCeldasMoto().size()<=10) {
+			if(picoYPlaca(moto.getPlaca())) {
+				VehiculoEnt vehiculoEnt = vehiculoConverter.model2Entity(moto);
+				vehiculoEnt.setPlaca(vehiculoEnt.getPlaca().toUpperCase());
+				vehiculoEnt.setParqueado(true);
+				vehiculoEnt.setTipo_vehiculo("Moto");
+				CeldaModel celda = new CeldaModel(moto,getFechaActual());
+				parqueaderoModel.setCeldasMoto(celda);
+				this.vehiculoEnt=vehiculoEnt;
+				return parqueaderoJpaRepository.save(vehiculoEnt);
+			}
+		}
+		return null;
 	}
 }

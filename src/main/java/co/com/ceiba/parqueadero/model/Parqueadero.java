@@ -25,8 +25,8 @@ public class Parqueadero{
         return celdasMoto;
     }
 
-    public void setCeldasMoto(ArrayList<CeldaModel> celdasMoto) {
-        this.celdasMoto = celdasMoto;
+    public void setCeldasMoto(CeldaModel celdaMoto) {
+        this.celdasMoto.add(celdaMoto);
     }
     
     public FechaModel getFechaActual() {

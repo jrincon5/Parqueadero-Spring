@@ -36,13 +36,20 @@ public class ParqueaderoController {
 	}
 	
 	@PostMapping("/addvehiculo")
-	public String addVehiculo(@ModelAttribute("vehiculo") VehiculoModel vehiculo, BindingResult result) {
+	public String addVehiculo(@ModelAttribute("vehiculo") VehiculoModel vehiculo,
+			@ModelAttribute("tipo_vehiculo") String tipo, BindingResult result) {
 		LOG.info("CALL: addVehiculo()");
 		if(result.hasErrors()) {
 			return "redirect:/parqueadero/listvehiculos";
 		}else {
-			parqueaderoService.addCarro(vehiculo);
-			parqueaderoService.addFecha();
+			if(tipo.equals("Carro")) {
+				parqueaderoService.addCarro(vehiculo);
+				parqueaderoService.addFechaCarro();
+			}
+			if(tipo.equals("Moto")) {
+				parqueaderoService.addMoto(vehiculo);
+				parqueaderoService.addFechaMoto();
+			}
 			return "redirect:/parqueadero/listvehiculos";
 		}		
 	}

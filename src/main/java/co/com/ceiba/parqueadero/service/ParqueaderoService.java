@@ -13,7 +13,11 @@ public interface ParqueaderoService {
 	
 	public abstract VehiculoEnt findByPlaca(String placa);
 	
-	public abstract VehiculoEnt addCarro(VehiculoModel vehiculo);
+	public abstract VehiculoEnt addCarro(VehiculoModel carro);
 	
-	public abstract FacturaEnt addFecha();
+	public abstract VehiculoEnt addMoto(VehiculoModel moto);
+	
+	public abstract FacturaEnt addFechaCarro();
+	
+	public abstract FacturaEnt addFechaMoto();
 }
