@@ -4,54 +4,41 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
 
-import co.com.ceiba.parqueadero.entity.VehiculoEnt;
-import co.com.ceiba.parqueadero.model.VehiculoModel;
-import co.com.ceiba.parqueadero.service.ParqueaderoService;
+import co.com.ceiba.parqueadero.model.CarroModel;
+import co.com.ceiba.parqueadero.model.MotoModel;
+import co.com.ceiba.parqueadero.service.VigilanteService;
 
-@Controller
+@RestController
 @RequestMapping("/parqueadero")
 public class ParqueaderoController {
 	
 	private static final Log LOG = LogFactory.getLog(ParqueaderoController.class);
 	
 	@Autowired
-	@Qualifier("parqueaderoServiceImpl")
-	private ParqueaderoService parqueaderoService;	
+	@Qualifier("vigilanteServiceImpl")
+	VigilanteService vigilanteService;
 	
-	@GetMapping("/listvehiculos")
-	public ModelAndView listAllVehiculos() {
-		LOG.info("CALL: listAllVehiculos()");
-		ModelAndView mav= new ModelAndView("vehiculo");
-		mav.addObject("vehiculos",parqueaderoService.listAllVehiculos());
-		mav.addObject("vehiculo", new VehiculoEnt());
-		return mav;
+	@PostMapping("/addcarro")
+	public void addCarro(@RequestBody CarroModel carroModel) {
+		LOG.info("CALL: addCarro()");
+		vigilanteService.addCarro(carroModel);
 	}
 	
-	@PostMapping("/addvehiculo")
-	public String addVehiculo(@ModelAttribute("vehiculo") VehiculoModel vehiculo,
-			@ModelAttribute("tipo_vehiculo") String tipo, BindingResult result) {
-		LOG.info("CALL: addVehiculo()");
-		if(result.hasErrors()) {
-			return "redirect:/parqueadero/listvehiculos";
-		}else {
-			if(tipo.equals("Carro")) {
-				parqueaderoService.addCarro(vehiculo);
-				parqueaderoService.addFechaCarro();
-			}
-			if(tipo.equals("Moto")) {
-				parqueaderoService.addMoto(vehiculo);
-				parqueaderoService.addFechaMoto();
-			}
-			return "redirect:/parqueadero/listvehiculos";
-		}		
+	@PostMapping("/addmoto")
+	public void addMoto(@RequestBody MotoModel motoModel) {
+		LOG.info("CALL: addMoto()");
+		vigilanteService.addMoto(motoModel);
+	}
+	
+	@PostMapping("/removecarro")
+	public void removeCarro(@RequestBody String placa) {
+		LOG.info("CALL: addCarro()");
+		vigilanteService.removeCarro(placa);
 	}
 
 }

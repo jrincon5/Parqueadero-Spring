@@ -2,40 +2,43 @@ package co.com.ceiba.parqueadero.model;
 
 import javax.validation.constraints.NotNull;
 
-public class VehiculoModel {
-	
-	@Override
-	public String toString() {
-		return "Vehiculo [placa=" + placa + ", cc=" + cilindraje + "]";
-	}
-	
+public abstract class VehiculoModel {
+
 	@NotNull
 	private String placa;
-	
 	@NotNull
-    private int cilindraje;
-    
-    public VehiculoModel(String placa, int cilindraje) {
-        this.placa = placa;
-        this.cilindraje = cilindraje;
-    }
-    
-    public VehiculoModel() {}
+	private boolean parqueado;
 
 	public String getPlaca() {
-	    return placa;
+		return placa;
 	}
-	
+
 	public void setPlaca(String placa) {
-	    this.placa = placa;
+		this.placa = placa;
+	}
+
+	public boolean isParqueado() {
+		return parqueado;
+	}
+
+	public void setParqueado(boolean parqueado) {
+		this.parqueado = parqueado;
+	}
+
+	public VehiculoModel(String placa, boolean parqueado) {
+		super();
+		this.placa = placa;
+		this.parqueado = parqueado;
+	}
+
+	public VehiculoModel() {
+	}
+
+	@Override
+	public String toString() {
+		return "VehiculoModel [placa=" + placa + ", parqueado=" + parqueado + "]";
 	}
 	
-	public int getCilindraje() {
-	    return cilindraje;
-	}
-	
-	public void setCilindraje(int cilindraje) {
-	    this.cilindraje = cilindraje;
-	}
+	public abstract String getTipoVehiculo();
 
 }

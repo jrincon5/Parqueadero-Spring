@@ -18,43 +18,43 @@ public class ParqueaderoTest {
 	@Before
 	public void arrange() {
 		park = new Parqueadero();
-		car = new CarroModel("BSW04D",1000);
+		car = new CarroModel("BSW04D",true);
 	}
 	
 	@Test
 	public void ingresarCarroTest() {
-        assertTrue(park.ingresarCarro("BSW04D",1000));
+        assertTrue(park.ingresarCarro("BSW04D",true));
     }
 	
 	@Test
 	public void ingresarMotoTest() {
-        assertTrue(park.ingresarMoto("BSW04D",1000));
+        assertTrue(park.ingresarMoto("BSW04D",true,1000));
     }
 	
 	@Test
 	public void ingresarCarroConReglaMaravillosaTest() {
-        assertFalse(park.ingresarCarro("ASW04D",1000));
+        assertFalse(park.ingresarCarro("ASW04D",true));
     }
 	
 	@Test
 	public void ingresarMotoConReglaMaravillosaTest() {
-        assertFalse(park.ingresarMoto("ASW04D",1000));
+        assertFalse(park.ingresarMoto("ASW04D",true,1000));
     }
 	
 	@Test
     public void ingresarCarrosMaximosTest() {
         for(int i = 0; i< 30 ; i++) {
-            park.ingresarCarro("WSW04D", 1000);
+            park.ingresarCarro("WSW04D",true);
         }
-        assertFalse(park.ingresarCarro("WSW04D",1000));
+        assertFalse(park.ingresarCarro("WSW04D",true));
     }
 	
 	@Test
     public void ingresarMotosMaximasTest() {
         for(int i = 0; i< 20 ; i++) {
-            park.ingresarMoto("WSW04D", 1000);
+            park.ingresarMoto("WSW04D",true,1000);
         }
-        assertFalse(park.ingresarMoto("WSW04D",1000));
+        assertFalse(park.ingresarMoto("WSW04D",true,1000));
     }
 	
 	@Test

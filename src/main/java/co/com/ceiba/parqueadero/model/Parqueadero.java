@@ -7,11 +7,13 @@ import java.util.Date;
 public class Parqueadero{
     private ArrayList<CeldaModel> celdasCarro = new ArrayList<>();
     private ArrayList<CeldaModel> celdasMoto = new ArrayList<>();
-    private static final int HORACARRO=1000;
-    private static final int HORAMOTO=500;
-    private static final int DIACARRO=8000;
-    private static final int DIAMOTO=4000;
-    private static final int MOTOALTOCILINDRAJE=2000;
+    public static final int HORACARRO=1000;
+    public static final int LIMITECARROS=20;
+    public static final int LIMITEMOTOS=10;
+    public static final int HORAMOTO=500;
+    public static final int DIACARRO=8000;
+    public static final int DIAMOTO=4000;
+    public static final int MOTOALTOCILINDRAJE=2000;
     
     public ArrayList<CeldaModel> getCeldasCarro() {
         return celdasCarro;
@@ -40,12 +42,12 @@ public class Parqueadero{
     	return new FechaModel(year,mes,diaMes,horaDia,minuto,second);
     }
 
-    public boolean ingresarCarro(String placa, int cc){
+    public boolean ingresarCarro(String placa, boolean parqueado){
     	placa=placa.toUpperCase();
-        if(celdasCarro.size()<=20){
+        if(celdasCarro.size()<=LIMITECARROS){
             if(picoYPlaca(placa))return false;
             FechaModel f = getFechaActual();
-            CarroModel c = new CarroModel(placa,cc);
+            CarroModel c = new CarroModel(placa,parqueado);
             CeldaModel celda = new CeldaModel(c,f);
             celdasCarro.add(celda);
             //System.out.print("Ingreso un carro:");
@@ -56,12 +58,12 @@ public class Parqueadero{
         return false;
     }
     
-    public boolean ingresarMoto(String placa, int cc){
+    public boolean ingresarMoto(String placa, boolean parqueado, int cilindraje){
     	placa=placa.toUpperCase();
-        if(celdasMoto.size()<=10){
+        if(celdasMoto.size()<=LIMITEMOTOS){
             if(picoYPlaca(placa))return false;
             FechaModel f = getFechaActual();
-            MotoModel c = new MotoModel(placa,cc);
+            MotoModel c = new MotoModel(placa,parqueado,cilindraje);
             CeldaModel celda = new CeldaModel(c,f);
             celdasMoto.add(celda);
             //System.out.print("Ingreso un carro:");
