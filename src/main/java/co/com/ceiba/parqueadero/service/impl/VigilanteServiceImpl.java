@@ -72,6 +72,18 @@ public class VigilanteServiceImpl implements VigilanteService{
 	}
 	
 	@Override
+	public ComprobantePagoEntity addComprobantePagoCarro() {
+		LOG.info("CALL: addComprobantePagoCarro()");
+		ComprobantePagoEntity factura;
+		int size=parqueaderoModel.getCeldasCarro().size();
+		LOG.info("CALL: Estoy sirviendo " + size);
+		Date fechaIngreso = parqueaderoModel.getCeldasCarro().get(size-1).getFecha().getTime();
+		factura = new ComprobantePagoEntity(fechaIngreso,null,0,0,this.vehiculoAux);
+		vehiculoAux=null;
+		return comprobanteJpaRepository.save(factura);
+	}
+	
+	@Override
 	public VehiculoEntity removeVehiculo(String placa) {
 		LOG.info("CALL: removeVehiculo()");
 		if(vehiculoJpaRepository.exists(placa.toUpperCase())) {
@@ -89,7 +101,11 @@ public class VigilanteServiceImpl implements VigilanteService{
 		LOG.info("CALL: generarCobroCarro()");
 		if(vehiculoJpaRepository.exists(placa.toUpperCase())) {
 			LOG.info("CALL: comprobanteJpaRepository.findByPlaca(placa)");
-			//ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findById(4);
+			VehiculoEntity veh = new VehiculoEntity();
+			veh.setPlaca(placa);
+			ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findByPlaca(veh);
+			//Date fechaSalida = new Date(getFechaActual());
+			//comprobanteEntity.setFechaSalida();
 		}
 		return null;
 	}
@@ -110,18 +126,6 @@ public class VigilanteServiceImpl implements VigilanteService{
 			return vehiculoJpaRepository.save(vehiculoEntity);
 		}
 		return null;
-	}
-
-	@Override
-	public ComprobantePagoEntity addComprobantePagoCarro() {
-		LOG.info("CALL: addComprobantePagoCarro()");
-		ComprobantePagoEntity factura;
-		int size=parqueaderoModel.getCeldasCarro().size();
-		LOG.info("CALL: Estoy sirviendo " + size);
-		Date fechaIngreso = parqueaderoModel.getCeldasCarro().get(size-1).getFecha().getTime();
-		factura = new ComprobantePagoEntity(fechaIngreso,null,0,0,this.vehiculoAux);
-		vehiculoAux=null;
-		return comprobanteJpaRepository.save(factura);
 	}
 	
 	@Override
