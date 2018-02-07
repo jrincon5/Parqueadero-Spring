@@ -1,44 +1,83 @@
 package co.com.ceiba.parqueadero.controller;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
+import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
 import co.com.ceiba.parqueadero.service.VigilanteService;
+
 
 @RestController
 @RequestMapping("/parqueadero")
 public class ParqueaderoController {
 	
 	private static final Log LOG = LogFactory.getLog(ParqueaderoController.class);
+	private JsonElement jsonObj;
 	
 	@Autowired
 	@Qualifier("vigilanteServiceImpl")
 	VigilanteService vigilanteService;
 	
+	@GetMapping("/listvehiculos")
+	public List <VehiculoEntity> listVehiculos() {
+		LOG.info("CALL: listVehiculos()");
+		return vigilanteService.listAllVehiculos();
+	}
+	
+	@GetMapping("/listcarros")
+	public List <CarroModel> listCarros() {
+		LOG.info("CALL: listCarros()");
+		return vigilanteService.listAllCarros();
+	}
+	
+	@GetMapping("/listmotos")
+	public List <MotoModel> listMotos() {
+		LOG.info("CALL: listMotos()");
+		return vigilanteService.listAllMotos();
+	}
+	
 	@PostMapping("/addcarro")
 	public void addCarro(@RequestBody CarroModel carroModel) {
 		LOG.info("CALL: addCarro()");
 		vigilanteService.addCarro(carroModel);
+		vigilanteService.addComprobantePagoCarro();
 	}
 	
 	@PostMapping("/addmoto")
 	public void addMoto(@RequestBody MotoModel motoModel) {
 		LOG.info("CALL: addMoto()");
 		vigilanteService.addMoto(motoModel);
+		vigilanteService.addComprobantePagoMoto();
 	}
 	
 	@PostMapping("/removecarro")
-	public void removeCarro(@RequestBody String placa) {
-		LOG.info("CALL: addCarro()");
-		vigilanteService.removeCarro(placa);
+	public void removeCarro(@RequestBody String json){
+		LOG.info("CALL: removeCarro()");
+		jsonObj = new JsonParser().parse(json);
+		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
+		vigilanteService.removeVehiculo(placa);
+		vigilanteService.generarCobroCarro(placa);
 	}
-
+	
+	@PostMapping("/removemoto")
+	public void removeMoto(@RequestBody String json){
+		LOG.info("CALL: removeMoto()");		
+		jsonObj = new JsonParser().parse(json);
+		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
+		vigilanteService.removeVehiculo(placa);
+	}
 }

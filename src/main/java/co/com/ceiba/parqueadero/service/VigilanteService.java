@@ -11,15 +11,19 @@ public interface VigilanteService {
 	
 	public abstract List<VehiculoEntity> listAllVehiculos();
 	
-	public abstract VehiculoEntity findByPlaca(String placa);
+	public abstract List<CarroModel> listAllCarros();
+	
+	public abstract List<MotoModel> listAllMotos();
 	
 	public abstract VehiculoEntity addCarro(CarroModel carro);
 	
 	public abstract VehiculoEntity addMoto(MotoModel moto);
 	
-	public abstract VehiculoEntity removeCarro(String placa);
+	public abstract VehiculoEntity removeVehiculo(String placa);
 	
-	public abstract ComprobantePagoEntity addFechaCarro();
+	public abstract ComprobantePagoEntity addComprobantePagoCarro();
 	
-	public abstract ComprobantePagoEntity addFechaMoto();
+	public abstract ComprobantePagoEntity addComprobantePagoMoto();
+	
+	public abstract ComprobantePagoEntity generarCobroCarro(String placa);
 }

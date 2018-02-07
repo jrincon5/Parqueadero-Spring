@@ -1,5 +1,6 @@
 package co.com.ceiba.parqueadero.service.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,7 @@ import co.com.ceiba.parqueadero.service.VigilanteService;
 public class VigilanteServiceImpl implements VigilanteService{
 	
 	private Parqueadero parqueaderoModel= new Parqueadero();
-	private VehiculoEntity vehiculoEntity=new VehiculoEntity();
+	private VehiculoEntity vehiculoAux=new VehiculoEntity();
 	
 	private static final Log LOG = LogFactory.getLog(VigilanteServiceImpl.class);	
 	
@@ -51,97 +52,117 @@ public class VigilanteServiceImpl implements VigilanteService{
 	public List<VehiculoEntity> listAllVehiculos() {
 		return vehiculoJpaRepository.findAll();
 	}
-
+	
+	@SuppressWarnings("static-access")
 	@Override
 	public VehiculoEntity addCarro(CarroModel carro) {
-		
 		LOG.info("CALL: addCarro()");
 		if(parqueaderoModel.getCeldasCarro().size()<=parqueaderoModel.LIMITECARROS) {
-			if(picoYPlaca(carro.getPlaca())) {
-				VehiculoEntity vehiculoEntity = carroConverter.model2Entity(carro);
-				vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
-				vehiculoEntity.setParqueado(true);
-				vehiculoEntity.setTipoVehiculo(carro.getTipoVehiculo());
-				CeldaModel celda = new CeldaModel(carro,getFechaActual());
-				parqueaderoModel.setCeldasCarro(celda);
-				//this.vehiculoEntity=vehiculoEntity;
-				LOG.info("RETURNING: addCarro()");
-				return vehiculoJpaRepository.save(vehiculoEntity);
-			}
+			VehiculoEntity vehiculoEntity = carroConverter.model2Entity(carro);
+			vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
+			vehiculoEntity.setParqueado(true);
+			vehiculoEntity.setTipoVehiculo(carro.getTipoVehiculo());
+			CeldaModel celda = new CeldaModel(carro,getFechaActual());
+			parqueaderoModel.setCeldasCarro(celda);
+			this.vehiculoAux=vehiculoEntity;
+			LOG.info("RETURNING: addCarro()");
+			return vehiculoJpaRepository.save(vehiculoEntity);
 		}
 		return null;		
 	}
 	
 	@Override
-	public VehiculoEntity removeCarro(String placa) {
-		/*VehiculoEntity vehiculoEntity = new VehiculoEntity();
-		vehiculoEntity = vehiculoJpaRepository.findOne(placa);
-		vehiculoEntity.setParqueado(false);*/
-		return vehiculoJpaRepository.save(vehiculoEntity);
+	public VehiculoEntity removeVehiculo(String placa) {
+		LOG.info("CALL: removeVehiculo()");
+		if(vehiculoJpaRepository.exists(placa.toUpperCase())) {
+			VehiculoEntity vehiculoEntity = vehiculoJpaRepository.findOne(placa);
+			vehiculoEntity.setParqueado(false);
+			LOG.info("RETURNING: removeCarro()");
+			return vehiculoJpaRepository.save(vehiculoEntity);
+		}
+		LOG.info("RETURNING NULL FROM: removeVehiculo() -- IT DIDN'T FIND THE VEHICLE");
+		return null;
 	}
 	
 	@Override
-	public VehiculoEntity addMoto(MotoModel moto) {
-		LOG.info("CALL: addMoto()");
-		if(parqueaderoModel.getCeldasMoto().size()<=10) {
-			if(picoYPlaca(moto.getPlaca())) {
-				VehiculoEntity vehiculoEntity = motoConverter.model2Entity(moto);
-				vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
-				vehiculoEntity.setParqueado(true);
-				vehiculoEntity.setTipoVehiculo(moto.getTipoVehiculo());
-				CeldaModel celda = new CeldaModel(moto,getFechaActual());
-				parqueaderoModel.setCeldasMoto(celda);
-				//this.vehiculoEntity=vehiculoEntity;
-				LOG.info("RETURNING: addMoto()");
-				return vehiculoJpaRepository.save(vehiculoEntity);
-			}
+	public ComprobantePagoEntity generarCobroCarro(String placa) {
+		LOG.info("CALL: generarCobroCarro()");
+		if(vehiculoJpaRepository.exists(placa.toUpperCase())) {
+			LOG.info("CALL: comprobanteJpaRepository.findByPlaca(placa)");
+			//ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findById(4);
 		}
 		return null;
-	}	
+	}
+	
+	@SuppressWarnings("static-access")
+	@Override
+	public VehiculoEntity addMoto(MotoModel moto) {
+		LOG.info("CALL: addMoto()");
+		if(parqueaderoModel.getCeldasMoto().size()<=parqueaderoModel.LIMITEMOTOS) {
+			VehiculoEntity vehiculoEntity = motoConverter.model2Entity(moto);
+			vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
+			vehiculoEntity.setParqueado(true);
+			vehiculoEntity.setTipoVehiculo(moto.getTipoVehiculo());
+			CeldaModel celda = new CeldaModel(moto,getFechaActual());
+			parqueaderoModel.setCeldasMoto(celda);
+			this.vehiculoAux=vehiculoEntity;
+			LOG.info("RETURNING: addMoto()");
+			return vehiculoJpaRepository.save(vehiculoEntity);
+		}
+		return null;
+	}
 
 	@Override
-	public ComprobantePagoEntity addFechaCarro() {
-		LOG.info("CALL: addFechaCarro()");
+	public ComprobantePagoEntity addComprobantePagoCarro() {
+		LOG.info("CALL: addComprobantePagoCarro()");
 		ComprobantePagoEntity factura;
 		int size=parqueaderoModel.getCeldasCarro().size();
+		LOG.info("CALL: Estoy sirviendo " + size);
 		Date fechaIngreso = parqueaderoModel.getCeldasCarro().get(size-1).getFecha().getTime();
-		factura = new ComprobantePagoEntity(fechaIngreso,null,0,0,this.vehiculoEntity);
+		factura = new ComprobantePagoEntity(fechaIngreso,null,0,0,this.vehiculoAux);
+		vehiculoAux=null;
 		return comprobanteJpaRepository.save(factura);
 	}
 	
 	@Override
-	public ComprobantePagoEntity addFechaMoto() {
+	public ComprobantePagoEntity addComprobantePagoMoto() {
 		LOG.info("CALL: addFechaMoto()");
 		ComprobantePagoEntity factura;
 		int size=parqueaderoModel.getCeldasMoto().size();
 		Date fechaIngreso = parqueaderoModel.getCeldasMoto().get(size-1).getFecha().getTime();
-		factura = new ComprobantePagoEntity(fechaIngreso,null,0,0,this.vehiculoEntity);
+		factura = new ComprobantePagoEntity(fechaIngreso,null,0,0,this.vehiculoAux);
+		vehiculoAux=null;
 		return comprobanteJpaRepository.save(factura);
 	}
 	
-	public boolean picoYPlaca(String placa) {
-    	if(placa.startsWith("A")) {
-    		if(Calendar.DAY_OF_WEEK!=0 && Calendar.DAY_OF_WEEK!=1){
-    			return false;
-    		}
-    	}
-    	return true;
-    }
-	
 	public FechaModel getFechaActual() {
-    	Calendar Cal = Calendar.getInstance();
-    	int year=Cal.get(Calendar.YEAR);
-    	int mes=Cal.get(Calendar.MONTH);
-    	int diaMes=Cal.get(Calendar.DAY_OF_MONTH);
-    	int horaDia=Cal.get(Calendar.HOUR_OF_DAY);
-    	int minuto=Cal.get(Calendar.MINUTE);
-    	int second=Cal.get(Calendar.SECOND);
+    	Calendar calendar = Calendar.getInstance();
+    	int year=calendar.get(Calendar.YEAR);
+    	int mes=calendar.get(Calendar.MONTH);
+    	int diaMes=calendar.get(Calendar.DAY_OF_MONTH);
+    	int horaDia=calendar.get(Calendar.HOUR_OF_DAY);
+    	int minuto=calendar.get(Calendar.MINUTE);
+    	int second=calendar.get(Calendar.SECOND);
     	return new FechaModel(year,mes,diaMes,horaDia,minuto,second);
     }
 
 	@Override
-	public VehiculoEntity findByPlaca(String placa) {
-		// TODO Auto-generated method stub
-		return null;
-	}	
+	public List<CarroModel> listAllCarros() {
+		List<VehiculoEntity> vehiculos = vehiculoJpaRepository.findAll();
+		List<CarroModel> listCarros = new ArrayList<>();
+		for(VehiculoEntity vehiculo : vehiculos) {
+			listCarros.add(carroConverter.entity2Model(vehiculo));
+		}
+		return listCarros;
+	}
+	
+	@Override
+	public List<MotoModel> listAllMotos() {
+		List<VehiculoEntity> vehiculos = vehiculoJpaRepository.findAll();
+		List<MotoModel> listMotos = new ArrayList<>();
+		for(VehiculoEntity vehiculo : vehiculos) {
+			listMotos.add(motoConverter.entity2Model(vehiculo));
+		}
+		return listMotos;
+	}
 }
