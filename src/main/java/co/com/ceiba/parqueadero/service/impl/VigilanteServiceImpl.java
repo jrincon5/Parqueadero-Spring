@@ -103,9 +103,11 @@ public class VigilanteServiceImpl implements VigilanteService{
 			LOG.info("CALL: comprobanteJpaRepository.findByPlaca(placa)");
 			VehiculoEntity veh = new VehiculoEntity();
 			veh.setPlaca(placa);
-			ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findByPlaca(veh);
-			//Date fechaSalida = new Date(getFechaActual());
-			//comprobanteEntity.setFechaSalida();
+			/*ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findByPlaca(veh);
+			FechaModel fechaSalida = getFechaActual();
+			comprobanteEntity.setFechaSalida(fechaSalida.getTime()); // Calculando fecha salida
+			long horasTotales=calcularHorasTotales(comprobanteEntity.getFechaEntrada(),fechaSalida);
+			comprobanteEntity.setTotalHoras((int)horasTotales);*/
 		}
 		return null;
 	}
@@ -168,5 +170,20 @@ public class VigilanteServiceImpl implements VigilanteService{
 			listMotos.add(motoConverter.entity2Model(vehiculo));
 		}
 		return listMotos;
+	}
+
+	@Override
+	public long calcularHorasTotales(Date d1, FechaModel salida) {
+    	//Date d1=entrada.getTime();
+    	Date d2=salida.getTime();
+    	long dif=(d2.getTime()-d1.getTime()) / (1000 * 60 * 60);
+    	if((d2.getTime()-d1.getTime()) % (1000 * 60 * 60)!=0) dif++;
+    	return dif;
+    }
+
+	@Override
+	public long generarCobroCarros(Date entrada, FechaModel salida) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

@@ -41,5 +41,41 @@ public class FechaModel extends GregorianCalendar{
 	public void setSecond(int second) {
 		this.second = second;
 	}
+
+	public int getMonth() {
+		return month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	public int getDayOfMonth() {
+		return dayOfMonth;
+	}
+
+	public void setDayOfMonth(int dayOfMonth) {
+		this.dayOfMonth = dayOfMonth;
+	}
+
+	public int getHourOfDay() {
+		return hourOfDay;
+	}
+
+	public void setHourOfDay(int hourOfDay) {
+		this.hourOfDay = hourOfDay;
+	}
+
+	public int getMinute() {
+		return minute;
+	}
+
+	public void setMinute(int minute) {
+		this.minute = minute;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
 	
 }
