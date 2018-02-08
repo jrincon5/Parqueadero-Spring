@@ -81,8 +81,6 @@ public class VigilanteServiceImpl implements VigilanteService{
 	public ComprobantePagoEntity addComprobantePagoCarro() {
 		LOG.info("CALL: addComprobantePagoCarro()");
 		ComprobantePagoEntity factura;
-		int size=parqueaderoModel.getCeldasCarro().size();
-		LOG.info("CALL: Estoy sirviendo " + size);
 		factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),null,0,0,this.vehiculoAux);
 		vehiculoAux=null;
 		LOG.info("RETURNING: addComprobantePagoCarro()");
@@ -194,7 +192,13 @@ public class VigilanteServiceImpl implements VigilanteService{
 
 	@Override
 	public boolean validarPlacaExistente(String placa) {
-		return vehiculoJpaRepository.exists(placa.toUpperCase());
+		if(vehiculoJpaRepository.exists(placa)) {
+			VehiculoEntity veh = vehiculoJpaRepository.findOne(placa);
+			if(veh.isParqueado()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@SuppressWarnings("static-access")

@@ -23,6 +23,7 @@ public class ParqueaderoTest {
 	
 	@Test
 	public void ingresarCarroTest() {
+		
         assertTrue(park.ingresarCarro("BSW04D",true));
     }
 	

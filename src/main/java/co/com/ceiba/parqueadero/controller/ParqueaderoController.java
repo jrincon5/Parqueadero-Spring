@@ -63,7 +63,7 @@ public class ParqueaderoController {
 		}
 	}
 	
-	@PostMapping("/addmoto")  // Aqui voy
+	@PostMapping("/addmoto")
 	public void addMoto(@RequestBody MotoModel motoModel) {
 		LOG.info("CALL: addMoto()");
 		VehiculoEntity vehiculo = vigilanteService.addMoto(motoModel);
