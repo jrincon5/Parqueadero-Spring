@@ -12,12 +12,10 @@ import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 
 @Repository("comprobanteJpaRepository")
 public interface ComprobanteJpaRepository extends JpaRepository<ComprobantePagoEntity, Serializable>{
-	
-	
+		
 	@Query("SELECT t FROM ComprobantePagoEntity t WHERE t.placaFk = :placaFk")
 	public abstract ComprobantePagoEntity findByPlaca(@Param("placaFk") VehiculoEntity placaFk);
 	
 	@Query("SELECT t FROM ComprobantePagoEntity t WHERE t.idComprobantePago = :idComprobantePago")
-	public abstract ComprobantePagoEntity findById(@Param("idComprobantePago") int idComprobantePago);
-	
+	public abstract ComprobantePagoEntity findById(@Param("idComprobantePago") int idComprobantePago);	
 }

@@ -53,15 +53,27 @@ public class ParqueaderoController {
 	@PostMapping("/addcarro")
 	public void addCarro(@RequestBody CarroModel carroModel) {
 		LOG.info("CALL: addCarro()");
-		vigilanteService.addCarro(carroModel);
-		vigilanteService.addComprobantePagoCarro();
+		VehiculoEntity vehiculo = vigilanteService.addCarro(carroModel);
+		try{
+			if(vehiculo != null) { // Verifica si el vehiculo ingreso correctamente
+				vigilanteService.addComprobantePagoCarro();
+			}
+		}catch(Exception e) {
+			LOG.info("ERROR");
+		}
 	}
 	
-	@PostMapping("/addmoto")
+	@PostMapping("/addmoto")  // Aqui voy
 	public void addMoto(@RequestBody MotoModel motoModel) {
 		LOG.info("CALL: addMoto()");
-		vigilanteService.addMoto(motoModel);
-		vigilanteService.addComprobantePagoMoto();
+		VehiculoEntity vehiculo = vigilanteService.addMoto(motoModel);
+		try{
+			if(vehiculo != null) { // Verifica si el vehiculo ingreso correctamente
+				vigilanteService.addComprobantePagoMoto();
+			}
+		}catch(Exception e) {
+			LOG.info("ERROR");
+		}
 	}
 	
 	@PostMapping("/removecarro")

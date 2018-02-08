@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import co.com.ceiba.parqueadero.converter.CarroConverter;
 import co.com.ceiba.parqueadero.converter.MotoConverter;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
-import co.com.ceiba.parqueadero.model.CeldaModel;
 import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
 import co.com.ceiba.parqueadero.model.Parqueadero;
@@ -56,19 +55,26 @@ public class VigilanteServiceImpl implements VigilanteService{
 	@SuppressWarnings("static-access")
 	@Override
 	public VehiculoEntity addCarro(CarroModel carro) {
-		LOG.info("CALL: addCarro()");
-		if(parqueaderoModel.getCeldasCarro().size()<=parqueaderoModel.LIMITECARROS) {
-			VehiculoEntity vehiculoEntity = carroConverter.model2Entity(carro);
-			vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
-			vehiculoEntity.setParqueado(true);
-			vehiculoEntity.setTipoVehiculo(carro.getTipoVehiculo());
-			CeldaModel celda = new CeldaModel(carro,getFechaActual());
-			parqueaderoModel.setCeldasCarro(celda);
-			this.vehiculoAux=vehiculoEntity;
-			LOG.info("RETURNING: addCarro()");
-			return vehiculoJpaRepository.save(vehiculoEntity);
+		LOG.info("CALL: addCarro()");		
+		if(!validarPlacaExistente(carro.getPlaca())) { // Validar placa existente
+			if(validarEspacioCarros()) { // Validar espacio
+				if(!picoYPlaca(carro.getPlaca(), Calendar.DAY_OF_WEEK)) { // Validar placa inicia con A
+					VehiculoEntity vehiculoEntity = carroConverter.model2Entity(carro);
+					vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
+					vehiculoEntity.setParqueado(true);
+					vehiculoEntity.setTipoVehiculo(carro.getTipoVehiculo());
+					this.vehiculoAux=vehiculoEntity;
+					LOG.info("RETURNING: addCarro()");
+					return vehiculoJpaRepository.save(vehiculoEntity);
+				}
+				LOG.info("EL DIA DE HOY LE TOCA PICO Y PLACA, NO ES POSIBLE INGRESAR");
+				return null;
+			}
+			LOG.info("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS CARROS");
+			return null;
 		}
-		return null;		
+		LOG.info("LA PLACA QUE ESTA INTENTANDO INGRESAR YA SE ENCUENTRA PRESENTE EN EL PARQUEADERO");
+		return null;
 	}
 	
 	@Override
@@ -77,9 +83,9 @@ public class VigilanteServiceImpl implements VigilanteService{
 		ComprobantePagoEntity factura;
 		int size=parqueaderoModel.getCeldasCarro().size();
 		LOG.info("CALL: Estoy sirviendo " + size);
-		Date fechaIngreso = parqueaderoModel.getCeldasCarro().get(size-1).getFecha().getTime();
-		factura = new ComprobantePagoEntity(fechaIngreso,null,0,0,this.vehiculoAux);
+		factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),null,0,0,this.vehiculoAux);
 		vehiculoAux=null;
+		LOG.info("RETURNING: addComprobantePagoCarro()");
 		return comprobanteJpaRepository.save(factura);
 	}
 	
@@ -103,11 +109,15 @@ public class VigilanteServiceImpl implements VigilanteService{
 			LOG.info("CALL: comprobanteJpaRepository.findByPlaca(placa)");
 			VehiculoEntity veh = new VehiculoEntity();
 			veh.setPlaca(placa);
-			/*ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findByPlaca(veh);
-			FechaModel fechaSalida = getFechaActual();
-			comprobanteEntity.setFechaSalida(fechaSalida.getTime()); // Calculando fecha salida
+			ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findByPlaca(veh);//Busca el comprobante en la base de datos
+			FechaModel fechaSalida = parqueaderoModel.getFechaActual();
+			comprobanteEntity.setFechaSalida(fechaSalida.getTime());
 			long horasTotales=calcularHorasTotales(comprobanteEntity.getFechaEntrada(),fechaSalida);
-			comprobanteEntity.setTotalHoras((int)horasTotales);*/
+			comprobanteEntity.setTotalHoras((int)horasTotales);
+			long totalPagar=generarCobroCarros(comprobanteEntity.getFechaEntrada(), fechaSalida);
+			comprobanteEntity.setTotalPagar((int)totalPagar);
+			LOG.info("RETURNING: generarCobroCarro()");
+			return comprobanteJpaRepository.save(comprobanteEntity);
 		}
 		return null;
 	}
@@ -116,13 +126,11 @@ public class VigilanteServiceImpl implements VigilanteService{
 	@Override
 	public VehiculoEntity addMoto(MotoModel moto) {
 		LOG.info("CALL: addMoto()");
-		if(parqueaderoModel.getCeldasMoto().size()<=parqueaderoModel.LIMITEMOTOS) {
+		if(vehiculoJpaRepository.countByCarros("Moto",true)<=parqueaderoModel.LIMITEMOTOS) {
 			VehiculoEntity vehiculoEntity = motoConverter.model2Entity(moto);
 			vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
 			vehiculoEntity.setParqueado(true);
 			vehiculoEntity.setTipoVehiculo(moto.getTipoVehiculo());
-			CeldaModel celda = new CeldaModel(moto,getFechaActual());
-			parqueaderoModel.setCeldasMoto(celda);
 			this.vehiculoAux=vehiculoEntity;
 			LOG.info("RETURNING: addMoto()");
 			return vehiculoJpaRepository.save(vehiculoEntity);
@@ -140,17 +148,6 @@ public class VigilanteServiceImpl implements VigilanteService{
 		vehiculoAux=null;
 		return comprobanteJpaRepository.save(factura);
 	}
-	
-	public FechaModel getFechaActual() {
-    	Calendar calendar = Calendar.getInstance();
-    	int year=calendar.get(Calendar.YEAR);
-    	int mes=calendar.get(Calendar.MONTH);
-    	int diaMes=calendar.get(Calendar.DAY_OF_MONTH);
-    	int horaDia=calendar.get(Calendar.HOUR_OF_DAY);
-    	int minuto=calendar.get(Calendar.MINUTE);
-    	int second=calendar.get(Calendar.SECOND);
-    	return new FechaModel(year,mes,diaMes,horaDia,minuto,second);
-    }
 
 	@Override
 	public List<CarroModel> listAllCarros() {
@@ -174,16 +171,45 @@ public class VigilanteServiceImpl implements VigilanteService{
 
 	@Override
 	public long calcularHorasTotales(Date d1, FechaModel salida) {
-    	//Date d1=entrada.getTime();
     	Date d2=salida.getTime();
     	long dif=(d2.getTime()-d1.getTime()) / (1000 * 60 * 60);
     	if((d2.getTime()-d1.getTime()) % (1000 * 60 * 60)!=0) dif++;
     	return dif;
     }
 
+	@SuppressWarnings("static-access")
 	@Override
 	public long generarCobroCarros(Date entrada, FechaModel salida) {
-		// TODO Auto-generated method stub
-		return 0;
+		int horasTotales=(int)calcularHorasTotales(entrada, salida);
+        int diasAPagar = horasTotales / 24;
+        int horasAPagar=0;
+        if((horasTotales % 24)>=9 && (horasTotales % 24)<=23) {
+        	diasAPagar++;
+        }else {
+        	horasAPagar = horasTotales % 24;
+        }        
+        int totalAPagar=(diasAPagar*parqueaderoModel.DIACARRO)+(horasAPagar*parqueaderoModel.HORACARRO);
+        return totalAPagar;
+	}
+
+	@Override
+	public boolean validarPlacaExistente(String placa) {
+		return vehiculoJpaRepository.exists(placa.toUpperCase());
+	}
+
+	@SuppressWarnings("static-access")
+	@Override
+	public boolean validarEspacioCarros() {
+		return vehiculoJpaRepository.countByCarros("Carro",true)<parqueaderoModel.LIMITECARROS;
+	}
+
+	@Override
+	public boolean picoYPlaca(String placa, int diaSemana) {
+		if(placa.startsWith("A")) {
+    		if(diaSemana==1 || diaSemana==2){
+    			return true;
+    		}
+    	}
+    	return false;
 	}
 }
