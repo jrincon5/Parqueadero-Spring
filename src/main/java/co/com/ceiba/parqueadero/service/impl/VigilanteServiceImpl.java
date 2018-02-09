@@ -46,42 +46,33 @@ public class VigilanteServiceImpl implements VigilanteService{
 	@Autowired
 	@Qualifier("comprobanteJpaRepository")
 	private ComprobanteJpaRepository comprobanteJpaRepository;
-
-	@Override
-	public List<VehiculoEntity> listAllVehiculos() {
-		return vehiculoJpaRepository.findAll();
-	}
 	
 	@SuppressWarnings("static-access")
 	@Override
 	public VehiculoEntity addCarro(CarroModel carro) {
 		LOG.info("CALL: addCarro()");		
-		if(!validarPlacaExistente(carro.getPlaca())) { // Validar placa existente
-			if(validarEspacioCarros()) { // Validar espacio
-				if(!picoYPlaca(carro.getPlaca(), Calendar.DAY_OF_WEEK)) { // Validar placa inicia con A
-					VehiculoEntity vehiculoEntity = carroConverter.model2Entity(carro);
-					vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
-					vehiculoEntity.setParqueado(true);
-					vehiculoEntity.setTipoVehiculo(carro.getTipoVehiculo());
-					this.vehiculoAux=vehiculoEntity;
-					LOG.info("RETURNING: addCarro()");
-					return vehiculoJpaRepository.save(vehiculoEntity);
-				}
-				LOG.info("EL DIA DE HOY LE TOCA PICO Y PLACA, NO ES POSIBLE INGRESAR");
-				return null;
+		if(validarEspacioCarros()) { // Validar espacio
+			if(!picoYPlaca(carro.getPlaca(), Calendar.DAY_OF_WEEK)) { // Validar placa inicia con A
+				VehiculoEntity vehiculoEntity = carroConverter.model2Entity(carro);
+				vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
+				vehiculoEntity.setParqueado(true);
+				vehiculoEntity.setTipoVehiculo(carro.getTipoVehiculo());
+				this.vehiculoAux=vehiculoEntity;
+				LOG.info("RETURNING: addCarro()");
+				return vehiculoJpaRepository.save(vehiculoEntity);
 			}
-			LOG.info("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS CARROS");
+			LOG.info("EL DIA DE HOY LE TOCA PICO Y PLACA, NO ES POSIBLE INGRESAR");
 			return null;
 		}
-		LOG.info("LA PLACA QUE ESTA INTENTANDO INGRESAR YA SE ENCUENTRA PRESENTE EN EL PARQUEADERO");
+		LOG.info("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS CARROS");
 		return null;
 	}
 	
 	@Override
-	public ComprobantePagoEntity addComprobantePagoCarro() {
+	public ComprobantePagoEntity addComprobantePago() {
 		LOG.info("CALL: addComprobantePagoCarro()");
 		ComprobantePagoEntity factura;
-		factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),null,0,0,this.vehiculoAux);
+		factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),null,0,0,true,this.vehiculoAux);
 		vehiculoAux=null;
 		LOG.info("RETURNING: addComprobantePagoCarro()");
 		return comprobanteJpaRepository.save(factura);
@@ -123,48 +114,22 @@ public class VigilanteServiceImpl implements VigilanteService{
 	@SuppressWarnings("static-access")
 	@Override
 	public VehiculoEntity addMoto(MotoModel moto) {
-		LOG.info("CALL: addMoto()");
-		if(vehiculoJpaRepository.countByCarros("Moto",true)<=parqueaderoModel.LIMITEMOTOS) {
-			VehiculoEntity vehiculoEntity = motoConverter.model2Entity(moto);
-			vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
-			vehiculoEntity.setParqueado(true);
-			vehiculoEntity.setTipoVehiculo(moto.getTipoVehiculo());
-			this.vehiculoAux=vehiculoEntity;
-			LOG.info("RETURNING: addMoto()");
-			return vehiculoJpaRepository.save(vehiculoEntity);
+		LOG.info("CALL: addMoto()");		
+		if(validarEspacioMotos()) { // Validar espacio
+			if(!picoYPlaca(moto.getPlaca(), Calendar.DAY_OF_WEEK)) { // Validar placa inicia con A
+				VehiculoEntity vehiculoEntity = motoConverter.model2Entity(moto);
+				vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
+				vehiculoEntity.setParqueado(true);
+				vehiculoEntity.setTipoVehiculo(moto.getTipoVehiculo());
+				this.vehiculoAux=vehiculoEntity;
+				LOG.info("RETURNING: addMoto()");
+				return vehiculoJpaRepository.save(vehiculoEntity);
+			}
+			LOG.info("EL DIA DE HOY LE TOCA PICO Y PLACA, NO ES POSIBLE INGRESAR");
+			return null;
 		}
+		LOG.info("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS MOTOS");
 		return null;
-	}
-	
-	@Override
-	public ComprobantePagoEntity addComprobantePagoMoto() {
-		LOG.info("CALL: addFechaMoto()");
-		ComprobantePagoEntity factura;
-		int size=parqueaderoModel.getCeldasMoto().size();
-		Date fechaIngreso = parqueaderoModel.getCeldasMoto().get(size-1).getFecha().getTime();
-		factura = new ComprobantePagoEntity(fechaIngreso,null,0,0,this.vehiculoAux);
-		vehiculoAux=null;
-		return comprobanteJpaRepository.save(factura);
-	}
-
-	@Override
-	public List<CarroModel> listAllCarros() {
-		List<VehiculoEntity> vehiculos = vehiculoJpaRepository.findAll();
-		List<CarroModel> listCarros = new ArrayList<>();
-		for(VehiculoEntity vehiculo : vehiculos) {
-			listCarros.add(carroConverter.entity2Model(vehiculo));
-		}
-		return listCarros;
-	}
-	
-	@Override
-	public List<MotoModel> listAllMotos() {
-		List<VehiculoEntity> vehiculos = vehiculoJpaRepository.findAll();
-		List<MotoModel> listMotos = new ArrayList<>();
-		for(VehiculoEntity vehiculo : vehiculos) {
-			listMotos.add(motoConverter.entity2Model(vehiculo));
-		}
-		return listMotos;
 	}
 
 	@Override
@@ -205,6 +170,12 @@ public class VigilanteServiceImpl implements VigilanteService{
 	@Override
 	public boolean validarEspacioCarros() {
 		return vehiculoJpaRepository.countByCarros("Carro",true)<parqueaderoModel.LIMITECARROS;
+	}
+	
+	@SuppressWarnings("static-access")
+	@Override
+	public boolean validarEspacioMotos() {
+		return vehiculoJpaRepository.countByCarros("Moto",true)<parqueaderoModel.LIMITEMOTOS;
 	}
 
 	@Override

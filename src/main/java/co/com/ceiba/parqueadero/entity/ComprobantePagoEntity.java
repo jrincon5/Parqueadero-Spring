@@ -36,6 +36,9 @@ public class ComprobantePagoEntity {
 	@Column(name="total_pagar")
 	private int totalPagar;
 	
+	@Column(name="estado")
+	private boolean estado;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "placa_fk",referencedColumnName = "placa")
 	private VehiculoEntity placaFk;
@@ -88,13 +91,16 @@ public class ComprobantePagoEntity {
 		this.placaFk = placaFk;
 	}
 
-	public ComprobantePagoEntity(Date fechaEntrada, Date fechaSalida, int totalHoras, int totalPagar,
+	
+
+	public ComprobantePagoEntity(Date fechaEntrada, Date fechaSalida, int totalHoras, int totalPagar, boolean estado,
 			VehiculoEntity placaFk) {
 		super();
 		this.fechaEntrada = fechaEntrada;
 		this.fechaSalida = fechaSalida;
 		this.totalHoras = totalHoras;
 		this.totalPagar = totalPagar;
+		this.estado = estado;
 		this.placaFk = placaFk;
 	}
 

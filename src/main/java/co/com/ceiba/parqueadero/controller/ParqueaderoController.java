@@ -18,6 +18,7 @@ import com.google.gson.JsonParser;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
+import co.com.ceiba.parqueadero.repository.ComprobanteJpaRepository;
 import co.com.ceiba.parqueadero.service.VigilanteService;
 
 
@@ -31,32 +32,14 @@ public class ParqueaderoController {
 	@Autowired
 	@Qualifier("vigilanteServiceImpl")
 	VigilanteService vigilanteService;
-	
-	@GetMapping("/listvehiculos")
-	public List <VehiculoEntity> listVehiculos() {
-		LOG.info("CALL: listVehiculos()");
-		return vigilanteService.listAllVehiculos();
-	}
-	
-	@GetMapping("/listcarros")
-	public List <CarroModel> listCarros() {
-		LOG.info("CALL: listCarros()");
-		return vigilanteService.listAllCarros();
-	}
-	
-	@GetMapping("/listmotos")
-	public List <MotoModel> listMotos() {
-		LOG.info("CALL: listMotos()");
-		return vigilanteService.listAllMotos();
-	}
-	
+		
 	@PostMapping("/addcarro")
 	public void addCarro(@RequestBody CarroModel carroModel) {
 		LOG.info("CALL: addCarro()");
 		VehiculoEntity vehiculo = vigilanteService.addCarro(carroModel);
 		try{
 			if(vehiculo != null) { // Verifica si el vehiculo ingreso correctamente
-				vigilanteService.addComprobantePagoCarro();
+				vigilanteService.addComprobantePago();
 			}
 		}catch(Exception e) {
 			LOG.info("ERROR");
@@ -69,7 +52,7 @@ public class ParqueaderoController {
 		VehiculoEntity vehiculo = vigilanteService.addMoto(motoModel);
 		try{
 			if(vehiculo != null) { // Verifica si el vehiculo ingreso correctamente
-				vigilanteService.addComprobantePagoMoto();
+				vigilanteService.addComprobantePago();
 			}
 		}catch(Exception e) {
 			LOG.info("ERROR");
@@ -81,8 +64,12 @@ public class ParqueaderoController {
 		LOG.info("CALL: removeCarro()");
 		jsonObj = new JsonParser().parse(json);
 		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
-		vigilanteService.removeVehiculo(placa);
-		vigilanteService.generarCobroCarro(placa);
+		VehiculoEntity vehiculo = vigilanteService.removeVehiculo(placa);
+		try {
+			vigilanteService.generarCobroCarro(placa);
+		}catch(Exception e) {
+			LOG.info("ERROR");
+		}
 	}
 	
 	@PostMapping("/removemoto")

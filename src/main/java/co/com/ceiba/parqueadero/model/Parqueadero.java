@@ -15,22 +15,6 @@ public class Parqueadero{
     public static final int DIAMOTO=4000;
     public static final int MOTOALTOCILINDRAJE=2000;
     
-    public ArrayList<CeldaModel> getCeldasCarro() {
-        return celdasCarro;
-    }
-
-    public void setCeldasCarro(CeldaModel celdaCarro) {
-        this.celdasCarro.add(celdaCarro);
-    }
-
-    public ArrayList<CeldaModel> getCeldasMoto() {
-        return celdasMoto;
-    }
-
-    public void setCeldasMoto(CeldaModel celdaMoto) {
-        this.celdasMoto.add(celdaMoto);
-    }
-    
     public FechaModel getFechaActual() {
     	Calendar Cal = Calendar.getInstance();
     	int year=Cal.get(Calendar.YEAR);
