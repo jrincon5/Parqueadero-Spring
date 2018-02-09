@@ -52,7 +52,6 @@ public class VigilanteTest {
 		moto = new MotoModel("WSW04D",true,100);
 		vehiculoCarro = new VehiculoEntity("WSW04D", true, 0, "Carro");
 		vehiculoMoto = new VehiculoEntity("WSW04D", true, 100, "Moto");
-		//factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),new Date(),0,0,true,this.vehiculoCarro);
 	}
 	
 	@Test

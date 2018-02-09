@@ -48,7 +48,7 @@ public class VigilanteServiceImpl implements VigilanteService{
 	@SuppressWarnings("static-access")
 	@Override
 	public VehiculoEntity addCarro(CarroModel carro) {
-		LOG.info("CALL: addCarro()");		
+		LOG.info("CALL: addCarro()");
 		if(validarEspacioCarros()) { // Validar espacio
 			if(!picoYPlaca(carro.getPlaca(), Calendar.DAY_OF_WEEK)) { // Validar placa inicia con A
 				VehiculoEntity vehiculoEntity = carroConverter.model2Entity(carro);
