@@ -21,7 +21,6 @@ import co.com.ceiba.parqueadero.service.VigilanteService;
 public class ParqueaderoController {
 	
 	private static final Log LOG = LogFactory.getLog(ParqueaderoController.class);
-	private JsonElement jsonObj;
 	
 	@Autowired
 	@Qualifier("vigilanteServiceImpl")
@@ -44,7 +43,7 @@ public class ParqueaderoController {
 	@PostMapping("/removevehiculo")
 	public void removeCarro(@RequestBody String json){
 		LOG.info("CALL: removeCarro()");
-		jsonObj = new JsonParser().parse(json);
+		JsonElement jsonObj = new JsonParser().parse(json);
 		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
 		vigilanteService.removeVehiculo(placa);
 		vigilanteService.generarCobro(placa);
