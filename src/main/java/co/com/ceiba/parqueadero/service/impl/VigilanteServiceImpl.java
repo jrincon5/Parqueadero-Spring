@@ -154,8 +154,7 @@ public class VigilanteServiceImpl implements VigilanteService{
         }else {
         	horasAPagar = horasTotales % 24;
         }        
-        int totalAPagar=(diasAPagar*parqueaderoModel.DIACARRO)+(horasAPagar*parqueaderoModel.HORACARRO);
-        return totalAPagar;
+        return (diasAPagar*parqueaderoModel.DIACARRO)+(horasAPagar*parqueaderoModel.HORACARRO);
 	}
 	
 	@SuppressWarnings("static-access")
@@ -169,8 +168,7 @@ public class VigilanteServiceImpl implements VigilanteService{
         }else {
         	horasAPagar = horasTotales % 24;
         }        
-        int totalAPagar=(diasAPagar*parqueaderoModel.DIAMOTO)+(horasAPagar*parqueaderoModel.HORAMOTO);
-        return totalAPagar;
+        return (diasAPagar*parqueaderoModel.DIAMOTO)+(horasAPagar*parqueaderoModel.HORAMOTO);
 	}
 
 	@SuppressWarnings("static-access")
