@@ -1,9 +1,7 @@
 package co.com.ceiba.parqueadero.service.impl;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -100,6 +98,7 @@ public class VigilanteServiceImpl implements VigilanteService{
 			ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findByPlaca(veh);//Busca el comprobante en la base de datos
 			FechaModel fechaSalida = parqueaderoModel.getFechaActual();
 			comprobanteEntity.setFechaSalida(fechaSalida.getTime());
+			comprobanteEntity.setEstado(false);
 			long horasTotales=calcularHorasTotales(comprobanteEntity.getFechaEntrada(),fechaSalida);
 			comprobanteEntity.setTotalHoras((int)horasTotales);
 			long totalPagar=0;

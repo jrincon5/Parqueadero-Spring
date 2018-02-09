@@ -13,16 +13,8 @@ public abstract class VehiculoModel {
 		return placa;
 	}
 
-	public void setPlaca(String placa) {
-		this.placa = placa;
-	}
-
 	public boolean isParqueado() {
 		return parqueado;
-	}
-
-	public void setParqueado(boolean parqueado) {
-		this.parqueado = parqueado;
 	}
 
 	public VehiculoModel(String placa, boolean parqueado) {
@@ -31,6 +23,12 @@ public abstract class VehiculoModel {
 		this.parqueado = parqueado;
 	}
 	
+	
+	
+	public VehiculoModel() {
+		super();
+	}
+
 	public abstract String getTipoVehiculo();
 
 }

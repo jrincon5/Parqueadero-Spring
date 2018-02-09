@@ -63,7 +63,9 @@ public class ComprobantePagoEntity {
 		this.totalPagar = totalPagar;
 	}
 
-	
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
 
 	public ComprobantePagoEntity(Date fechaEntrada, Date fechaSalida, int totalHoras, int totalPagar, boolean estado,
 			VehiculoEntity placaFk) {

@@ -2,7 +2,7 @@ package co.com.ceiba.parqueadero.model;
 
 public class MotoModel extends VehiculoModel{
 	
-	private static String TIPOVEHICULO="Moto";
+	private static final String TIPOVEHICULO="Moto";
 	private int cilindraje;
 
 	public MotoModel(String placa, boolean parqueado, int cilindraje) {
@@ -19,7 +19,11 @@ public class MotoModel extends VehiculoModel{
 		return cilindraje;
 	}
 
-	public void setCilindraje(int cilindraje) {
-		this.cilindraje = cilindraje;
-	}	
+	public MotoModel() {
+		super();
+	}
+
+	public MotoModel(String placa, boolean parqueado) {
+		super(placa, parqueado);
+	}
 }
