@@ -25,8 +25,6 @@ public interface VigilanteService {
 	
 	public abstract long generarCobroCarros(Date entrada, FechaModel salida);
 	
-	public abstract boolean validarPlacaExistente(String placa);
-	
 	public abstract boolean validarEspacioCarros();
 	
 	public abstract boolean validarEspacioMotos();

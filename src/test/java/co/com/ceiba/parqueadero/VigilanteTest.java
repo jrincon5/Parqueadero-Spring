@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.print.attribute.standard.DateTimeAtCompleted;
+
 import org.aspectj.lang.annotation.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,10 +38,12 @@ public class VigilanteTest {
 	@Qualifier("vigilanteServiceImpl")
 	VigilanteService vigilanteService;
 	
-	@Mock
+	@Autowired
+	@Qualifier("vehiculoJpaRepository")
 	VehiculoJpaRepository vehiculoJpaRepository;
 	
-	@Mock
+	@Autowired
+	@Qualifier("comprobanteJpaRepository")
 	ComprobanteJpaRepository comprobanteJpaRepository;
 	
 	VehiculoEntity vehiculoCarro;
@@ -55,21 +59,50 @@ public class VigilanteTest {
 		moto = new MotoModel("WSW04D",true,100);
 		vehiculoCarro = new VehiculoEntity("WSW04D", true, 0, "Carro");
 		vehiculoMoto = new VehiculoEntity("WSW04D", true, 100, "Moto");
-		//factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),null,0,0,true,this.vehiculoCarro);
-		MockitoAnnotations.initMocks(this); 
+		//factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),new Date(),0,0,true,this.vehiculoCarro);
 	}
 	
 	@Test
 	public void addCarroValidoTest() {
-		when(vehiculoJpaRepository.save(vehiculoCarro)).thenReturn(vehiculoCarro);
 		assertNotNull(vigilanteService.addCarro(carro));
-		vehiculoJpaRepository.delete(vehiculoCarro);
+		vehiculoJpaRepository.deleteAll();
+	}
+	
+	@Test
+	public void addCarroSobreCupoTest() {
+		vigilanteService.addCarro(new CarroModel("AAA111",true));
+		vigilanteService.addCarro(new CarroModel("AAA112",true));
+		vigilanteService.addCarro(new CarroModel("AAA113",true));
+		vigilanteService.addCarro(new CarroModel("AAA114",true));
+		vigilanteService.addCarro(new CarroModel("AAA115",true));
+		vigilanteService.addCarro(new CarroModel("AAA116",true));
+		vigilanteService.addCarro(new CarroModel("AAA117",true));
+		vigilanteService.addCarro(new CarroModel("AAA118",true));
+		vigilanteService.addCarro(new CarroModel("AAA119",true));
+		vigilanteService.addCarro(new CarroModel("AAA110",true));
+		vigilanteService.addCarro(new CarroModel("AAA121",true));
+		vigilanteService.addCarro(new CarroModel("AAA122",true));
+		vigilanteService.addCarro(new CarroModel("AAA123",true));
+		vigilanteService.addCarro(new CarroModel("AAA124",true));
+		vigilanteService.addCarro(new CarroModel("AAA125",true));
+		vigilanteService.addCarro(new CarroModel("AAA126",true));
+		vigilanteService.addCarro(new CarroModel("AAA127",true));
+		vigilanteService.addCarro(new CarroModel("AAA128",true));
+		vigilanteService.addCarro(new CarroModel("AAA129",true));
+		vigilanteService.addCarro(new CarroModel("AAA120",true));
+		vigilanteService.addCarro(new CarroModel("AAA130",true));
+		assertNull(vigilanteService.addCarro(carro));
+		vehiculoJpaRepository.deleteAll();
+	}
+	
+	@Test
+	public void addMotoValidaTest() {
+		assertNotNull(vigilanteService.addMoto(moto));
+		vehiculoJpaRepository.deleteAll();;
 	}
 	
 	@Test
 	public void addMotoSobreCupoTest() {
-		when(vehiculoJpaRepository.save(vehiculoCarro)).thenReturn(vehiculoCarro);
-		vigilanteService.addMoto(moto);
 		vigilanteService.addMoto(new MotoModel("AAA111",true,100));
 		vigilanteService.addMoto(new MotoModel("AAA112",true,100));
 		vigilanteService.addMoto(new MotoModel("AAA113",true,100));
@@ -82,27 +115,22 @@ public class VigilanteTest {
 		vigilanteService.addMoto(new MotoModel("AAA110",true,100));
 		vigilanteService.addMoto(new MotoModel("AAA120",true,100));
 		assertNull(vigilanteService.addMoto(moto));
+		vehiculoJpaRepository.deleteAll();
 	}
 	
 	@Test
-	public void addMotoValidaTest() {
-		when(vehiculoJpaRepository.save(vehiculoMoto)).thenReturn(vehiculoMoto);
-		assertNotNull(vigilanteService.addMoto(moto));
-	}
-	
-	/*@Test   Arreglar esta prueba que sale nula
 	public void addComprobantePagoCarroValidoTest() {
-		vigilanteService.addCarro(carro);
-		factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),null,0,0,true,this.vehiculoCarro);
-		when(new ComprobantePagoEntity()).thenReturn(factura);
-		when(comprobanteJpaRepository.save(factura)).thenReturn(factura);
-		assertNull(vigilanteService.addComprobantePago());
-	}*/
+		vigilanteService.addCarro(carro);		
+		assertNotNull(vigilanteService.addComprobantePago());
+		comprobanteJpaRepository.deleteAll();
+		vehiculoJpaRepository.deleteAll();
+	}
 	
 	@Test
-	public void validarPlacaExistente() {
-		when(vehiculoJpaRepository.exists("WSW04D")).thenReturn(true);
-		assertFalse(vigilanteService.validarPlacaExistente("WSW04D"));
+	public void removeVehiculoTest() {
+		vigilanteService.addCarro(carro);
+		assertNotNull(vigilanteService.removeVehiculo("WSW04D"));
+		vehiculoJpaRepository.deleteAll();
 	}
 	
 	@Test

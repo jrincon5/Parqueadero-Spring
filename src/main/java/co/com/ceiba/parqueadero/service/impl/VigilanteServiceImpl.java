@@ -155,17 +155,6 @@ public class VigilanteServiceImpl implements VigilanteService{
         return totalAPagar;
 	}
 
-	@Override
-	public boolean validarPlacaExistente(String placa) {
-		if(vehiculoJpaRepository.exists(placa)) {
-			VehiculoEntity veh = vehiculoJpaRepository.findOne(placa);
-			if(veh.isParqueado()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	@SuppressWarnings("static-access")
 	@Override
 	public boolean validarEspacioCarros() {
