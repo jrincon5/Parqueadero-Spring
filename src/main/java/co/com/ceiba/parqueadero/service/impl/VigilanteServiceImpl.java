@@ -71,8 +71,8 @@ public class VigilanteServiceImpl implements VigilanteService{
 	@Override
 	public ComprobantePagoEntity addComprobantePago() {
 		LOG.info("CALL: addComprobantePagoCarro()");
-		ComprobantePagoEntity factura;
-		factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),null,0,0,true,this.vehiculoAux);
+		ComprobantePagoEntity factura = new ComprobantePagoEntity
+				(parqueaderoModel.getFechaActual().getTime(),null,0,0,true,this.vehiculoAux);
 		vehiculoAux=null;
 		LOG.info("RETURNING: addComprobantePagoCarro()");
 		return comprobanteJpaRepository.save(factura);

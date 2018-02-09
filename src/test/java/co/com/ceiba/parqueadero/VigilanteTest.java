@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.aspectj.lang.annotation.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,7 @@ import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.FechaModel;
+import co.com.ceiba.parqueadero.model.MotoModel;
 import co.com.ceiba.parqueadero.model.Parqueadero;
 import co.com.ceiba.parqueadero.repository.ComprobanteJpaRepository;
 import co.com.ceiba.parqueadero.repository.VehiculoJpaRepository;
@@ -40,29 +42,61 @@ public class VigilanteTest {
 	@Mock
 	ComprobanteJpaRepository comprobanteJpaRepository;
 	
-	VehiculoEntity vehiculo;
+	VehiculoEntity vehiculoCarro;
+	VehiculoEntity vehiculoMoto;
 	CarroModel carro;
+	MotoModel moto;
 	Parqueadero parqueaderoModel;
-	//ComprobantePagoEntity factura;
+	ComprobantePagoEntity factura;
 	
 	@Before
 	public void arrange() {
 		carro = new CarroModel("WSW04D",true);
-		vehiculo = new VehiculoEntity("WSW04D", true, 0, "Carro");
-		//factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),null,0,0,true,this.vehiculo);
+		moto = new MotoModel("WSW04D",true,100);
+		vehiculoCarro = new VehiculoEntity("WSW04D", true, 0, "Carro");
+		vehiculoMoto = new VehiculoEntity("WSW04D", true, 100, "Moto");
+		//factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),null,0,0,true,this.vehiculoCarro);
 		MockitoAnnotations.initMocks(this); 
 	}
 	
 	@Test
 	public void addCarroValidoTest() {
-		when(vehiculoJpaRepository.save(vehiculo)).thenReturn(vehiculo);
+		when(vehiculoJpaRepository.save(vehiculoCarro)).thenReturn(vehiculoCarro);
 		assertNotNull(vigilanteService.addCarro(carro));
+		vehiculoJpaRepository.delete(vehiculoCarro);
 	}
 	
-	/*@Test
-	public void addComprobantePagoValidoTest() {		
+	@Test
+	public void addMotoSobreCupoTest() {
+		when(vehiculoJpaRepository.save(vehiculoCarro)).thenReturn(vehiculoCarro);
+		vigilanteService.addMoto(moto);
+		vigilanteService.addMoto(new MotoModel("AAA111",true,100));
+		vigilanteService.addMoto(new MotoModel("AAA112",true,100));
+		vigilanteService.addMoto(new MotoModel("AAA113",true,100));
+		vigilanteService.addMoto(new MotoModel("AAA114",true,100));
+		vigilanteService.addMoto(new MotoModel("AAA115",true,100));
+		vigilanteService.addMoto(new MotoModel("AAA116",true,100));
+		vigilanteService.addMoto(new MotoModel("AAA117",true,100));
+		vigilanteService.addMoto(new MotoModel("AAA118",true,100));
+		vigilanteService.addMoto(new MotoModel("AAA119",true,100));
+		vigilanteService.addMoto(new MotoModel("AAA110",true,100));
+		vigilanteService.addMoto(new MotoModel("AAA120",true,100));
+		assertNull(vigilanteService.addMoto(moto));
+	}
+	
+	@Test
+	public void addMotoValidaTest() {
+		when(vehiculoJpaRepository.save(vehiculoMoto)).thenReturn(vehiculoMoto);
+		assertNotNull(vigilanteService.addMoto(moto));
+	}
+	
+	/*@Test   Arreglar esta prueba que sale nula
+	public void addComprobantePagoCarroValidoTest() {
+		vigilanteService.addCarro(carro);
+		factura = new ComprobantePagoEntity(parqueaderoModel.getFechaActual().getTime(),null,0,0,true,this.vehiculoCarro);
+		when(new ComprobantePagoEntity()).thenReturn(factura);
 		when(comprobanteJpaRepository.save(factura)).thenReturn(factura);
-		assertNotNull(vigilanteService.addComprobantePagoCarro());
+		assertNull(vigilanteService.addComprobantePago());
 	}*/
 	
 	@Test
