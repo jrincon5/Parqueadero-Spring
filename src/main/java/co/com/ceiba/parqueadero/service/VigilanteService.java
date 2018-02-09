@@ -19,11 +19,15 @@ public interface VigilanteService {
 	
 	public abstract ComprobantePagoEntity addComprobantePago();
 	
-	public abstract ComprobantePagoEntity generarCobroCarro(String placa);
+	public abstract ComprobantePagoEntity generarCobro(String placa);
 	
 	public abstract long calcularHorasTotales(Date entrada, FechaModel salida);
 	
 	public abstract long generarCobroCarros(Date entrada, FechaModel salida);
+	
+	public abstract long generarCobroMotos(Date entrada, FechaModel salida);
+	
+	public abstract long generarAumentoMotosAltoCilindraje(int cilindraje);
 	
 	public abstract boolean validarEspacioCarros();
 	

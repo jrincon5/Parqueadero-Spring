@@ -64,9 +64,8 @@ public class ParqueaderoController {
 		LOG.info("CALL: removeCarro()");
 		jsonObj = new JsonParser().parse(json);
 		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
-		VehiculoEntity vehiculo = vigilanteService.removeVehiculo(placa);
 		try {
-			vigilanteService.generarCobroCarro(placa);
+			vigilanteService.generarCobro(placa);
 		}catch(Exception e) {
 			LOG.info("ERROR");
 		}
@@ -74,9 +73,13 @@ public class ParqueaderoController {
 	
 	@PostMapping("/removemoto")
 	public void removeMoto(@RequestBody String json){
-		LOG.info("CALL: removeMoto()");		
+		LOG.info("CALL: removeMoto()");
 		jsonObj = new JsonParser().parse(json);
 		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
-		vigilanteService.removeVehiculo(placa);
+		try {
+			vigilanteService.generarCobro(placa);
+		}catch(Exception e) {
+			LOG.info("ERROR");
+		}
 	}
 }

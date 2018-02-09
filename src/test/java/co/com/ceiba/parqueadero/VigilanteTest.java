@@ -178,6 +178,29 @@ public class VigilanteTest {
 	}
 	
 	@Test
+	public void generarCobroMotosHorasTest() {
+		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
+		FechaModel salida = new FechaModel(2017, 1, 1, 7, 59,0);
+		assertEquals(2500, vigilanteService.generarCobroMotos(entrada, salida));
+		
+	}
+	
+	@Test
+	public void generarCobroMotosDiasTest() {
+		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
+		FechaModel salida = new FechaModel(2017, 1, 1, 15, 0,0);
+		assertEquals(4000, vigilanteService.generarCobroMotos(entrada, salida));
+		
+	}
+	
+	@Test
+	public void generarCobroMotosHorasDiasTest() {
+		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
+		FechaModel salida = new FechaModel(2017, 1, 2, 3, 1,0);
+		assertEquals(4500, vigilanteService.generarCobroMotos(entrada, salida));
+	}
+	
+	@Test
 	public void picoYPlacaDomingo() {
 		assertTrue(vigilanteService.picoYPlaca("AAA111", 1));
 	}
@@ -190,5 +213,15 @@ public class VigilanteTest {
 	@Test
 	public void picoYPlacaDiaHabil() {
 		assertFalse(vigilanteService.picoYPlaca("AAA111", 4));
+	}
+	
+	@Test
+	public void generarAumentoMotosAltoCilindrajeTest() {
+		assertEquals(2000, vigilanteService.generarAumentoMotosAltoCilindraje(600));
+	}
+	
+	@Test
+	public void noGenerarAumentoMotosAltoCilindrajeTest() {
+		assertEquals(0, vigilanteService.generarAumentoMotosAltoCilindraje(400));
 	}
 }

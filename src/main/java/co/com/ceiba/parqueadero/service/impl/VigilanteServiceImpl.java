@@ -92,18 +92,22 @@ public class VigilanteServiceImpl implements VigilanteService{
 	}
 	
 	@Override
-	public ComprobantePagoEntity generarCobroCarro(String placa) {
+	public ComprobantePagoEntity generarCobro(String placa) {
 		LOG.info("CALL: generarCobroCarro()");
 		if(vehiculoJpaRepository.exists(placa.toUpperCase())) {
 			LOG.info("CALL: comprobanteJpaRepository.findByPlaca(placa)");
-			VehiculoEntity veh = new VehiculoEntity();
-			veh.setPlaca(placa);
+			VehiculoEntity veh = vehiculoJpaRepository.findOne(placa); // Encontrar vehiculo con la clave foranea
 			ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findByPlaca(veh);//Busca el comprobante en la base de datos
 			FechaModel fechaSalida = parqueaderoModel.getFechaActual();
 			comprobanteEntity.setFechaSalida(fechaSalida.getTime());
 			long horasTotales=calcularHorasTotales(comprobanteEntity.getFechaEntrada(),fechaSalida);
 			comprobanteEntity.setTotalHoras((int)horasTotales);
-			long totalPagar=generarCobroCarros(comprobanteEntity.getFechaEntrada(), fechaSalida);
+			long totalPagar=0;
+			if(veh.getTipoVehiculo().equals("Carro"))totalPagar=generarCobroCarros(comprobanteEntity.getFechaEntrada(), fechaSalida);
+			if(veh.getTipoVehiculo().equals("Moto")) {
+				totalPagar=generarCobroMotos(comprobanteEntity.getFechaEntrada(), fechaSalida);
+				totalPagar+=generarAumentoMotosAltoCilindraje(veh.getCilindraje());
+			}
 			comprobanteEntity.setTotalPagar((int)totalPagar);
 			LOG.info("RETURNING: generarCobroCarro()");
 			return comprobanteJpaRepository.save(comprobanteEntity);
@@ -154,6 +158,21 @@ public class VigilanteServiceImpl implements VigilanteService{
         int totalAPagar=(diasAPagar*parqueaderoModel.DIACARRO)+(horasAPagar*parqueaderoModel.HORACARRO);
         return totalAPagar;
 	}
+	
+	@SuppressWarnings("static-access")
+	@Override
+	public long generarCobroMotos(Date entrada, FechaModel salida) {
+		int horasTotales=(int)calcularHorasTotales(entrada, salida);
+        int diasAPagar = horasTotales / 24;
+        int horasAPagar=0;
+        if((horasTotales % 24)>=9 && (horasTotales % 24)<=23) {
+        	diasAPagar++;
+        }else {
+        	horasAPagar = horasTotales % 24;
+        }        
+        int totalAPagar=(diasAPagar*parqueaderoModel.DIAMOTO)+(horasAPagar*parqueaderoModel.HORAMOTO);
+        return totalAPagar;
+	}
 
 	@SuppressWarnings("static-access")
 	@Override
@@ -175,5 +194,11 @@ public class VigilanteServiceImpl implements VigilanteService{
     		}
     	}
     	return false;
+	}
+
+	@Override
+	public long generarAumentoMotosAltoCilindraje(int cilindraje) {
+		if(cilindraje>500) return 2000;
+		return 0;
 	}
 }
