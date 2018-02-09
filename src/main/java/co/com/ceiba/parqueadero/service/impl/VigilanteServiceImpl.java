@@ -187,12 +187,7 @@ public class VigilanteServiceImpl implements VigilanteService{
 
 	@Override
 	public boolean picoYPlaca(String placa, int diaSemana) {
-		if(placa.startsWith("A")) {
-    		if(diaSemana==1 || diaSemana==2){
-    			return true;
-    		}
-    	}
-    	return false;
+		return ((placa.startsWith("A")) && (diaSemana==1 || diaSemana==2));
 	}
 
 	@Override
