@@ -10,10 +10,6 @@ public class MotoModel extends VehiculoModel{
 		this.cilindraje = cilindraje;
 	}
 
-	public MotoModel() {
-		super();
-	}
-
 	@Override
 	public String getTipoVehiculo() {
 		return TIPOVEHICULO;

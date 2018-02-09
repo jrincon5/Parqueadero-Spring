@@ -47,48 +47,20 @@ public class ComprobantePagoEntity {
 		return idComprobantePago;
 	}
 
-	public void setIdComprobantePago(int idComprobantePago) {
-		this.idComprobantePago = idComprobantePago;
-	}
-
 	public Date getFechaEntrada() {
 		return fechaEntrada;
-	}
-
-	public void setFechaEntrada(Date fechaEntrada) {
-		this.fechaEntrada = fechaEntrada;
-	}
-
-	public Date getFechaSalida() {
-		return fechaSalida;
 	}
 
 	public void setFechaSalida(Date fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
 
-	public int getTotalHoras() {
-		return totalHoras;
-	}
-
 	public void setTotalHoras(int totalHoras) {
 		this.totalHoras = totalHoras;
 	}
 
-	public int getTotalPagar() {
-		return totalPagar;
-	}
-
 	public void setTotalPagar(int totalPagar) {
 		this.totalPagar = totalPagar;
-	}
-
-	public VehiculoEntity getPlacaFk() {
-		return placaFk;
-	}
-
-	public void setPlacaFk(VehiculoEntity placaFk) {
-		this.placaFk = placaFk;
 	}
 
 	

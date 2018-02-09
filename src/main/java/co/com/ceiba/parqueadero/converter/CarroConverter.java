@@ -13,15 +13,6 @@ public class CarroConverter {
 	
 	private static final Log LOG = LogFactory.getLog(VigilanteServiceImpl.class);
 	
-	//Entity to Model
-	public CarroModel entity2Model(VehiculoEntity vehiculoEntity) {
-		LOG.info("CALL: entity2Model()");
-		CarroModel carroModel = new CarroModel();
-		carroModel.setPlaca(vehiculoEntity.getPlaca());
-		carroModel.setParqueado(vehiculoEntity.isParqueado());
-		return carroModel;
-	}
-	
 	//Model to Entity
 	public VehiculoEntity model2Entity(CarroModel carroModel) {
 		LOG.info("CALL: model2Entity()");

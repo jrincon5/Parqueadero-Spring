@@ -58,28 +58,6 @@ public class Parqueadero{
         return false;
     }
 
-    public boolean sacarCarro(String placa){
-        for(int i=0;i<celdasCarro.size();i++){
-            if(celdasCarro.get(i).getVehiculo().getPlaca().equals(placa)){
-                //generarCobro(celdasCarro.get(i).getFecha().getHora(),Calendar.HOUR_OF_DAY);
-            	celdasCarro.remove(i);
-            	return true;
-            }
-        }
-        return false;
-    }
-    
-    public boolean sacarMoto(String placa){
-        for(int i=0;i<celdasMoto.size();i++){
-            if(celdasMoto.get(i).getVehiculo().getPlaca().equals(placa)){
-                //generarCobro(celdasCarro.get(i).getFecha().getHora(),Calendar.HOUR_OF_DAY);
-            	celdasMoto.remove(i);
-            	return true;
-            }
-        }
-        return false;
-    }
-
   //Metodo que calcula el total a pagar de los carros
     public int generarCobroCarros(FechaModel fechaEntrada, FechaModel fechaSalida){
         int horasTotales=(int)calcularHorasTotales(fechaEntrada, fechaSalida);

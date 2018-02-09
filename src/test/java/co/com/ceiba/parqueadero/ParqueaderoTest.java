@@ -59,16 +59,6 @@ public class ParqueaderoTest {
     }
 	
 	@Test
-	public void sacarCarroTest() {
-		assertFalse(park.sacarCarro("WSW04D"));
-	}
-	
-	@Test
-	public void sacarMotoTest() {
-		assertFalse(park.sacarMoto("WSW04D"));
-	}
-	
-	@Test
 	public void calcularHoras() {
 		FechaModel entrada = new FechaModel(2017, 1, 1, 3, 0,0);
     	FechaModel salida = new FechaModel(2017, 1, 5, 8, 0,0);

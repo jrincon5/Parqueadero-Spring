@@ -224,4 +224,24 @@ public class VigilanteTest {
 	public void noGenerarAumentoMotosAltoCilindrajeTest() {
 		assertEquals(0, vigilanteService.generarAumentoMotosAltoCilindraje(400));
 	}
+	
+	@Test
+	public void generarCobroVehiculosCarroTest() {
+		vigilanteService.addCarro(carro);
+		vigilanteService.addComprobantePago();
+		vigilanteService.removeVehiculo("WSW04D");
+		assertNotNull(vigilanteService.generarCobro("WSW04D"));
+		comprobanteJpaRepository.deleteAll();
+		vehiculoJpaRepository.deleteAll();
+	}
+	
+	@Test
+	public void generarCobroVehiculosMotoTest() {
+		vigilanteService.addMoto(moto);
+		vigilanteService.addComprobantePago();
+		vigilanteService.removeVehiculo("WSW04D");
+		assertNotNull(vigilanteService.generarCobro("WSW04D"));
+		comprobanteJpaRepository.deleteAll();
+		vehiculoJpaRepository.deleteAll();
+	}
 }

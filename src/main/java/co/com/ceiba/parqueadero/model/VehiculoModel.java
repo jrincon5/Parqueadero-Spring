@@ -30,14 +30,6 @@ public abstract class VehiculoModel {
 		this.placa = placa;
 		this.parqueado = parqueado;
 	}
-
-	public VehiculoModel() {
-	}
-
-	@Override
-	public String toString() {
-		return "VehiculoModel [placa=" + placa + ", parqueado=" + parqueado + "]";
-	}
 	
 	public abstract String getTipoVehiculo();
 

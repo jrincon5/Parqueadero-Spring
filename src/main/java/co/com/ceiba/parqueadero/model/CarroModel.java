@@ -4,9 +4,6 @@ public class CarroModel extends VehiculoModel {
 	
 	private static String TIPOVEHICULO="Carro"; 
 
-	public CarroModel() {
-		super();
-	}
 
 	public CarroModel(String placa, boolean parqueado) {
 		super(placa, parqueado);
