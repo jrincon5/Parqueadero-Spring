@@ -15,11 +15,8 @@ public interface VehiculoJpaRepository extends JpaRepository<VehiculoEntity, Ser
 	//public abstract int findByPlaca
 	
 	@Query("SELECT COUNT (t) FROM VehiculoEntity t WHERE t.tipoVehiculo = :tipoVehiculo AND t.parqueado = :parqueado")
-	public abstract int countByCarros(@Param("tipoVehiculo") String tipoVehiculo,
+	public abstract int countByCarrosOrMotos(@Param("tipoVehiculo") String tipoVehiculo,
 			@Param("parqueado") boolean parqueado);
-	
-	@Query("SELECT COUNT (t) FROM VehiculoEntity t WHERE t.tipoVehiculo = :tipoVehiculo")
-	public abstract int countByMotos(@Param("tipoVehiculo") String tipoVehiculo);
 	
 	@Query("SELECT t.placa FROM VehiculoEntity t WHERE t.placa = :placa AND t.parqueado = :parqueado")
 	public abstract boolean findActiveCarro(@Param("placa") String placa, 

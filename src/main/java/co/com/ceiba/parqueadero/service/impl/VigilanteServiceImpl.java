@@ -174,13 +174,13 @@ public class VigilanteServiceImpl implements VigilanteService{
 	@SuppressWarnings("static-access")
 	@Override
 	public boolean validarEspacioCarros() {
-		return vehiculoJpaRepository.countByCarros("Carro",true)<parqueaderoModel.LIMITECARROS;
+		return vehiculoJpaRepository.countByCarrosOrMotos("Carro",true)<parqueaderoModel.LIMITECARROS;
 	}
 	
 	@SuppressWarnings("static-access")
 	@Override
 	public boolean validarEspacioMotos() {
-		return vehiculoJpaRepository.countByCarros("Moto",true)<parqueaderoModel.LIMITEMOTOS;
+		return vehiculoJpaRepository.countByCarrosOrMotos("Moto",true)<parqueaderoModel.LIMITEMOTOS;
 	}
 
 	@Override
