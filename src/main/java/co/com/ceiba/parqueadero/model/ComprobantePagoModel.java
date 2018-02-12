@@ -11,13 +11,6 @@ public class ComprobantePagoModel {
 		super();
 	}
 	
-	public ComprobantePagoModel(String placa, String tipoVehiculo, Date fechaEntrada) {
-		super();
-		this.placa = placa;
-		this.tipoVehiculo = tipoVehiculo;
-		this.fechaEntrada = fechaEntrada;
-	}
-	
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
