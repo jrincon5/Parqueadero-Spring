@@ -8,8 +8,6 @@ import java.util.GregorianCalendar;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -161,7 +159,7 @@ public class VigilanteTest {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 1, 7, 59,0);
 		assertEquals(5000,vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.DIACARRO,parqueaderoModel.HORACARRO));
+				(entrada,salida,parqueaderoModel.VALORDIACARRO,parqueaderoModel.VALORHORACARRO));
 		
 	}
 	
@@ -171,7 +169,7 @@ public class VigilanteTest {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 1, 15, 0,0);
 		assertEquals(8000, vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.DIACARRO,parqueaderoModel.HORACARRO));
+				(entrada,salida,parqueaderoModel.VALORDIACARRO,parqueaderoModel.VALORHORACARRO));
 		
 	}
 	
@@ -181,7 +179,7 @@ public class VigilanteTest {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 2, 3, 1,0);
 		assertEquals(9000, vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.DIACARRO,parqueaderoModel.HORACARRO));
+				(entrada,salida,parqueaderoModel.VALORDIACARRO,parqueaderoModel.VALORHORACARRO));
 	}
 	
 	@SuppressWarnings("static-access")
@@ -190,7 +188,7 @@ public class VigilanteTest {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 1, 7, 59,0);
 		assertEquals(2500, vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.DIAMOTO,parqueaderoModel.HORAMOTO));
+				(entrada,salida,parqueaderoModel.VALORDIAMOTO,parqueaderoModel.VALORHORAMOTO));
 		
 	}
 	
@@ -200,7 +198,7 @@ public class VigilanteTest {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 1, 15, 0,0);
 		assertEquals(4000, vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.DIAMOTO,parqueaderoModel.HORAMOTO));
+				(entrada,salida,parqueaderoModel.VALORDIAMOTO,parqueaderoModel.VALORHORAMOTO));
 		
 	}
 	
@@ -210,7 +208,7 @@ public class VigilanteTest {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 2, 3, 1,0);
 		assertEquals(4500, vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.DIAMOTO,parqueaderoModel.HORAMOTO));
+				(entrada,salida,parqueaderoModel.VALORDIAMOTO,parqueaderoModel.VALORHORAMOTO));
 	}
 	
 	@Test

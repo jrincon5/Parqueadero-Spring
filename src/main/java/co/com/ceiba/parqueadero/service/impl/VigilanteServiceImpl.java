@@ -125,22 +125,22 @@ public class VigilanteServiceImpl implements VigilanteService{
 		LOG.info("CALL: generarCobroCarro()");
 		if(vehiculoJpaRepository.exists(placa.toUpperCase())) {
 			LOG.info("CALL: comprobanteJpaRepository.findByPlaca(placa)");
-			VehiculoEntity veh = vehiculoJpaRepository.findOne(placa); // Encontrar vehiculo con la clave foranea
-			ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findByPlaca(veh);//Busca el comprobante en la base de datos
+			VehiculoEntity vehiculo = vehiculoJpaRepository.findOne(placa); // Encontrar vehiculo con la clave foranea
+			ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findByPlaca(vehiculo);//Busca el comprobante en la base de datos
 			FechaModel fechaSalida = parqueaderoModel.getFechaActual();
 			comprobanteEntity.setFechaSalida(fechaSalida.getTime());
 			comprobanteEntity.setEstado(false);
 			long horasTotales=calcularHorasTotales(comprobanteEntity.getFechaEntrada(),fechaSalida);
 			comprobanteEntity.setTotalHoras((int)horasTotales);
 			long totalPagar=0;
-			if(veh.getTipoVehiculo().equals("Carro")){
+			if(vehiculo.getTipoVehiculo().equals("Carro")){
 				totalPagar=calcularTotalAPagar(comprobanteEntity.getFechaEntrada(), 
-						fechaSalida,parqueaderoModel.DIACARRO,parqueaderoModel.HORACARRO);
+						fechaSalida,parqueaderoModel.VALORDIACARRO,parqueaderoModel.VALORHORACARRO);
 			}			
-			if(veh.getTipoVehiculo().equals("Moto")) {
+			if(vehiculo.getTipoVehiculo().equals("Moto")) {
 				totalPagar=calcularTotalAPagar(comprobanteEntity.getFechaEntrada(), 
-						fechaSalida,parqueaderoModel.DIAMOTO,parqueaderoModel.HORAMOTO);
-				totalPagar+=generarAumentoMotosAltoCilindraje(veh.getCilindraje());
+						fechaSalida,parqueaderoModel.VALORDIAMOTO,parqueaderoModel.VALORHORAMOTO);
+				totalPagar+=generarAumentoMotosAltoCilindraje(vehiculo.getCilindraje());
 			}
 			comprobanteEntity.setTotalPagar((int)totalPagar);
 			LOG.info("RETURNING: generarCobroCarro()");
@@ -156,21 +156,21 @@ public class VigilanteServiceImpl implements VigilanteService{
     	if((d2.getTime()-d1.getTime()) % (1000 * 60 * 60)!=0) dif++;
     	return dif;
     }
-
+	
 	@SuppressWarnings("static-access")
 	@Override
 	public long calcularTotalAPagar(Date entrada, FechaModel salida, int valorDia, int valorHora) {
 		int horasTotales=(int)calcularHorasTotales(entrada, salida);
-        int diasAPagar = horasTotales / 24;
+        int diasAPagar = horasTotales / parqueaderoModel.HORASMAXIMASDELDIA;
         int horasAPagar=0;
-        if((horasTotales % 24)>=9 && (horasTotales % 24)<=23) {
+        if((horasTotales % 24)>=parqueaderoModel.HORASMINIMASDELDIA && (horasTotales % parqueaderoModel.HORASMAXIMASDELDIA)<=23) {
         	diasAPagar++;
         }else {
-        	horasAPagar = horasTotales % 24;
+        	horasAPagar = horasTotales % parqueaderoModel.HORASMAXIMASDELDIA;
         }
-        return (diasAPagar*valorDia)+(horasAPagar*valorHora);
+        return (long)(diasAPagar*valorDia)+(horasAPagar*valorHora);
 	}
-
+	
 	@SuppressWarnings("static-access")
 	@Override
 	public boolean validarEspacioCarros() {
@@ -188,9 +188,10 @@ public class VigilanteServiceImpl implements VigilanteService{
 		return ((placa.startsWith("A")) && (diaSemana==1 || diaSemana==2));
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public long generarAumentoMotosAltoCilindraje(int cilindraje) {
-		if(cilindraje>500) return 2000;
+		if(cilindraje>parqueaderoModel.CILINDRAJEREGLAMOTO) return parqueaderoModel.AUMENTOCILINDRAJE;
 		return 0;
 	}	
 }
