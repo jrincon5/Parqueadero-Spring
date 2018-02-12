@@ -18,7 +18,7 @@ import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
-import co.com.ceiba.parqueadero.model.Parqueadero;
+import co.com.ceiba.parqueadero.model.ParqueaderoModel;
 import co.com.ceiba.parqueadero.repository.ComprobanteJpaRepository;
 import co.com.ceiba.parqueadero.repository.VehiculoJpaRepository;
 import co.com.ceiba.parqueadero.service.VigilanteService;
@@ -43,7 +43,7 @@ public class VigilanteTest {
 	VehiculoEntity vehiculoMoto;
 	CarroModel carro;
 	MotoModel moto;
-	Parqueadero parqueaderoModel;
+	ParqueaderoModel parqueaderoModel;
 	
 	@Before
 	public void arrange() {
@@ -52,8 +52,8 @@ public class VigilanteTest {
 		moto = new MotoModel("WSW04D",true,100);
 		vehiculoCarro = new VehiculoEntity("WSW04D", true, 0, "Carro");
 		vehiculoMoto = new VehiculoEntity("WSW04D", true, 100, "Moto");
-		//vehiculoJpaRepository.deleteAll();
-		//comprobanteJpaRepository.deleteAll();
+		comprobanteJpaRepository.deleteAll();
+		vehiculoJpaRepository.deleteAll();
 	}
 	
 	@Test
@@ -87,6 +87,20 @@ public class VigilanteTest {
 		vigilanteService.agregarCarro(new CarroModel("AAA130",true));
 		assertNull(vigilanteService.agregarCarro(carro));
 		vehiculoJpaRepository.deleteAll();
+	}
+	
+	@Test
+	public void consultarVehiculoTest() {
+		vigilanteService.agregarCarro(carro);
+		vigilanteService.agregarComprobantePago();
+		assertNotNull(vigilanteService.consultarVehiculo(carro.getPlaca()));
+		comprobanteJpaRepository.deleteAll();
+		vehiculoJpaRepository.deleteAll();
+	}
+	
+	@Test
+	public void consultarVehiculoInvlidoTest() {
+		assertNull(vigilanteService.consultarVehiculo(carro.getPlaca()));
 	}
 	
 	@Test

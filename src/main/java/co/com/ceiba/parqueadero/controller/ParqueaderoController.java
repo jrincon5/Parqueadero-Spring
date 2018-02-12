@@ -4,15 +4,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import co.com.ceiba.parqueadero.model.CarroModel;
+import co.com.ceiba.parqueadero.model.ComprobantePagoModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
 import co.com.ceiba.parqueadero.service.VigilanteService;
 
@@ -27,25 +30,31 @@ public class ParqueaderoController {
 	VigilanteService vigilanteService;
 		
 	@PostMapping("/agregarcarro")
-	public void addCarro(@RequestBody CarroModel carroModel) {
+	public void agregarCarro(@RequestBody CarroModel carroModel) {
 		LOG.info("CALL: agregarcarro()");
 		vigilanteService.agregarCarro(carroModel);
 		vigilanteService.agregarComprobantePago();
 	}
 	
 	@PostMapping("/agregarmoto")
-	public void addMoto(@RequestBody MotoModel motoModel) {
+	public void agregarMoto(@RequestBody MotoModel motoModel) {
 		LOG.info("CALL: agregarmoto()");
 		vigilanteService.agregarMoto(motoModel);
 		vigilanteService.agregarComprobantePago();
 	}
 	
 	@PostMapping("/removervehiculo")
-	public void removeCarro(@RequestBody String json){
-		LOG.info("CALL: removeCarro()");
+	public void removerVehiculo(@RequestBody String json){
+		LOG.info("CALL: removerCarro()");
 		JsonElement jsonObj = new JsonParser().parse(json);
 		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
 		vigilanteService.removerVehiculo(placa);
 		vigilanteService.generarCobro(placa);
+	}
+	
+	@GetMapping("/consultarvehiculo")
+	public ComprobantePagoModel consultarVehiculo(@RequestParam(name="placa", required=true)String placa){
+		LOG.info("CALL: consultarVehiculo()");
+		return vigilanteService.consultarVehiculo(placa);
 	}
 }

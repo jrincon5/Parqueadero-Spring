@@ -14,9 +14,10 @@ import co.com.ceiba.parqueadero.converter.MotoConverter;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
-import co.com.ceiba.parqueadero.model.Parqueadero;
+import co.com.ceiba.parqueadero.model.ParqueaderoModel;
 import co.com.ceiba.parqueadero.model.VehiculoModel;
 import co.com.ceiba.parqueadero.model.CarroModel;
+import co.com.ceiba.parqueadero.model.ComprobantePagoModel;
 import co.com.ceiba.parqueadero.repository.ComprobanteJpaRepository;
 import co.com.ceiba.parqueadero.repository.VehiculoJpaRepository;
 import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
@@ -25,7 +26,7 @@ import co.com.ceiba.parqueadero.service.VigilanteService;
 @Service("vigilanteServiceImpl")
 public class VigilanteServiceImpl implements VigilanteService{
 	
-	private Parqueadero parqueaderoModel= new Parqueadero();
+	private ParqueaderoModel parqueaderoModel= new ParqueaderoModel();
 	private VehiculoEntity vehiculoAux=new VehiculoEntity();
 	
 	private static final Log LOG = LogFactory.getLog(VigilanteServiceImpl.class);	
@@ -75,6 +76,20 @@ public class VigilanteServiceImpl implements VigilanteService{
 			return null;
 		}
 		LOG.info("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS MOTOS");
+		return null;
+	}
+	
+	@Override
+	public ComprobantePagoModel consultarVehiculo(String placa) {
+		if(vehiculoJpaRepository.exists(placa)) {
+			ComprobantePagoModel comprobante = new ComprobantePagoModel();
+			VehiculoEntity vehiculo = vehiculoJpaRepository.findOne(placa);
+			comprobante.setPlaca(placa);
+			comprobante.setTipoVehiculo(vehiculo.getTipoVehiculo());
+			comprobante.setFechaEntrada(comprobanteJpaRepository.
+					findByPlaca(vehiculo).getFechaEntrada());
+			return comprobante;
+		}
 		return null;
 	}
 	
@@ -197,5 +212,5 @@ public class VigilanteServiceImpl implements VigilanteService{
 	public long generarAumentoMotosAltoCilindraje(int cilindraje) {
 		if(cilindraje>parqueaderoModel.CILINDRAJEREGLAMOTO) return parqueaderoModel.AUMENTOCILINDRAJE;
 		return 0;
-	}	
+	}
 }

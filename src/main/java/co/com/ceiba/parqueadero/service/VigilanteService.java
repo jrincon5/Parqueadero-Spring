@@ -5,6 +5,7 @@ import java.util.Date;
 import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.model.CarroModel;
+import co.com.ceiba.parqueadero.model.ComprobantePagoModel;
 import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
 import co.com.ceiba.parqueadero.model.VehiculoModel;
@@ -16,6 +17,8 @@ public interface VigilanteService {
 	public abstract VehiculoEntity agregarMoto(MotoModel moto);
 	
 	public abstract VehiculoEntity removerVehiculo(String placa);
+	
+	public abstract ComprobantePagoModel consultarVehiculo(String placa);
 	
 	public abstract ComprobantePagoEntity agregarComprobantePago();
 	

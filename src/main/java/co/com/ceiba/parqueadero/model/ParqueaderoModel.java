@@ -2,7 +2,7 @@ package co.com.ceiba.parqueadero.model;
 
 import java.util.Calendar;
 
-public class Parqueadero{
+public class ParqueaderoModel{
 	public static final int CILINDRAJEREGLAMOTO = 500;
 	public static final int AUMENTOCILINDRAJE = 2000;
 	public static final int HORASMINIMASDELDIA = 9;
