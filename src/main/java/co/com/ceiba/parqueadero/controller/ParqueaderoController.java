@@ -1,5 +1,7 @@
 package co.com.ceiba.parqueadero.controller;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +55,8 @@ public class ParqueaderoController {
 	}
 	
 	@GetMapping("/consultarvehiculo")
-	public ComprobantePagoModel consultarVehiculo(@RequestParam(name="placa", required=true)String placa){
+	public List<ComprobantePagoModel> consultarVehiculos(){
 		LOG.info("CALL: consultarVehiculo()");
-		return vigilanteService.consultarVehiculo(placa);
+		return vigilanteService.consultarVehiculos();
 	}
 }

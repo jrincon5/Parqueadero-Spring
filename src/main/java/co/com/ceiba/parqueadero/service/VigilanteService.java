@@ -1,6 +1,7 @@
 package co.com.ceiba.parqueadero.service;
 
 import java.util.Date;
+import java.util.List;
 
 import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
@@ -18,7 +19,7 @@ public interface VigilanteService {
 	
 	public abstract VehiculoEntity removerVehiculo(String placa);
 	
-	public abstract ComprobantePagoModel consultarVehiculo(String placa);
+	public abstract List<ComprobantePagoModel> consultarVehiculos();
 	
 	public abstract ComprobantePagoEntity agregarComprobantePago();
 	

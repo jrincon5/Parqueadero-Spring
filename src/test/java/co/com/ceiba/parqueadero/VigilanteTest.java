@@ -2,8 +2,12 @@ package co.com.ceiba.parqueadero;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+
+import javax.persistence.NonUniqueResultException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +22,7 @@ import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
+import co.com.ceiba.parqueadero.model.ComprobantePagoModel;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
 import co.com.ceiba.parqueadero.repository.ComprobanteJpaRepository;
 import co.com.ceiba.parqueadero.repository.VehiculoJpaRepository;
@@ -93,15 +98,17 @@ public class VigilanteTest {
 	public void consultarVehiculoTest() {
 		vigilanteService.agregarCarro(carro);
 		vigilanteService.agregarComprobantePago();
-		assertNotNull(vigilanteService.consultarVehiculo(carro.getPlaca()));
+		List<ComprobantePagoModel> comprobantes = new ArrayList<>();
+		comprobantes.addAll(vigilanteService.consultarVehiculos());
+		assertEquals(comprobantes.size(),vigilanteService.consultarVehiculos().size());
 		comprobanteJpaRepository.deleteAll();
 		vehiculoJpaRepository.deleteAll();
 	}
 	
-	@Test
+	/*@Test
 	public void consultarVehiculoInvlidoTest() {
-		assertNull(vigilanteService.consultarVehiculo(carro.getPlaca()));
-	}
+		assertNull(vigilanteService.consultarVehiculos());
+	}*/
 	
 	@Test
 	public void agregarMotoValidaTest() {

@@ -1,7 +1,9 @@
 package co.com.ceiba.parqueadero.service.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -80,17 +82,17 @@ public class VigilanteServiceImpl implements VigilanteService{
 	}
 	
 	@Override
-	public ComprobantePagoModel consultarVehiculo(String placa) {
-		if(vehiculoJpaRepository.exists(placa)) {
+	public List<ComprobantePagoModel> consultarVehiculos() {
+		List<ComprobantePagoModel> comprobantes = new ArrayList<>();
+		List<VehiculoEntity> vehiculos = vehiculoJpaRepository.findAll();
+		for(VehiculoEntity vehiculo : vehiculos) {
 			ComprobantePagoModel comprobante = new ComprobantePagoModel();
-			VehiculoEntity vehiculo = vehiculoJpaRepository.findOne(placa);
-			comprobante.setPlaca(placa);
+			comprobante.setPlaca(vehiculo.getPlaca());
 			comprobante.setTipoVehiculo(vehiculo.getTipoVehiculo());
-			comprobante.setFechaEntrada(comprobanteJpaRepository.
-					findByPlaca(vehiculo).getFechaEntrada());
-			return comprobante;
+			comprobante.setFechaEntrada(comprobanteJpaRepository.findByPlaca(vehiculo).getFechaEntrada());
+			comprobantes.add(comprobante);
 		}
-		return null;
+		return comprobantes;
 	}
 	
 	@Override
