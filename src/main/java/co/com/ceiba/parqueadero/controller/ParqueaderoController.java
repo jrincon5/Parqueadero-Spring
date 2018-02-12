@@ -26,26 +26,26 @@ public class ParqueaderoController {
 	@Qualifier("vigilanteServiceImpl")
 	VigilanteService vigilanteService;
 		
-	@PostMapping("/addcarro")
+	@PostMapping("/agregarcarro")
 	public void addCarro(@RequestBody CarroModel carroModel) {
-		LOG.info("CALL: addCarro()");
-		vigilanteService.addCarro(carroModel);
-		vigilanteService.addComprobantePago();
+		LOG.info("CALL: agregarcarro()");
+		vigilanteService.agregarCarro(carroModel);
+		vigilanteService.agregarComprobantePago();
 	}
 	
-	@PostMapping("/addmoto")
+	@PostMapping("/agregarmoto")
 	public void addMoto(@RequestBody MotoModel motoModel) {
-		LOG.info("CALL: addMoto()");
-		vigilanteService.addMoto(motoModel);
-		vigilanteService.addComprobantePago();
+		LOG.info("CALL: agregarmoto()");
+		vigilanteService.agregarMoto(motoModel);
+		vigilanteService.agregarComprobantePago();
 	}
 	
-	@PostMapping("/removevehiculo")
+	@PostMapping("/removervehiculo")
 	public void removeCarro(@RequestBody String json){
 		LOG.info("CALL: removeCarro()");
 		JsonElement jsonObj = new JsonParser().parse(json);
 		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
-		vigilanteService.removeVehiculo(placa);
+		vigilanteService.removerVehiculo(placa);
 		vigilanteService.generarCobro(placa);
 	}
 }
