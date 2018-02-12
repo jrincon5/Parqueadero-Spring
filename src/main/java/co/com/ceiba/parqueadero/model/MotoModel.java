@@ -9,21 +9,17 @@ public class MotoModel extends VehiculoModel{
 		super(placa, parqueado);
 		this.cilindraje = cilindraje;
 	}
-
-	@Override
-	public String getTipoVehiculo() {
-		return TIPOVEHICULO;
+	
+	public MotoModel() {
+		super();
 	}
-
+	
 	public int getCilindraje() {
 		return cilindraje;
 	}
 
-	public MotoModel() {
-		super();
-	}
-
-	public MotoModel(String placa, boolean parqueado) {
-		super(placa, parqueado);
+	@Override
+	public String getTipoVehiculo() {
+		return TIPOVEHICULO;
 	}
 }

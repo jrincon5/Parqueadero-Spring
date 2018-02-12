@@ -1,17 +1,15 @@
 package co.com.ceiba.parqueadero;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito.Then;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,9 +28,6 @@ import co.com.ceiba.parqueadero.service.VigilanteService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class VigilanteTest {
-	
-	@Mock
-	VigilanteService mock;
 	
 	@Autowired
 	@Qualifier("vigilanteServiceImpl")
@@ -59,8 +54,8 @@ public class VigilanteTest {
 		moto = new MotoModel("WSW04D",true,100);
 		vehiculoCarro = new VehiculoEntity("WSW04D", true, 0, "Carro");
 		vehiculoMoto = new VehiculoEntity("WSW04D", true, 100, "Moto");
-		vehiculoJpaRepository.deleteAll();
-		comprobanteJpaRepository.deleteAll();
+		//vehiculoJpaRepository.deleteAll();
+		//comprobanteJpaRepository.deleteAll();
 	}
 	
 	@Test
@@ -68,14 +63,6 @@ public class VigilanteTest {
 		assertNotNull(vigilanteService.agregarCarro(carro));
 		vehiculoJpaRepository.deleteAll();
 	}
-	
-	/*@Test
-	public void agregarCarroEnPicoYPlacaTest() {
-		when(mock.picoYPlaca("WSW04D", Calendar.DAY_OF_WEEK))
-		.thenReturn(mock.picoYPlaca("WSW04D",1));
-		assertNull(vigilanteService.agregarCarro(carro));
-		vehiculoJpaRepository.deleteAll();
-	}*/
 	
 	@Test
 	public void agregarCarroSobreCupoTest() {
@@ -107,7 +94,7 @@ public class VigilanteTest {
 	@Test
 	public void agregarMotoValidaTest() {
 		assertNotNull(vigilanteService.agregarMoto(moto));
-		vehiculoJpaRepository.deleteAll();;
+		vehiculoJpaRepository.deleteAll();
 	}
 	
 	@Test
