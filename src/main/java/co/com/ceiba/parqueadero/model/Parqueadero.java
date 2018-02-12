@@ -13,6 +13,9 @@ public class Parqueadero{
     public static final int VALORHORAMOTO=500;
     public static final int VALORDIACARRO=8000;
     public static final int VALORDIAMOTO=4000;
+    public static final int MILISEGUNDOS=1000;
+    public static final int SEGUNDOS=60;
+    public static final int MINUTOS=60;
     
     public FechaModel getFechaActual() {
     	Calendar calendar = Calendar.getInstance();

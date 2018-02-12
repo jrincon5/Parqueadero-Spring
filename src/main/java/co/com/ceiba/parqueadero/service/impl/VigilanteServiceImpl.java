@@ -149,22 +149,26 @@ public class VigilanteServiceImpl implements VigilanteService{
 		return null;
 	}	
 
+	@SuppressWarnings("static-access")
 	@Override
-	public long calcularHorasTotales(Date d1, FechaModel salida) {
-    	Date d2=salida.getTime();
-    	long dif=(d2.getTime()-d1.getTime()) / (1000 * 60 * 60);
-    	if((d2.getTime()-d1.getTime()) % (1000 * 60 * 60)!=0) dif++;
-    	return dif;
+	public long calcularHorasTotales(Date fechaEntrada, FechaModel paramFechaSalida) {
+    	Date fechaSalida=paramFechaSalida.getTime();
+		long diferenciaHoras=(fechaSalida.getTime()-fechaEntrada.getTime()) / 
+    			(parqueaderoModel.MILISEGUNDOS * parqueaderoModel.SEGUNDOS * parqueaderoModel.MINUTOS);
+    	if((fechaSalida.getTime()-fechaEntrada.getTime()) % 
+    			(parqueaderoModel.MILISEGUNDOS * parqueaderoModel.SEGUNDOS * parqueaderoModel.MINUTOS)!=0) diferenciaHoras++;
+    	return diferenciaHoras;
     }
 	
 	@SuppressWarnings("static-access")
 	@Override
-	public long calcularTotalAPagar(Date entrada, FechaModel salida, int valorDia, int valorHora) {
-		int horasTotales=(int)calcularHorasTotales(entrada, salida);
+	public long calcularTotalAPagar(Date fechaEntrada, FechaModel fechaSalida, int valorDia, int valorHora) {
+		int horasTotales=(int)calcularHorasTotales(fechaEntrada, fechaSalida);
         int diasAPagar = horasTotales / parqueaderoModel.HORASMAXIMASDELDIA;
         int horasAPagar=0;
-        if((horasTotales % 24)>=parqueaderoModel.HORASMINIMASDELDIA && (horasTotales % parqueaderoModel.HORASMAXIMASDELDIA)<=23) {
-        	diasAPagar++;
+        if( (horasTotales % parqueaderoModel.HORASMAXIMASDELDIA)>=parqueaderoModel.HORASMINIMASDELDIA &&
+        		(horasTotales % parqueaderoModel.HORASMAXIMASDELDIA)<=parqueaderoModel.HORASMAXIMASDELDIA-1 ) {
+        	diasAPagar++; // Si hay una hora entre 9 y 23 horas, debe aumentar un dia
         }else {
         	horasAPagar = horasTotales % parqueaderoModel.HORASMAXIMASDELDIA;
         }
@@ -185,7 +189,7 @@ public class VigilanteServiceImpl implements VigilanteService{
 
 	@Override
 	public boolean picoYPlaca(String placa, int diaSemana) {
-		return ((placa.startsWith("A")) && (diaSemana==1 || diaSemana==2));
+		return ((placa.startsWith("A")) && (diaSemana==Calendar.SUNDAY || diaSemana==Calendar.MONDAY));
 	}
 
 	@SuppressWarnings("static-access")
