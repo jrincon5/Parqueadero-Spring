@@ -25,9 +25,13 @@ public interface VigilanteService {
 	
 	public abstract ComprobantePagoEntity generarCobro(String placa);
 	
+	public abstract int establecerVehiculoAPagar(ComprobantePagoEntity 
+			comprobante,FechaModel fechaSalida,VehiculoEntity vehiculo);
+	
 	public abstract long calcularHorasTotales(Date entrada, FechaModel salida);
 	
-	public abstract long calcularTotalAPagar(Date entrada, FechaModel salida, int valorDia, int valorHora);
+	public abstract long calcularTotalAPagar(Date entrada, FechaModel salida,
+			int valorDia, int valorHora);
 	
 	public abstract long generarAumentoMotosAltoCilindraje(int cilindraje);
 	

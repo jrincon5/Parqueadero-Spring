@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import co.com.ceiba.parqueadero.converter.CarroConverter;
 import co.com.ceiba.parqueadero.converter.MotoConverter;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
+import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
@@ -31,7 +32,7 @@ public class VigilanteServiceImpl implements VigilanteService{
 	private ParqueaderoModel parqueaderoModel= new ParqueaderoModel();
 	private VehiculoEntity vehiculoAux=new VehiculoEntity();
 	
-	private static final Log LOG = LogFactory.getLog(VigilanteServiceImpl.class);	
+	private static final Log LOG = LogFactory.getLog(VigilanteServiceImpl.class);
 	
 	@Autowired
 	@Qualifier("carroConverter")
@@ -61,8 +62,7 @@ public class VigilanteServiceImpl implements VigilanteService{
 			LOG.info("EL DIA DE HOY LE TOCA PICO Y PLACA, NO ES POSIBLE INGRESAR");
 			return null;
 		}
-		LOG.info("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS CARROS");
-		return null;
+		throw new ParqueaderoException("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS CARROS");
 	}
 	
 	@SuppressWarnings("static-access")
@@ -77,8 +77,7 @@ public class VigilanteServiceImpl implements VigilanteService{
 			LOG.info("EL DIA DE HOY LE TOCA PICO Y PLACA, NO ES POSIBLE INGRESAR");
 			return null;
 		}
-		LOG.info("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS MOTOS");
-		return null;
+		throw new ParqueaderoException("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS MOTOS");
 	}
 	
 	@Override
@@ -132,39 +131,43 @@ public class VigilanteServiceImpl implements VigilanteService{
 			LOG.info("RETURNING: removerVehiculo()");
 			return vehiculoJpaRepository.save(vehiculoEntity);
 		}
-		LOG.info("RETURNING NULL FROM: removeVehiculo() -- IT DIDN'T FIND THE VEHICLE");
-		return null;
+		throw new ParqueaderoException("LA PLACA INGRESADA NO SE ENCUENTRA UBICADA EN EL PARQUEADERO");
 	}
 	
 	@SuppressWarnings("static-access")
 	@Override
 	public ComprobantePagoEntity generarCobro(String placa) {
 		LOG.info("CALL: generarCobroCarro()");
-		if(vehiculoJpaRepository.exists(placa.toUpperCase())) {
-			LOG.info("CALL: comprobanteJpaRepository.findByPlaca(placa)");
-			VehiculoEntity vehiculo = vehiculoJpaRepository.findOne(placa); // Encontrar vehiculo con la clave foranea
-			ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findByPlaca(vehiculo);//Busca el comprobante en la base de datos
-			FechaModel fechaSalida = parqueaderoModel.getFechaActual();
-			comprobanteEntity.setFechaSalida(fechaSalida.getTime());
-			comprobanteEntity.setEstado(false);
-			long horasTotales=calcularHorasTotales(comprobanteEntity.getFechaEntrada(),fechaSalida);
-			comprobanteEntity.setTotalHoras((int)horasTotales);
-			long totalPagar=0;
-			if(vehiculo.getTipoVehiculo().equals("Carro")){
-				totalPagar=calcularTotalAPagar(comprobanteEntity.getFechaEntrada(), 
-						fechaSalida,parqueaderoModel.VALORDIACARRO,parqueaderoModel.VALORHORACARRO);
-			}			
-			if(vehiculo.getTipoVehiculo().equals("Moto")) {
-				totalPagar=calcularTotalAPagar(comprobanteEntity.getFechaEntrada(), 
-						fechaSalida,parqueaderoModel.VALORDIAMOTO,parqueaderoModel.VALORHORAMOTO);
-				totalPagar+=generarAumentoMotosAltoCilindraje(vehiculo.getCilindraje());
-			}
-			comprobanteEntity.setTotalPagar((int)totalPagar);
-			LOG.info("RETURNING: generarCobroCarro()");
-			return comprobanteJpaRepository.save(comprobanteEntity);
+		LOG.info("CALL: comprobanteJpaRepository.findByPlaca(placa)");
+		VehiculoEntity vehiculo = vehiculoJpaRepository.findOne(placa); // Encontrar vehiculo con la clave foranea
+		ComprobantePagoEntity comprobanteEntity = comprobanteJpaRepository.findByPlaca(vehiculo);//Busca el comprobante en la base de datos
+		FechaModel fechaSalida = parqueaderoModel.getFechaActual();
+		comprobanteEntity.setFechaSalida(fechaSalida.getTime());
+		comprobanteEntity.setEstado(false);
+		long horasTotales=calcularHorasTotales(comprobanteEntity.getFechaEntrada(),fechaSalida);
+		comprobanteEntity.setTotalHoras((int)horasTotales);
+		int totalPagar=establecerVehiculoAPagar(comprobanteEntity, fechaSalida, vehiculo);
+		comprobanteEntity.setTotalPagar(totalPagar);
+		LOG.info("RETURNING: generarCobroCarro()");
+		return comprobanteJpaRepository.save(comprobanteEntity);
+	}
+	
+	@SuppressWarnings("static-access")
+	@Override
+	public int establecerVehiculoAPagar(ComprobantePagoEntity comprobante, FechaModel fechaSalida,
+			VehiculoEntity vehiculo) {
+		long totalPagar=0;
+		if(vehiculo.getTipoVehiculo().equals("Carro")){
+			totalPagar=calcularTotalAPagar(comprobante.getFechaEntrada(), 
+					fechaSalida,parqueaderoModel.VALORDIACARRO,parqueaderoModel.VALORHORACARRO);
+		}			
+		if(vehiculo.getTipoVehiculo().equals("Moto")) {
+			totalPagar=calcularTotalAPagar(comprobante.getFechaEntrada(), 
+					fechaSalida,parqueaderoModel.VALORDIAMOTO,parqueaderoModel.VALORHORAMOTO);
+			totalPagar+=generarAumentoMotosAltoCilindraje(vehiculo.getCilindraje());
 		}
-		return null;
-	}	
+		return (int)totalPagar;
+	}
 
 	@SuppressWarnings("static-access")
 	@Override

@@ -7,8 +7,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
-
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
+import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
@@ -61,37 +61,24 @@ public class VigilanteTest {
 		vehiculoJpaRepository.deleteAll();
 	}
 	
+	@After
+	public void clean() {
+		comprobanteJpaRepository.deleteAll();
+		vehiculoJpaRepository.deleteAll();
+	}
+	
 	@Test
 	public void agregarCarroValidoTest() {
 		assertNotNull(vigilanteService.agregarCarro(carro));
 		vehiculoJpaRepository.deleteAll();
 	}
 	
-	@Test
+	@Test(expected = ParqueaderoException.class)
 	public void agregarCarroSobreCupoTest() {
-		vigilanteService.agregarCarro(new CarroModel("AAA111",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA112",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA113",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA114",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA115",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA116",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA117",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA118",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA119",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA110",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA121",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA122",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA123",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA124",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA125",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA126",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA127",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA128",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA129",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA120",true));
-		vigilanteService.agregarCarro(new CarroModel("AAA130",true));
-		assertNull(vigilanteService.agregarCarro(carro));
-		vehiculoJpaRepository.deleteAll();
+		for (int i=0;i<=10;i++) {
+			vigilanteService.agregarCarro(new CarroModel("AAA11"+i,true));
+			vigilanteService.agregarCarro(new CarroModel("AAA12"+i,true));
+		}
 	}
 	
 	@Test
@@ -105,32 +92,18 @@ public class VigilanteTest {
 		vehiculoJpaRepository.deleteAll();
 	}
 	
-	/*@Test
-	public void consultarVehiculoInvlidoTest() {
-		assertNull(vigilanteService.consultarVehiculos());
-	}*/
-	
 	@Test
 	public void agregarMotoValidaTest() {
 		assertNotNull(vigilanteService.agregarMoto(moto));
 		vehiculoJpaRepository.deleteAll();
 	}
 	
-	@Test
+	@Test(expected = ParqueaderoException.class)
 	public void agregarMotoSobreCupoTest() {
-		vigilanteService.agregarMoto(new MotoModel("AAA111",true,100));
-		vigilanteService.agregarMoto(new MotoModel("AAA112",true,100));
-		vigilanteService.agregarMoto(new MotoModel("AAA113",true,100));
-		vigilanteService.agregarMoto(new MotoModel("AAA114",true,100));
-		vigilanteService.agregarMoto(new MotoModel("AAA115",true,100));
-		vigilanteService.agregarMoto(new MotoModel("AAA116",true,100));
-		vigilanteService.agregarMoto(new MotoModel("AAA117",true,100));
-		vigilanteService.agregarMoto(new MotoModel("AAA118",true,100));
-		vigilanteService.agregarMoto(new MotoModel("AAA119",true,100));
-		vigilanteService.agregarMoto(new MotoModel("AAA110",true,100));
-		vigilanteService.agregarMoto(new MotoModel("AAA120",true,100));
-		assertNull(vigilanteService.agregarMoto(moto));
-		vehiculoJpaRepository.deleteAll();
+		for (int i=0;i<=5;i++) {
+			vigilanteService.agregarMoto(new MotoModel("AAA11"+i,true,100));
+			vigilanteService.agregarMoto(new MotoModel("AAA12"+i,true,100));
+		}
 	}
 	
 	@Test
@@ -148,9 +121,9 @@ public class VigilanteTest {
 		vehiculoJpaRepository.deleteAll();
 	}
 	
-	@Test
+	@Test (expected = ParqueaderoException.class)
 	public void removerVehiculoInexistenteTest() {
-		assertNull(vigilanteService.removerVehiculo("WSW04D"));
+		vigilanteService.removerVehiculo("WSW04D");
 	}
 	
 	@Test
@@ -275,10 +248,5 @@ public class VigilanteTest {
 		assertNotNull(vigilanteService.generarCobro("WSW04D"));
 		comprobanteJpaRepository.deleteAll();
 		vehiculoJpaRepository.deleteAll();
-	}
-	
-	@Test
-	public void generarCobroVehiculoInvalidoTest() {
-		assertNull(vigilanteService.generarCobro("WSW04D"));
 	}
 }
