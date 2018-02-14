@@ -59,8 +59,7 @@ public class VigilanteServiceImpl implements VigilanteService{
 				LOG.info("RETURNING: agregarCarro()");
 				return vehiculoJpaRepository.save(mapearModelAEntidad(carro));
 			}
-			LOG.info("EL DIA DE HOY LE TOCA PICO Y PLACA, NO ES POSIBLE INGRESAR");
-			return null;
+			throw new ParqueaderoException("EL DIA DE HOY LE TOCA PICO Y PLACA, NO ES POSIBLE INGRESAR");
 		}
 		throw new ParqueaderoException("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS CARROS");
 	}
@@ -74,8 +73,7 @@ public class VigilanteServiceImpl implements VigilanteService{
 				LOG.info("RETURNING: agregarMoto()");
 				return vehiculoJpaRepository.save(mapearModelAEntidad(moto));
 			}
-			LOG.info("EL DIA DE HOY LE TOCA PICO Y PLACA, NO ES POSIBLE INGRESAR");
-			return null;
+			throw new ParqueaderoException("EL DIA DE HOY LE TOCA PICO Y PLACA, NO ES POSIBLE INGRESAR");
 		}
 		throw new ParqueaderoException("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS MOTOS");
 	}
@@ -176,7 +174,8 @@ public class VigilanteServiceImpl implements VigilanteService{
 		long diferenciaHoras=(fechaSalida.getTime()-fechaEntrada.getTime()) / 
     			(parqueaderoModel.MILISEGUNDOS * parqueaderoModel.SEGUNDOS * parqueaderoModel.MINUTOS);
     	if((fechaSalida.getTime()-fechaEntrada.getTime()) % 
-    			(parqueaderoModel.MILISEGUNDOS * parqueaderoModel.SEGUNDOS * parqueaderoModel.MINUTOS)!=0) diferenciaHoras++;
+    			(parqueaderoModel.MILISEGUNDOS * parqueaderoModel.SEGUNDOS * parqueaderoModel.MINUTOS)!=0)
+    		diferenciaHoras++;
     	return diferenciaHoras;
     }
 	
@@ -207,9 +206,10 @@ public class VigilanteServiceImpl implements VigilanteService{
 		return vehiculoJpaRepository.countByCarrosOrMotos("Moto",true)<parqueaderoModel.LIMITEMOTOS;
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public boolean picoYPlaca(String placa, int diaSemana) {
-		return ((placa.startsWith("A")) && (diaSemana==Calendar.SUNDAY || diaSemana==Calendar.MONDAY));
+		return ((placa.startsWith(parqueaderoModel.validacionLetraA)) && (diaSemana==Calendar.SUNDAY || diaSemana==Calendar.MONDAY));
 	}
 
 	@SuppressWarnings("static-access")

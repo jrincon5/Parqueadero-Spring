@@ -16,6 +16,7 @@ public class ParqueaderoModel{
     public static final int MILISEGUNDOS=1000;
     public static final int SEGUNDOS=60;
     public static final int MINUTOS=60;
+    public static final String validacionLetraA = "A";
     
     public FechaModel getFechaActual() {
     	Calendar calendar = Calendar.getInstance();

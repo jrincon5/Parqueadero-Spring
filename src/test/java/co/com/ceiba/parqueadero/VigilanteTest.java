@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,6 +36,11 @@ public class VigilanteTest {
 	@Autowired
 	@Qualifier("vigilanteServiceImpl")
 	VigilanteService vigilanteService;
+	
+	@Mock
+	@Autowired
+	@Qualifier("vigilanteServiceImpl")
+	VigilanteService vigilanteMock;
 	
 	@Autowired
 	@Qualifier("vehiculoJpaRepository")
@@ -72,6 +78,14 @@ public class VigilanteTest {
 		assertNotNull(vigilanteService.agregarCarro(carro));
 		vehiculoJpaRepository.deleteAll();
 	}
+	
+	/*@Test
+	public void agregarCarroEnPicoYPlacaTest() {
+		carro = new CarroModel("ASW04D",true);
+		when(vigilanteMock.picoYPlaca("ASW04D", Calendar.MONDAY)).thenReturn(true);
+		assertNull(vigilanteService.agregarCarro(carro));
+		vehiculoJpaRepository.deleteAll();
+	}*/
 	
 	@Test(expected = ParqueaderoException.class)
 	public void agregarCarroSobreCupoTest() {
