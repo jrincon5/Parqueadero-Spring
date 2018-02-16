@@ -18,15 +18,8 @@ public abstract class VehiculoModel {
 	}
 
 	public VehiculoModel(String placa, boolean parqueado) {
-		super();
 		this.placa = placa;
 		this.parqueado = parqueado;
-	}
-	
-	
-	
-	public VehiculoModel() {
-		super();
 	}
 
 	public abstract String getTipoVehiculo();

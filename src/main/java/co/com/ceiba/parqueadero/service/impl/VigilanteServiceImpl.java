@@ -209,7 +209,8 @@ public class VigilanteServiceImpl implements VigilanteService{
 	@SuppressWarnings("static-access")
 	@Override
 	public boolean picoYPlaca(String placa, int diaSemana) {
-		return ((placa.startsWith(parqueaderoModel.VALIDACIONLETRAA)) && (diaSemana==Calendar.SUNDAY || diaSemana==Calendar.MONDAY));
+		return ((placa.startsWith(parqueaderoModel.VALIDACIONLETRAA)) && 
+				(diaSemana==Calendar.SUNDAY || diaSemana==Calendar.MONDAY));
 	}
 
 	@SuppressWarnings("static-access")

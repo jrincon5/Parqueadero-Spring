@@ -8,11 +8,7 @@ public class MotoModel extends VehiculoModel{
 	public MotoModel(String placa, boolean parqueado, int cilindraje) {
 		super(placa, parqueado);
 		this.cilindraje = cilindraje;
-	}
-	
-	public MotoModel() {
-		super();
-	}
+	}	
 	
 	public int getCilindraje() {
 		return cilindraje;

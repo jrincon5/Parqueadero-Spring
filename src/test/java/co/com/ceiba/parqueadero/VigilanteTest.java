@@ -192,6 +192,15 @@ public class VigilanteTest {
 	
 	@SuppressWarnings("static-access")
 	@Test
+	public void generarCobroCarrosHorasDiasTes2t() {
+		Date entrada = new GregorianCalendar(2017, 1, 1, 2, 0,0).getTime();
+		FechaModel   salida = new FechaModel(2017, 1, 2, 18, 0,0);
+		assertEquals(16000, vigilanteService.calcularTotalAPagar
+				(entrada,salida,parqueaderoModel.VALORDIACARRO,parqueaderoModel.VALORHORACARRO));
+	}
+	
+	@SuppressWarnings("static-access")
+	@Test
 	public void generarCobroMotosHorasTest() {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 1, 7, 59,0);
