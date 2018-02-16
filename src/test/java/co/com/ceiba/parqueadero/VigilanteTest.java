@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.FechaModel;
@@ -50,8 +49,6 @@ public class VigilanteTest {
 	@Qualifier("comprobanteJpaRepository")
 	ComprobanteJpaRepository comprobanteJpaRepository;
 	
-	VehiculoEntity vehiculoCarro;
-	VehiculoEntity vehiculoMoto;
 	CarroModel carro;
 	MotoModel moto;
 	ParqueaderoModel parqueaderoModel;
@@ -61,8 +58,6 @@ public class VigilanteTest {
 		MockitoAnnotations.initMocks(this);
 		carro = new CarroModel("WSW04D",true);
 		moto = new MotoModel("WSW04D",true,100);
-		vehiculoCarro = new VehiculoEntity("WSW04D", true, 0, "Carro");
-		vehiculoMoto = new VehiculoEntity("WSW04D", true, 100, "Moto");
 		comprobanteJpaRepository.deleteAll();
 		vehiculoJpaRepository.deleteAll();
 	}
@@ -271,5 +266,36 @@ public class VigilanteTest {
 		assertNotNull(vigilanteService.generarCobro("WSW04D"));
 		comprobanteJpaRepository.deleteAll();
 		vehiculoJpaRepository.deleteAll();
+	}
+	
+	@Test
+	public void crearMotoModelSinDatosTest() {
+		assertNotNull(new MotoModel());
+	}
+	
+	@Test
+	public void crearCarroModelSinDatosTest() {
+		assertNotNull(new CarroModel());
+	}
+	
+	@Test
+	public void getPlacaComprobanteTest() {
+		ComprobantePagoModel comprobante = new ComprobantePagoModel();
+		comprobante.setPlaca("WSW04D");
+		assertEquals("WSW04D", comprobante.getPlaca());
+	}
+	
+	@Test
+	public void getTipoVehiculoComprobanteTest() {
+		ComprobantePagoModel comprobante = new ComprobantePagoModel();
+		comprobante.setTipoVehiculo("Carro");
+		assertEquals("Carro", comprobante.getTipoVehiculo());
+	}
+	
+	@Test
+	public void getFechaEntradaTest() {
+		ComprobantePagoModel comprobante = new ComprobantePagoModel();
+		comprobante.setFechaEntrada(new Date());
+		assertNotNull(comprobante.getFechaEntrada());;
 	}
 }

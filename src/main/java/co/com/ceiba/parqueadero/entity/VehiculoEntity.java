@@ -39,13 +39,6 @@ public class VehiculoEntity {
 	public void setTipoVehiculo(String tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
-	public VehiculoEntity(String placa, boolean parqueado, int cilindraje, String tipoVehiculo) {
-		super();
-		this.placa = placa;
-		this.parqueado = parqueado;
-		this.cilindraje = cilindraje;
-		this.tipoVehiculo = tipoVehiculo;
-	}
 	public VehiculoEntity() {
 		super();
 	}	

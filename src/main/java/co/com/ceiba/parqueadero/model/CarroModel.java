@@ -7,6 +7,9 @@ public class CarroModel extends VehiculoModel {
 	public CarroModel(String placa, boolean parqueado) {
 		super(placa, parqueado);
 	}
+	
+	public CarroModel() {
+	}
 
 	@Override
 	public String getTipoVehiculo() {

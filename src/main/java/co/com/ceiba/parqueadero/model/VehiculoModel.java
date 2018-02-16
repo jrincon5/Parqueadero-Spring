@@ -21,6 +21,9 @@ public abstract class VehiculoModel {
 		this.placa = placa;
 		this.parqueado = parqueado;
 	}
+	
+	public VehiculoModel() {
+	}
 
 	public abstract String getTipoVehiculo();
 
