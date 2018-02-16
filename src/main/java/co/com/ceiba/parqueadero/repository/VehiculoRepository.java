@@ -12,8 +12,6 @@ import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 @Repository("vehiculoJpaRepository")
 public interface VehiculoRepository extends JpaRepository<VehiculoEntity, Serializable>{
 	
-	//public abstract int findByPlaca
-	
 	@Query("SELECT COUNT (t) FROM VehiculoEntity t WHERE t.tipoVehiculo = :tipoVehiculo AND t.parqueado = :parqueado")
 	public abstract int countByVehiculos(@Param("tipoVehiculo") String tipoVehiculo,
 			@Param("parqueado") boolean parqueado);
@@ -21,5 +19,11 @@ public interface VehiculoRepository extends JpaRepository<VehiculoEntity, Serial
 	@Query("SELECT t.placa FROM VehiculoEntity t WHERE t.placa = :placa AND t.parqueado = :parqueado")
 	public abstract boolean findActiveCarro(@Param("placa") String placa, 
 			@Param("parqueado") boolean parqueado);
+	
+	@Query("INSERT INTO VehiculoEntity (placa,cilindraje,parqueado,tipo_vehiculo) VALUES()")
+	public abstract void ingresarVehiculo(@Param("placa") String placa, 
+			@Param("cilindraje") int cilindraje,
+			@Param("parqueado") boolean parqueado,
+			@Param("tipo_vehiculo") String tipo);
 	
 }
