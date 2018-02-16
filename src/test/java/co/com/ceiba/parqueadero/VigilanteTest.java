@@ -24,8 +24,9 @@ import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
 import co.com.ceiba.parqueadero.model.ComprobantePagoModel;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
-import co.com.ceiba.parqueadero.repository.ComprobanteJpaRepository;
-import co.com.ceiba.parqueadero.repository.VehiculoJpaRepository;
+import co.com.ceiba.parqueadero.model.validacionesingreso.ValidacionPlacaIniciaPorA;
+import co.com.ceiba.parqueadero.repository.ComprobanteRepository;
+import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 import co.com.ceiba.parqueadero.service.VigilanteService;
 
 @RunWith(SpringRunner.class)
@@ -43,11 +44,11 @@ public class VigilanteTest {
 	
 	@Autowired
 	@Qualifier("vehiculoJpaRepository")
-	VehiculoJpaRepository vehiculoJpaRepository;
+	VehiculoRepository vehiculoJpaRepository;
 	
 	@Autowired
 	@Qualifier("comprobanteJpaRepository")
-	ComprobanteJpaRepository comprobanteJpaRepository;
+	ComprobanteRepository comprobanteJpaRepository;
 	
 	CarroModel carro;
 	MotoModel moto;
@@ -225,17 +226,20 @@ public class VigilanteTest {
 	
 	@Test
 	public void picoYPlacaDomingo() {
-		assertTrue(vigilanteService.picoYPlaca("AAA111", 1));
+		ValidacionPlacaIniciaPorA validacionPlacaIniciaPorA = new ValidacionPlacaIniciaPorA();
+		assertTrue(validacionPlacaIniciaPorA.placaIniciaPorAYEsHabil("AAA111", 1));
 	}
 	
 	@Test
 	public void picoYPlacaLunes() {
-		assertTrue(vigilanteService.picoYPlaca("AAA111", 2));
+		ValidacionPlacaIniciaPorA validacionPlacaIniciaPorA = new ValidacionPlacaIniciaPorA();
+		assertTrue(validacionPlacaIniciaPorA.placaIniciaPorAYEsHabil("AAA111", 2));
 	}
 	
 	@Test
 	public void picoYPlacaDiaHabil() {
-		assertFalse(vigilanteService.picoYPlaca("AAA111", 4));
+		ValidacionPlacaIniciaPorA validacionPlacaIniciaPorA = new ValidacionPlacaIniciaPorA();
+		assertFalse(validacionPlacaIniciaPorA.placaIniciaPorAYEsHabil("AAA111", 4));
 	}
 	
 	@Test

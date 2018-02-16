@@ -22,9 +22,9 @@ import co.com.ceiba.parqueadero.service.VigilanteService;
 
 @RestController
 @RequestMapping("/parqueadero")
-public class ParqueaderoController {
+public class VigilanteController {
 	
-	private static final Log LOG = LogFactory.getLog(ParqueaderoController.class);
+	private static final Log LOG = LogFactory.getLog(VigilanteController.class);
 	
 	@Autowired
 	@Qualifier("vigilanteServiceImpl")
@@ -33,15 +33,15 @@ public class ParqueaderoController {
 	@PostMapping("/agregarcarro")
 	public void agregarCarro(@RequestBody CarroModel carroModel) {
 		LOG.info("CALL: agregarcarro()");
-		vigilanteService.agregarCarro(carroModel);
-		vigilanteService.agregarComprobantePago();
+		vigilanteService.ingresarVehiculo(carroModel);
+		//vigilanteService.agregarComprobantePago();
 	}
 	
 	@PostMapping("/agregarmoto")
 	public void agregarMoto(@RequestBody MotoModel motoModel) {
 		LOG.info("CALL: agregarmoto()");
-		vigilanteService.agregarMoto(motoModel);
-		vigilanteService.agregarComprobantePago();
+		vigilanteService.ingresarVehiculo(motoModel);
+		//vigilanteService.agregarComprobantePago();
 	}
 	
 	@PostMapping("/removervehiculo")
@@ -50,7 +50,7 @@ public class ParqueaderoController {
 		JsonElement jsonObj = new JsonParser().parse(json);
 		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
 		vigilanteService.removerVehiculo(placa);
-		vigilanteService.generarCobro(placa);
+		//vigilanteService.generarCobro(placa);
 	}
 	
 	@GetMapping("/consultarvehiculo")

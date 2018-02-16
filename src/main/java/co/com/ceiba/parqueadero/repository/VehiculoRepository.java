@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 
 @Repository("vehiculoJpaRepository")
-public interface VehiculoJpaRepository extends JpaRepository<VehiculoEntity, Serializable>{
+public interface VehiculoRepository extends JpaRepository<VehiculoEntity, Serializable>{
 	
 	//public abstract int findByPlaca
 	
 	@Query("SELECT COUNT (t) FROM VehiculoEntity t WHERE t.tipoVehiculo = :tipoVehiculo AND t.parqueado = :parqueado")
-	public abstract int countByCarrosOrMotos(@Param("tipoVehiculo") String tipoVehiculo,
+	public abstract int countByVehiculos(@Param("tipoVehiculo") String tipoVehiculo,
 			@Param("parqueado") boolean parqueado);
 	
 	@Query("SELECT t.placa FROM VehiculoEntity t WHERE t.placa = :placa AND t.parqueado = :parqueado")

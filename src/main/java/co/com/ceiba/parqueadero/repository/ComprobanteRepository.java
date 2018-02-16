@@ -11,7 +11,7 @@ import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 
 @Repository("comprobanteJpaRepository")
-public interface ComprobanteJpaRepository extends JpaRepository<ComprobantePagoEntity, Serializable>{
+public interface ComprobanteRepository extends JpaRepository<ComprobantePagoEntity, Serializable>{
 		
 	@Query("SELECT t FROM ComprobantePagoEntity t WHERE t.placaFk = :placaFk")
 	public abstract ComprobantePagoEntity findByPlaca(@Param("placaFk") VehiculoEntity placaFk);
