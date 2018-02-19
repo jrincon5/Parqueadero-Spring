@@ -53,7 +53,8 @@ public class VigilanteTest {
 	CarroModel carro;
 	MotoModel moto;
 	ParqueaderoModel parqueaderoModel;
-	
+}
+	/*
 	@Before
 	public void arrange() {
 		MockitoAnnotations.initMocks(this);
@@ -82,7 +83,7 @@ public class VigilanteTest {
 		assertNull(vigilanteService.agregarCarro(carro));
 		vehiculoJpaRepository.deleteAll();
 	}*/
-	
+	/*
 	@Test(expected = ParqueaderoException.class)
 	public void agregarCarroSobreCupoTest() {
 		for (int i=0;i<=10;i++) {
@@ -303,3 +304,4 @@ public class VigilanteTest {
 		assertNotNull(comprobante.getFechaEntrada());;
 	}
 }
+*/

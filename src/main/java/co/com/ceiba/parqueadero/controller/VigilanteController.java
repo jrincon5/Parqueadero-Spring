@@ -34,14 +34,12 @@ public class VigilanteController {
 	public void agregarCarro(@RequestBody CarroModel carroModel) {
 		LOG.info("CALL: agregarcarro()");
 		vigilanteService.ingresarVehiculo(carroModel);
-		//vigilanteService.agregarComprobantePago();
 	}
 	
 	@PostMapping("/agregarmoto")
 	public void agregarMoto(@RequestBody MotoModel motoModel) {
 		LOG.info("CALL: agregarmoto()");
 		vigilanteService.ingresarVehiculo(motoModel);
-		//vigilanteService.agregarComprobantePago();
 	}
 	
 	@PostMapping("/removervehiculo")

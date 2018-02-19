@@ -169,10 +169,6 @@ public class VigilanteServiceImpl implements VigilanteService {
 		return (long) (diasAPagar * valorDia) + (horasAPagar * valorHora);
 	}
 
-	public boolean validarEspacioCarros() {
-		return vehiculoJpaRepository.countByVehiculos("Carro", true) < ParqueaderoModel.LIMITECARROS;
-	}
-
 	public long generarAumentoMotosAltoCilindraje(int cilindraje) {
 		if (cilindraje > ParqueaderoModel.CILINDRAJEREGLAMOTO)
 			return ParqueaderoModel.AUMENTOCILINDRAJE;

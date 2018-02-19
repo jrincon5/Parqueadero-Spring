@@ -20,10 +20,10 @@ public interface VehiculoRepository extends JpaRepository<VehiculoEntity, Serial
 	public abstract boolean findActiveCarro(@Param("placa") String placa, 
 			@Param("parqueado") boolean parqueado);
 	
-	@Query("INSERT INTO VehiculoEntity (placa,cilindraje,parqueado,tipo_vehiculo) VALUES()")
+	/*@Query("INSERT INTO VehiculoEntity (placa,cilindraje,parqueado,tipo_vehiculo) VALUES()")
 	public abstract void ingresarVehiculo(@Param("placa") String placa, 
 			@Param("cilindraje") int cilindraje,
 			@Param("parqueado") boolean parqueado,
 			@Param("tipo_vehiculo") String tipo);
-	
+	*/
 }
