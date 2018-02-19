@@ -3,7 +3,7 @@ package co.com.ceiba.parqueadero.service.impl;
 import java.util.List;
 
 import co.com.ceiba.parqueadero.model.VehiculoModel;
-import co.com.ceiba.parqueadero.model.validacionesingreso.ValidacionIngresoVehiculo;
+import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionIngresoVehiculo;
 
 
 public class VigilianteSevicePalmas extends VigilanteServiceImpl {

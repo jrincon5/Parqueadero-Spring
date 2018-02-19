@@ -48,7 +48,6 @@ public class VigilanteController {
 		JsonElement jsonObj = new JsonParser().parse(json);
 		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
 		vigilanteService.removerVehiculo(placa);
-		//vigilanteService.generarCobro(placa);
 	}
 	
 	@GetMapping("/consultarvehiculo")

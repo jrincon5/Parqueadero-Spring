@@ -24,10 +24,10 @@ import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
 import co.com.ceiba.parqueadero.model.ComprobantePagoModel;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
-import co.com.ceiba.parqueadero.model.validacionesingreso.ValidacionPlacaIniciaPorA;
 import co.com.ceiba.parqueadero.repository.ComprobanteRepository;
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 import co.com.ceiba.parqueadero.service.VigilanteService;
+import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionPlacaIniciaPorA;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

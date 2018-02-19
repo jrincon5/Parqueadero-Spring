@@ -1,4 +1,4 @@
-package co.com.ceiba.parqueadero.model.validacionesingreso;
+package co.com.ceiba.parqueadero.validation.entervalidation;
 
 import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.CarroModel;

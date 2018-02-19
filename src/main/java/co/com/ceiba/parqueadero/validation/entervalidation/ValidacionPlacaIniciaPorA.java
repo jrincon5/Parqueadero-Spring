@@ -1,4 +1,4 @@
-package co.com.ceiba.parqueadero.model.validacionesingreso;
+package co.com.ceiba.parqueadero.validation.entervalidation;
 
 import java.util.Calendar;
 

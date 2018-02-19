@@ -10,21 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import co.com.ceiba.parqueadero.converter.CarroConverter;
-import co.com.ceiba.parqueadero.converter.MotoConverter;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.FechaModel;
-import co.com.ceiba.parqueadero.model.MotoModel;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
 import co.com.ceiba.parqueadero.model.VehiculoModel;
-import co.com.ceiba.parqueadero.model.validacionesingreso.ValidacionIngresoVehiculo;
-import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.ComprobantePagoModel;
 import co.com.ceiba.parqueadero.repository.ComprobanteRepository;
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
+import co.com.ceiba.parqueadero.repository.converter.VehiculoConverter;
 import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
 import co.com.ceiba.parqueadero.service.VigilanteService;
+import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionIngresoVehiculo;
 
 @Service("vigilanteServiceImpl")
 public class VigilanteServiceImpl implements VigilanteService {
@@ -34,16 +31,8 @@ public class VigilanteServiceImpl implements VigilanteService {
 	private static final Log LOG = LogFactory.getLog(VigilanteServiceImpl.class);
 
 	@Autowired
-	@Qualifier("carroConverter")
-	private CarroConverter carroConverter;
-
-	@Autowired
-	@Qualifier("motoConverter")
-	private MotoConverter motoConverter;
-
-	@Autowired
-	@Qualifier("vehiculoJpaRepository")
-	private VehiculoRepository vehiculoJpaRepository;
+	@Qualifier("vehiculoRepository")
+	private VehiculoRepository vehiculoRepository;
 
 	@Autowired
 	@Qualifier("comprobanteJpaRepository")
@@ -59,13 +48,16 @@ public class VigilanteServiceImpl implements VigilanteService {
 	@Override
 	public void ingresarVehiculo(VehiculoModel vehiculoModel) {
 		validacionesIngreso.stream().forEach(validacion -> validacion.validar(vehiculoModel));
-		agregarComprobantePago(vehiculoJpaRepository.save(mapearModelAEntidad(vehiculoModel)));
+		LOG.info("ESTOY SIRVIENDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+		vehiculoRepository.guardarVehiculo(vehiculoModel);
+		//vehiculoJpaRepository.save(vehiculoAIngresar.converter(vehiculoModel));
+		//agregarComprobantePago(vehiculoJpaRepository.save(vehiculoAIngresar.converter(vehiculoModel)));
 	}
 
 	@Override
 	public List<ComprobantePagoModel> consultarVehiculos() {
 		List<ComprobantePagoModel> comprobantes = new ArrayList<>();
-		List<VehiculoEntity> vehiculos = vehiculoJpaRepository.findAll();
+		List<VehiculoEntity> vehiculos = vehiculoRepository.findAll();
 		for (VehiculoEntity vehiculo : vehiculos) {
 			ComprobantePagoModel comprobante = new ComprobantePagoModel();
 			comprobante.setPlaca(vehiculo.getPlaca());
@@ -74,22 +66,6 @@ public class VigilanteServiceImpl implements VigilanteService {
 			comprobantes.add(comprobante);
 		}
 		return comprobantes;
-	}
-
-	public VehiculoEntity mapearModelAEntidad(VehiculoModel vehiculo) {
-		VehiculoEntity vehiculoEntity = new VehiculoEntity();
-		if (vehiculo instanceof MotoModel) {
-			MotoModel moto = (MotoModel) vehiculo;
-			vehiculoEntity = motoConverter.model2Entity(moto);
-		}
-		if (vehiculo instanceof CarroModel) {
-			CarroModel carro = (CarroModel) vehiculo;
-			vehiculoEntity = carroConverter.model2Entity(carro);
-		}
-		vehiculoEntity.setPlaca(vehiculoEntity.getPlaca().toUpperCase());
-		vehiculoEntity.setParqueado(true);
-		vehiculoEntity.setTipoVehiculo(vehiculo.getTipoVehiculo());
-		return vehiculoEntity;
 	}
 
 	public ComprobantePagoEntity agregarComprobantePago(VehiculoEntity vehiculo) {
@@ -103,20 +79,19 @@ public class VigilanteServiceImpl implements VigilanteService {
 	@Override
 	public VehiculoEntity removerVehiculo(String placa) {
 		LOG.info("CALL: removerVehiculo()");
-		if (vehiculoJpaRepository.exists(placa.toUpperCase())) {
-			VehiculoEntity vehiculoEntity = vehiculoJpaRepository.findOne(placa);
+		if (vehiculoRepository.exists(placa.toUpperCase())) {
+			VehiculoEntity vehiculoEntity = vehiculoRepository.findOne(placa);
 			vehiculoEntity.setParqueado(false);
 			LOG.info("RETURNING: removerVehiculo()");
-			return vehiculoJpaRepository.save(vehiculoEntity);
+			return vehiculoRepository.save(vehiculoEntity);
 		}
 		throw new ParqueaderoException("LA PLACA INGRESADA NO SE ENCUENTRA UBICADA EN EL PARQUEADERO");
 	}
 
-	@SuppressWarnings("static-access")
 	public ComprobantePagoEntity generarCobro(String placa) {
 		LOG.info("CALL: generarCobroCarro()");
 		LOG.info("CALL: comprobanteJpaRepository.findByPlaca(placa)");
-		VehiculoEntity vehiculo = vehiculoJpaRepository.findOne(placa); // Encontrar vehiculo con la clave foranea
+		VehiculoEntity vehiculo = vehiculoRepository.findOne(placa); // Encontrar vehiculo con la clave foranea
 		ComprobantePagoEntity comprobanteEntity = comprobanteRepository.findByPlaca(vehiculo);// Busca el comprobante
 																									// en la base de
 																									// datos
