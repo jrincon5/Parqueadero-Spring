@@ -33,6 +33,10 @@ public class VigilanteServiceImpl implements VigilanteService {
 	@Autowired
 	@Qualifier("vehiculoRepository")
 	private VehiculoRepository vehiculoRepository;
+	
+	@Autowired
+	@Qualifier("vehiculoConverter")
+	private VehiculoConverter vehiculoConverter;
 
 	@Autowired
 	@Qualifier("comprobanteJpaRepository")
@@ -47,11 +51,11 @@ public class VigilanteServiceImpl implements VigilanteService {
 
 	@Override
 	public void ingresarVehiculo(VehiculoModel vehiculoModel) {
+		LOG.info("CALL: ingresarVehiculo()");
 		validacionesIngreso.stream().forEach(validacion -> validacion.validar(vehiculoModel));
-		LOG.info("ESTOY SIRVIENDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-		vehiculoRepository.guardarVehiculo(vehiculoModel);
-		//vehiculoJpaRepository.save(vehiculoAIngresar.converter(vehiculoModel));
-		//agregarComprobantePago(vehiculoJpaRepository.save(vehiculoAIngresar.converter(vehiculoModel)));
+		agregarComprobantePago(vehiculoRepository.save(vehiculoConverter.
+				establecerVehiculoAGuardar(vehiculoModel)));
+		LOG.info("RETURNING: ingresarVehiculo()");
 	}
 
 	@Override
@@ -90,7 +94,6 @@ public class VigilanteServiceImpl implements VigilanteService {
 
 	public ComprobantePagoEntity generarCobro(String placa) {
 		LOG.info("CALL: generarCobroCarro()");
-		LOG.info("CALL: comprobanteJpaRepository.findByPlaca(placa)");
 		VehiculoEntity vehiculo = vehiculoRepository.findOne(placa); // Encontrar vehiculo con la clave foranea
 		ComprobantePagoEntity comprobanteEntity = comprobanteRepository.findByPlaca(vehiculo);// Busca el comprobante
 																									// en la base de
