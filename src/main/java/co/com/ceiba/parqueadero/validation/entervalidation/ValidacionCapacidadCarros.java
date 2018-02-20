@@ -1,5 +1,8 @@
 package co.com.ceiba.parqueadero.validation.entervalidation;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
@@ -8,6 +11,8 @@ import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 
 public class ValidacionCapacidadCarros implements ValidacionIngresoVehiculo{
 	
+	@Autowired
+	@Qualifier("vehiculoRepository")
 	VehiculoRepository vehiculoRepository;
 	
 	public ValidacionCapacidadCarros(VehiculoRepository vehiculoRepository) {

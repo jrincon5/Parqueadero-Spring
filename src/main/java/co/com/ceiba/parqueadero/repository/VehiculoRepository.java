@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
-import co.com.ceiba.parqueadero.model.VehiculoModel;
 
 @Repository("vehiculoRepository")
 public interface VehiculoRepository extends JpaRepository<VehiculoEntity, Serializable>{

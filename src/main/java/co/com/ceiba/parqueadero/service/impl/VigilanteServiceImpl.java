@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
-import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
 import co.com.ceiba.parqueadero.model.VehiculoModel;
@@ -22,6 +21,7 @@ import co.com.ceiba.parqueadero.repository.converter.VehiculoConverter;
 import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
 import co.com.ceiba.parqueadero.service.VigilanteService;
 import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionIngresoVehiculo;
+import co.com.ceiba.parqueadero.validation.exitvalidation.ValidacionSalidaVehiculo;
 
 @Service("vigilanteServiceImpl")
 public class VigilanteServiceImpl implements VigilanteService {
@@ -39,14 +39,16 @@ public class VigilanteServiceImpl implements VigilanteService {
 	private VehiculoConverter vehiculoConverter;
 
 	@Autowired
-	@Qualifier("comprobanteJpaRepository")
+	@Qualifier("comprobanteRepository")
 	private ComprobanteRepository comprobanteRepository;
 
 	List<ValidacionIngresoVehiculo> validacionesIngreso;
+	List<ValidacionSalidaVehiculo> validacionesSalida;
 
 	@Autowired
-	public VigilanteServiceImpl(List<ValidacionIngresoVehiculo> validacionesIngreso) {
+	public VigilanteServiceImpl(List<ValidacionIngresoVehiculo> validacionesIngreso, List<ValidacionSalidaVehiculo> validacionesSalida) {
 		this.validacionesIngreso = validacionesIngreso;
+		this.validacionesSalida = validacionesSalida;
 	}
 
 	@Override
@@ -62,6 +64,11 @@ public class VigilanteServiceImpl implements VigilanteService {
 	public List<ComprobantePagoModel> consultarVehiculos() {
 		List<ComprobantePagoModel> comprobantes = new ArrayList<>();
 		List<VehiculoEntity> vehiculos = vehiculoRepository.findAll();
+		return encontrarVehiculos(comprobantes,vehiculos);
+	}
+	
+	public List<ComprobantePagoModel> encontrarVehiculos(List<ComprobantePagoModel> comprobantes,
+			List<VehiculoEntity> vehiculos){
 		for (VehiculoEntity vehiculo : vehiculos) {
 			ComprobantePagoModel comprobante = new ComprobantePagoModel();
 			comprobante.setPlaca(vehiculo.getPlaca());
@@ -81,23 +88,20 @@ public class VigilanteServiceImpl implements VigilanteService {
 	}
 
 	@Override
-	public VehiculoEntity removerVehiculo(String placa) {
+	public void removerVehiculo(String placa) {
 		LOG.info("CALL: removerVehiculo()");
-		if (vehiculoRepository.exists(placa.toUpperCase())) {
-			VehiculoEntity vehiculoEntity = vehiculoRepository.findOne(placa);
-			vehiculoEntity.setParqueado(false);
-			LOG.info("RETURNING: removerVehiculo()");
-			return vehiculoRepository.save(vehiculoEntity);
-		}
-		throw new ParqueaderoException("LA PLACA INGRESADA NO SE ENCUENTRA UBICADA EN EL PARQUEADERO");
+		validacionesSalida.stream().forEach(validacion -> validacion.validar(placa));
+		VehiculoEntity vehiculoEntity = vehiculoRepository.findOne(placa);
+		vehiculoEntity.setParqueado(false);
+		generarCobro(placa);
+		vehiculoRepository.save(vehiculoEntity);
+		LOG.info("RETURNING: removerVehiculo()");
 	}
 
 	public ComprobantePagoEntity generarCobro(String placa) {
 		LOG.info("CALL: generarCobroCarro()");
 		VehiculoEntity vehiculo = vehiculoRepository.findOne(placa); // Encontrar vehiculo con la clave foranea
-		ComprobantePagoEntity comprobanteEntity = comprobanteRepository.findByPlaca(vehiculo);// Busca el comprobante
-																									// en la base de
-																									// datos
+		ComprobantePagoEntity comprobanteEntity = comprobanteRepository.findByPlaca(vehiculo);// Busca el comprobante en la base de datos
 		FechaModel fechaSalida = parqueaderoModel.getFechaActual();
 		comprobanteEntity.setFechaSalida(fechaSalida.getTime());
 		comprobanteEntity.setEstado(false);

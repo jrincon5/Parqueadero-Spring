@@ -11,13 +11,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.FechaModel;
@@ -26,8 +25,9 @@ import co.com.ceiba.parqueadero.model.ComprobantePagoModel;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
 import co.com.ceiba.parqueadero.repository.ComprobanteRepository;
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
+import co.com.ceiba.parqueadero.repository.converter.VehiculoConverter;
 import co.com.ceiba.parqueadero.service.VigilanteService;
-import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionPlacaIniciaPorA;
+import co.com.ceiba.parqueadero.service.impl.VigilanteServiceImpl;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -37,99 +37,103 @@ public class VigilanteTest {
 	@Qualifier("vigilanteServiceImpl")
 	VigilanteService vigilanteService;
 	
-	@Mock
 	@Autowired
 	@Qualifier("vigilanteServiceImpl")
-	VigilanteService vigilanteMock;
+	VigilanteServiceImpl vigilanteServiceImpl;
 	
 	@Autowired
-	@Qualifier("vehiculoJpaRepository")
-	VehiculoRepository vehiculoJpaRepository;
+	@Qualifier("vehiculoRepository")
+	VehiculoRepository vehiculoRepository;
 	
 	@Autowired
-	@Qualifier("comprobanteJpaRepository")
-	ComprobanteRepository comprobanteJpaRepository;
+	@Qualifier("comprobanteRepository")
+	ComprobanteRepository comprobanteRepository;
+	
+	@Autowired
+	@Qualifier("vehiculoConverter")
+	VehiculoConverter vehiculoConverter;
 	
 	CarroModel carro;
 	MotoModel moto;
 	ParqueaderoModel parqueaderoModel;
-}
-	/*
+	
 	@Before
 	public void arrange() {
-		MockitoAnnotations.initMocks(this);
 		carro = new CarroModel("WSW04D",true);
 		moto = new MotoModel("WSW04D",true,100);
-		comprobanteJpaRepository.deleteAll();
-		vehiculoJpaRepository.deleteAll();
 	}
 	
 	@After
 	public void clean() {
-		comprobanteJpaRepository.deleteAll();
-		vehiculoJpaRepository.deleteAll();
+		comprobanteRepository.deleteAll();
+	    vehiculoRepository.deleteAll();
 	}
 	
 	@Test
-	public void agregarCarroValidoTest() {
-		assertNotNull(vigilanteService.agregarCarro(carro));
-		vehiculoJpaRepository.deleteAll();
+	public void ingresarCarroValidoTest() {
+		vigilanteService.ingresarVehiculo(carro);
+		assertTrue(vehiculoRepository.exists(carro.getPlaca()));
 	}
 	
-	/*@Test
-	public void agregarCarroEnPicoYPlacaTest() {
-		carro = new CarroModel("ASW04D",true);
-		when(vigilanteMock.picoYPlaca("ASW04D", Calendar.MONDAY)).thenReturn(true);
-		assertNull(vigilanteService.agregarCarro(carro));
-		vehiculoJpaRepository.deleteAll();
-	}*/
-	/*
 	@Test(expected = ParqueaderoException.class)
-	public void agregarCarroSobreCupoTest() {
+	public void ingresarCarroSobreCupoTest() {
 		for (int i=0;i<=10;i++) {
-			vigilanteService.agregarCarro(new CarroModel("AAA11"+i,true));
-			vigilanteService.agregarCarro(new CarroModel("AAA12"+i,true));
+			vigilanteService.ingresarVehiculo(new CarroModel("AAA11"+i,true));
+			vigilanteService.ingresarVehiculo(new CarroModel("AAA12"+i,true));
 		}
+	}
+	
+	@Test
+	public void ingresarMotoValidaTest() {
+		vigilanteService.ingresarVehiculo(moto);
+		assertTrue(vehiculoRepository.exists(moto.getPlaca()));
+	}
+	
+	@Test(expected = ParqueaderoException.class)
+	public void ingresarMotoSobreCupoTest() {
+		for (int i=0;i<=5;i++) {
+			vigilanteService.ingresarVehiculo(new MotoModel("AAA11"+i,true,100));
+			vigilanteService.ingresarVehiculo(new MotoModel("AAA12"+i,true,100));
+		}
+	}
+	
+	
+	@Test
+	public void agregarComprobantePagoCarroValidoTest() {
+		vigilanteService.ingresarVehiculo(carro);
+		VehiculoEntity vehiculo = vehiculoConverter.establecerVehiculoAGuardar(carro);
+		assertNotNull(comprobanteRepository.findByPlaca(vehiculo));
+	}
+	
+	@Test
+	public void agregarComprobantePagoMotoValidoTest() {
+		vigilanteService.ingresarVehiculo(moto);
+		VehiculoEntity vehiculo = vehiculoConverter.establecerVehiculoAGuardar(moto);
+		assertNotNull(comprobanteRepository.findByPlaca(vehiculo));
 	}
 	
 	@Test
 	public void consultarVehiculoTest() {
-		vigilanteService.agregarCarro(carro);
-		vigilanteService.agregarComprobantePago();
+		vigilanteService.ingresarVehiculo(carro);
 		List<ComprobantePagoModel> comprobantes = new ArrayList<>();
 		comprobantes.addAll(vigilanteService.consultarVehiculos());
 		assertEquals(comprobantes.size(),vigilanteService.consultarVehiculos().size());
-		comprobanteJpaRepository.deleteAll();
-		vehiculoJpaRepository.deleteAll();
 	}
 	
 	@Test
-	public void agregarMotoValidaTest() {
-		assertNotNull(vigilanteService.agregarMoto(moto));
-		vehiculoJpaRepository.deleteAll();
-	}
-	
-	@Test(expected = ParqueaderoException.class)
-	public void agregarMotoSobreCupoTest() {
-		for (int i=0;i<=5;i++) {
-			vigilanteService.agregarMoto(new MotoModel("AAA11"+i,true,100));
-			vigilanteService.agregarMoto(new MotoModel("AAA12"+i,true,100));
-		}
+	public void removerVehiculoCarroTest() {
+		vigilanteService.ingresarVehiculo(carro);
+		vigilanteService.removerVehiculo(carro.getPlaca());
+		VehiculoEntity vehiculo = vehiculoConverter.establecerVehiculoAGuardar(carro);
+		assertFalse(comprobanteRepository.findByPlaca(vehiculo).isEstado());
 	}
 	
 	@Test
-	public void agregarComprobantePagoCarroValidoTest() {
-		vigilanteService.agregarCarro(carro);		
-		assertNotNull(vigilanteService.agregarComprobantePago());
-		comprobanteJpaRepository.deleteAll();
-		vehiculoJpaRepository.deleteAll();
-	}
-	
-	@Test
-	public void removerVehiculoTest() {
-		vigilanteService.agregarCarro(carro);
-		assertNotNull(vigilanteService.removerVehiculo("WSW04D"));
-		vehiculoJpaRepository.deleteAll();
+	public void removerVehiculoMotoTest() {
+		vigilanteService.ingresarVehiculo(moto);
+		vigilanteService.removerVehiculo(moto.getPlaca());
+		VehiculoEntity vehiculo = vehiculoConverter.establecerVehiculoAGuardar(moto);
+		assertFalse(comprobanteRepository.findByPlaca(vehiculo).isEstado());
 	}
 	
 	@Test (expected = ParqueaderoException.class)
@@ -141,91 +145,84 @@ public class VigilanteTest {
 	public void calcularHorasExactasTotalesTest() {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 5, 8, 0,0);
-		assertEquals(101, vigilanteService.calcularHorasTotales(entrada, salida));
+		assertEquals(101, vigilanteServiceImpl.calcularHorasTotales(entrada, salida));
 	}
 	
 	@Test
 	public void calcularHorasInexactasConMinutosDeMasTest() {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
     	FechaModel salida = new FechaModel(2017, 1, 1, 8, 1,0);
-		assertEquals(6, vigilanteService.calcularHorasTotales(entrada, salida));
+		assertEquals(6, vigilanteServiceImpl.calcularHorasTotales(entrada, salida));
 	}
 	
 	@Test
 	public void calcularHorasInexactasConMinutossDeMenosTest() {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
     	FechaModel salida = new FechaModel(2017, 1, 1, 7, 59,0);
-		assertEquals(5, vigilanteService.calcularHorasTotales(entrada,salida));
+		assertEquals(5, vigilanteServiceImpl.calcularHorasTotales(entrada,salida));
 	}
 	
-	@SuppressWarnings("static-access")
 	@Test
 	public void generarCobroCarrosHorasTest() {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 1, 7, 59,0);
-		assertEquals(5000,vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.VALORDIACARRO,parqueaderoModel.VALORHORACARRO));
+		assertEquals(5000,vigilanteServiceImpl.calcularTotalAPagar
+				(entrada,salida,ParqueaderoModel.VALORDIACARRO,ParqueaderoModel.VALORHORACARRO));
 		
 	}
 	
-	@SuppressWarnings("static-access")
 	@Test
 	public void generarCobroCarrosDiasTest() {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 1, 15, 0,0);
-		assertEquals(8000, vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.VALORDIACARRO,parqueaderoModel.VALORHORACARRO));
+		assertEquals(8000, vigilanteServiceImpl.calcularTotalAPagar
+				(entrada,salida,ParqueaderoModel.VALORDIACARRO,ParqueaderoModel.VALORHORACARRO));
 		
 	}
 	
-	@SuppressWarnings("static-access")
 	@Test
 	public void generarCobroCarrosHorasDiasTest() {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 2, 3, 1,0);
-		assertEquals(9000, vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.VALORDIACARRO,parqueaderoModel.VALORHORACARRO));
+		assertEquals(9000, vigilanteServiceImpl.calcularTotalAPagar
+				(entrada,salida,ParqueaderoModel.VALORDIACARRO,ParqueaderoModel.VALORHORACARRO));
 	}
 	
-	@SuppressWarnings("static-access")
 	@Test
 	public void generarCobroCarrosHorasDiasTes2t() {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 2, 0,0).getTime();
 		FechaModel   salida = new FechaModel(2017, 1, 2, 18, 0,0);
-		assertEquals(16000, vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.VALORDIACARRO,parqueaderoModel.VALORHORACARRO));
+		assertEquals(16000, vigilanteServiceImpl.calcularTotalAPagar
+				(entrada,salida,ParqueaderoModel.VALORDIACARRO,ParqueaderoModel.VALORHORACARRO));
 	}
 	
-	@SuppressWarnings("static-access")
 	@Test
 	public void generarCobroMotosHorasTest() {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 1, 7, 59,0);
-		assertEquals(2500, vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.VALORDIAMOTO,parqueaderoModel.VALORHORAMOTO));
+		assertEquals(2500, vigilanteServiceImpl.calcularTotalAPagar
+				(entrada,salida,ParqueaderoModel.VALORDIAMOTO,ParqueaderoModel.VALORHORAMOTO));
 		
 	}
 	
-	@SuppressWarnings("static-access")
 	@Test
 	public void generarCobroMotosDiasTest() {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 1, 15, 0,0);
-		assertEquals(4000, vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.VALORDIAMOTO,parqueaderoModel.VALORHORAMOTO));
+		assertEquals(4000, vigilanteServiceImpl.calcularTotalAPagar
+				(entrada,salida,ParqueaderoModel.VALORDIAMOTO,ParqueaderoModel.VALORHORAMOTO));
 		
 	}
 	
-	@SuppressWarnings("static-access")
 	@Test
 	public void generarCobroMotosHorasDiasTest() {
 		Date entrada = new GregorianCalendar(2017, 1, 1, 3, 0,0).getTime();
 		FechaModel salida = new FechaModel(2017, 1, 2, 3, 1,0);
-		assertEquals(4500, vigilanteService.calcularTotalAPagar
-				(entrada,salida,parqueaderoModel.VALORDIAMOTO,parqueaderoModel.VALORHORAMOTO));
+		assertEquals(4500, vigilanteServiceImpl.calcularTotalAPagar
+				(entrada,salida,ParqueaderoModel.VALORDIAMOTO,ParqueaderoModel.VALORHORAMOTO));
 	}
 	
-	@Test
+	/*@Test
 	public void picoYPlacaDomingo() {
 		ValidacionPlacaIniciaPorA validacionPlacaIniciaPorA = new ValidacionPlacaIniciaPorA();
 		assertTrue(validacionPlacaIniciaPorA.placaIniciaPorAYEsHabil("AAA111", 1));
@@ -242,37 +239,34 @@ public class VigilanteTest {
 		ValidacionPlacaIniciaPorA validacionPlacaIniciaPorA = new ValidacionPlacaIniciaPorA();
 		assertFalse(validacionPlacaIniciaPorA.placaIniciaPorAYEsHabil("AAA111", 4));
 	}
+	*/
 	
 	@Test
 	public void generarAumentoMotosAltoCilindrajeTest() {
-		assertEquals(2000, vigilanteService.generarAumentoMotosAltoCilindraje(600));
+		assertEquals(2000, vigilanteServiceImpl.generarAumentoMotosAltoCilindraje(600));
 	}
 	
 	@Test
 	public void noGenerarAumentoMotosAltoCilindrajeTest() {
-		assertEquals(0, vigilanteService.generarAumentoMotosAltoCilindraje(400));
+		assertEquals(0, vigilanteServiceImpl.generarAumentoMotosAltoCilindraje(400));
 	}
-	
+
+	/*
 	@Test
 	public void generarCobroVehiculosCarroTest() {
-		vigilanteService.agregarCarro(carro);
-		vigilanteService.agregarComprobantePago();
-		vigilanteService.removerVehiculo("WSW04D");
-		assertNotNull(vigilanteService.generarCobro("WSW04D"));
-		comprobanteJpaRepository.deleteAll();
-		vehiculoJpaRepository.deleteAll();
+		vigilanteService.ingresarVehiculo(carro);
+		vigilanteService.removerVehiculo(carro.getPlaca());
+		VehiculoEntity vehiculo = vehiculoRepository.findOne(carro.getPlaca());
+		assertEquals(1000, comprobanteRepository.findByPlaca(vehiculo).getTotalPagar());
 	}
 	
 	@Test
 	public void generarCobroVehiculosMotoTest() {
-		vigilanteService.agregarMoto(moto);
-		vigilanteService.agregarComprobantePago();
+		vigilanteService.ingresarVehiculo(moto);
 		vigilanteService.removerVehiculo("WSW04D");
-		assertNotNull(vigilanteService.generarCobro("WSW04D"));
-		comprobanteJpaRepository.deleteAll();
-		vehiculoJpaRepository.deleteAll();
+		VehiculoEntity vehiculo = vehiculoConverter.establecerVehiculoAGuardar(moto);
+		assertEquals(500, comprobanteRepository.findByPlaca(vehiculo).getTotalPagar());
 	}
-	
 	@Test
 	public void crearMotoModelSinDatosTest() {
 		assertNotNull(new MotoModel());
@@ -301,7 +295,6 @@ public class VigilanteTest {
 	public void getFechaEntradaTest() {
 		ComprobantePagoModel comprobante = new ComprobantePagoModel();
 		comprobante.setFechaEntrada(new Date());
-		assertNotNull(comprobante.getFechaEntrada());;
-	}
+		assertNotNull(comprobante.getFechaEntrada());
+		*/
 }
-*/

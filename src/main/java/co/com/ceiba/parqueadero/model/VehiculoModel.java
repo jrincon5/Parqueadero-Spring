@@ -13,10 +13,6 @@ public abstract class VehiculoModel {
 		return placa;
 	}
 
-	public boolean isParqueado() {
-		return parqueado;
-	}
-
 	public VehiculoModel(String placa, boolean parqueado) {
 		this.placa = placa;
 		this.parqueado = parqueado;

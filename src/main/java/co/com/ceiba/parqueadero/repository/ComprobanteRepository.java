@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 
-@Repository("comprobanteJpaRepository")
+@Repository("comprobanteRepository")
 public interface ComprobanteRepository extends JpaRepository<ComprobantePagoEntity, Serializable>{
 		
 	@Query("SELECT t FROM ComprobantePagoEntity t WHERE t.placaFk = :placaFk")

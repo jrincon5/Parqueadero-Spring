@@ -50,6 +50,10 @@ public class ComprobantePagoEntity {
 	public Date getFechaEntrada() {
 		return fechaEntrada;
 	}
+	
+	public boolean isEstado() {
+		return estado;
+	}
 
 	public void setFechaSalida(Date fechaSalida) {
 		this.fechaSalida = fechaSalida;

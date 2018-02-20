@@ -23,7 +23,7 @@ public class VehiculoConverter{
 	public VehiculoEntity carroModel2entity(CarroModel carroModel) {
 		VehiculoEntity vehiculoEntity = new VehiculoEntity();
 		vehiculoEntity.setPlaca(carroModel.getPlaca());
-		vehiculoEntity.setParqueado(carroModel.isParqueado());
+		vehiculoEntity.setParqueado(true);
 		vehiculoEntity.setTipoVehiculo(carroModel.getTipoVehiculo());
 		return vehiculoEntity;
 	}
@@ -31,7 +31,7 @@ public class VehiculoConverter{
 	public VehiculoEntity motoModel2entity(MotoModel motoModel) {
 		VehiculoEntity vehiculoEntity = new VehiculoEntity();
 		vehiculoEntity.setPlaca(motoModel.getPlaca());
-		vehiculoEntity.setParqueado(motoModel.isParqueado());
+		vehiculoEntity.setParqueado(true);
 		vehiculoEntity.setTipoVehiculo(motoModel.getTipoVehiculo());
 		vehiculoEntity.setCilindraje(motoModel.getCilindraje());
 		return vehiculoEntity;
