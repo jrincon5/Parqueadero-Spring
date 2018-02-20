@@ -14,10 +14,7 @@ public class VehiculoConverter{
 		if(vehiculoModel instanceof CarroModel) {
 			return carroModel2entity((CarroModel)vehiculoModel);
 		}
-		if(vehiculoModel instanceof MotoModel) {
-			return motoModel2entity((MotoModel)vehiculoModel);
-		}
-		return null;
+	return motoModel2entity((MotoModel)vehiculoModel);
 	}
 	
 	public VehiculoEntity carroModel2entity(CarroModel carroModel) {

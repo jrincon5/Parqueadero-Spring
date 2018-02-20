@@ -267,6 +267,7 @@ public class VigilanteTest {
 		VehiculoEntity vehiculo = vehiculoConverter.establecerVehiculoAGuardar(moto);
 		assertEquals(500, comprobanteRepository.findByPlaca(vehiculo).getTotalPagar());
 	}
+	*/
 	@Test
 	public void crearMotoModelSinDatosTest() {
 		assertNotNull(new MotoModel());
@@ -276,6 +277,7 @@ public class VigilanteTest {
 	public void crearCarroModelSinDatosTest() {
 		assertNotNull(new CarroModel());
 	}
+	
 	
 	@Test
 	public void getPlacaComprobanteTest() {
@@ -296,5 +298,5 @@ public class VigilanteTest {
 		ComprobantePagoModel comprobante = new ComprobantePagoModel();
 		comprobante.setFechaEntrada(new Date());
 		assertNotNull(comprobante.getFechaEntrada());
-		*/
+	}
 }

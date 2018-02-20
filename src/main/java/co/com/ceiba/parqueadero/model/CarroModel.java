@@ -15,4 +15,5 @@ public class CarroModel extends VehiculoModel {
 	public String getTipoVehiculo() {
 		return TIPOVEHICULO;
 	}
+	
 }
