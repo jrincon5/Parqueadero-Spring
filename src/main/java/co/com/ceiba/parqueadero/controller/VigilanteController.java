@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
 import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.ComprobantePagoModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
+import co.com.ceiba.parqueadero.repository.ComprobanteRepository;
 import co.com.ceiba.parqueadero.service.VigilanteService;
 
 @RestController
@@ -29,6 +31,11 @@ public class VigilanteController {
 	@Autowired
 	@Qualifier("vigilanteServiceImpl")
 	VigilanteService vigilanteService;
+	
+	@Autowired
+	@Qualifier("comprobanteRepository")
+	ComprobanteRepository comprobanteRepository;
+	
 		
 	@PostMapping("/agregarcarro")
 	public void agregarCarro(@RequestBody CarroModel carroModel) {
@@ -54,5 +61,11 @@ public class VigilanteController {
 	public List<ComprobantePagoModel> consultarVehiculos(){
 		LOG.info("CALL: consultarVehiculo()");
 		return vigilanteService.consultarVehiculos();
+	}
+	
+	@GetMapping("/consultarcomprobantes")
+	public List<ComprobantePagoEntity> consultarComprobantes(){
+		LOG.info("CALL: consultarComprobantes()");
+		return comprobanteRepository.findAll();
 	}
 }

@@ -70,11 +70,13 @@ public class VigilanteServiceImpl implements VigilanteService {
 	public List<ComprobantePagoModel> encontrarVehiculos(List<ComprobantePagoModel> comprobantes,
 			List<VehiculoEntity> vehiculos){
 		for (VehiculoEntity vehiculo : vehiculos) {
-			ComprobantePagoModel comprobante = new ComprobantePagoModel();
-			comprobante.setPlaca(vehiculo.getPlaca());
-			comprobante.setTipoVehiculo(vehiculo.getTipoVehiculo());
-			comprobante.setFechaEntrada(comprobanteRepository.findByPlaca(vehiculo).getFechaEntrada());
-			comprobantes.add(comprobante);
+			if(comprobanteRepository.findByPlaca(vehiculo).isEstado()) {
+				ComprobantePagoModel comprobante = new ComprobantePagoModel();
+				comprobante.setPlaca(vehiculo.getPlaca());
+				comprobante.setTipoVehiculo(vehiculo.getTipoVehiculo());
+				comprobante.setFechaEntrada(comprobanteRepository.findByPlaca(vehiculo).getFechaEntrada());
+				comprobantes.add(comprobante);	
+			}			
 		}
 		return comprobantes;
 	}

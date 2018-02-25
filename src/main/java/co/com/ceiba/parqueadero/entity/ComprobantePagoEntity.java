@@ -55,6 +55,22 @@ public class ComprobantePagoEntity {
 		return estado;
 	}
 
+	public Date getFechaSalida() {
+		return fechaSalida;
+	}
+
+	public int getTotalHoras() {
+		return totalHoras;
+	}
+
+	public int getTotalPagar() {
+		return totalPagar;
+	}
+
+	public String getPlacaFk() {
+		return placaFk.getPlaca();
+	}
+
 	public void setFechaSalida(Date fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
