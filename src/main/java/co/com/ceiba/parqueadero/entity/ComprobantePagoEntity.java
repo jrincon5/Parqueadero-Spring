@@ -43,10 +43,6 @@ public class ComprobantePagoEntity {
 	@JoinColumn(name = "placa_fk",referencedColumnName = "placa")
 	private VehiculoEntity placaFk;
 
-	public int getIdComprobantePago() {
-		return idComprobantePago;
-	}
-
 	public Date getFechaEntrada() {
 		return fechaEntrada;
 	}

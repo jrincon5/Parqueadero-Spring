@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
+import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
 import co.com.ceiba.parqueadero.model.VehiculoModel;
@@ -62,8 +63,10 @@ public class VigilanteServiceImpl implements VigilanteService {
 
 	@Override
 	public List<ComprobantePagoModel> consultarVehiculos() {
+		LOG.info("CALL: consultarVehiculos()");
 		List<ComprobantePagoModel> comprobantes = new ArrayList<>();
 		List<VehiculoEntity> vehiculos = vehiculoRepository.findAll();
+		LOG.info("RETURNING: consultarVehiculos()");
 		return encontrarVehiculos(comprobantes,vehiculos);
 	}
 	
@@ -78,6 +81,7 @@ public class VigilanteServiceImpl implements VigilanteService {
 				comprobantes.add(comprobante);	
 			}			
 		}
+		//if (comprobantes.isEmpty()) throw new ParqueaderoException("NO HAY VEHICULOS EN LA BASE DE DATOS"); 
 		return comprobantes;
 	}
 

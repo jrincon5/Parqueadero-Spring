@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +30,9 @@ import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 import co.com.ceiba.parqueadero.repository.converter.VehiculoConverter;
 import co.com.ceiba.parqueadero.service.VigilanteService;
 import co.com.ceiba.parqueadero.service.impl.VigilanteServiceImpl;
+import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionPlacaIniciaPorA;
 
+@Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class VigilanteTest {
@@ -222,10 +226,11 @@ public class VigilanteTest {
 				(entrada,salida,ParqueaderoModel.VALORDIAMOTO,ParqueaderoModel.VALORHORAMOTO));
 	}
 	
-	/*@Test
+	@Test//(expected=ParqueaderoException.class)
 	public void picoYPlacaDomingo() {
 		ValidacionPlacaIniciaPorA validacionPlacaIniciaPorA = new ValidacionPlacaIniciaPorA();
-		assertTrue(validacionPlacaIniciaPorA.placaIniciaPorAYEsHabil("AAA111", 1));
+		carro = new CarroModel("AAA111", true);
+		validacionPlacaIniciaPorA.validar(carro);
 	}
 	
 	@Test
@@ -239,7 +244,6 @@ public class VigilanteTest {
 		ValidacionPlacaIniciaPorA validacionPlacaIniciaPorA = new ValidacionPlacaIniciaPorA();
 		assertFalse(validacionPlacaIniciaPorA.placaIniciaPorAYEsHabil("AAA111", 4));
 	}
-	*/
 	
 	@Test
 	public void generarAumentoMotosAltoCilindrajeTest() {
