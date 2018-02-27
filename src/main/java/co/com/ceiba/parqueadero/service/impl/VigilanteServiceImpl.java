@@ -108,6 +108,7 @@ public class VigilanteServiceImpl implements VigilanteService {
 		LOG.info("CALL: generarCobroCarro()");
 		VehiculoEntity vehiculo = vehiculoRepository.findOne(placa); // Encontrar vehiculo con la clave foranea
 		ComprobantePagoEntity comprobanteEntity = comprobanteRepository.findByPlaca(vehiculo);// Busca el comprobante en la base de datos
+		LOG.info("ESTOY CONTANDOO LAS FACTURASSSS: "+comprobanteEntity.getPlacaFk());
 		FechaModel fechaSalida = parqueaderoModel.getFechaActual();
 		comprobanteEntity.setFechaSalida(fechaSalida.getTime());
 		comprobanteEntity.setEstado(false);

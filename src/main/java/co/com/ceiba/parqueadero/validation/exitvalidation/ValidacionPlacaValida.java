@@ -1,9 +1,14 @@
 package co.com.ceiba.parqueadero.validation.exitvalidation;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 
 public class ValidacionPlacaValida implements ValidacionSalidaVehiculo{
+	
+	private static final Log LOG = LogFactory.getLog(ValidacionPlacaValida.class);
 	
 	VehiculoRepository vehiculoRepository;
 	
@@ -19,6 +24,10 @@ public class ValidacionPlacaValida implements ValidacionSalidaVehiculo{
 	}
 	
 	public boolean placaExistente(String placa) {
-		return vehiculoRepository.exists(placa.toUpperCase());
+		LOG.info("CALL: placaExistente()");
+		if(vehiculoRepository.exists(placa)) {
+			return vehiculoRepository.findOne(placa).isParqueado();	
+		}
+		return false;
 	}
 }

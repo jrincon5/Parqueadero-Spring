@@ -21,6 +21,9 @@ public class VehiculoEntity {
 	public String getPlaca() {
 		return placa;
 	}
+	public boolean isParqueado() {
+		return parqueado;
+	}
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}

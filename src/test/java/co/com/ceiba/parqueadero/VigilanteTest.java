@@ -125,6 +125,13 @@ public class VigilanteTest {
 	}
 	
 	@Test
+	public void consultarVehiculoInvalidoTest() {
+		List<ComprobantePagoModel> comprobantes = new ArrayList<>();
+		comprobantes.addAll(vigilanteService.consultarVehiculos());
+		assertEquals(comprobantes.size(),vigilanteService.consultarVehiculos().size());
+	}
+	
+	@Test
 	public void removerVehiculoCarroTest() {
 		vigilanteService.ingresarVehiculo(carro);
 		vigilanteService.removerVehiculo(carro.getPlaca());

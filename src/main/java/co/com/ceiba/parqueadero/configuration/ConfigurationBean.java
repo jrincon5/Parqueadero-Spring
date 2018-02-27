@@ -9,6 +9,7 @@ import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionCapacidadCa
 import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionCapacidadMotos;
 import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionIngresoVehiculo;
 import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionPlacaIniciaPorA;
+import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionVehiculoYaParqueado;
 import co.com.ceiba.parqueadero.validation.exitvalidation.ValidacionPlacaValida;
 import co.com.ceiba.parqueadero.validation.exitvalidation.ValidacionSalidaVehiculo;
 
@@ -21,6 +22,7 @@ public class ConfigurationBean {
 		validacionIngresoVehiculos.add(new ValidacionCapacidadMotos(vehiculoRepository));
 		validacionIngresoVehiculos.add(new ValidacionCapacidadCarros(vehiculoRepository));
 		validacionIngresoVehiculos.add(new ValidacionPlacaIniciaPorA());
+		validacionIngresoVehiculos.add(new ValidacionVehiculoYaParqueado(vehiculoRepository));
 		return validacionIngresoVehiculos;
 	}
 	

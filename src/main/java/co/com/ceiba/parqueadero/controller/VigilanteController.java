@@ -25,7 +25,7 @@ import co.com.ceiba.parqueadero.repository.ComprobanteRepository;
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 import co.com.ceiba.parqueadero.service.VigilanteService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/parqueadero")
 public class VigilanteController {
@@ -58,8 +58,10 @@ public class VigilanteController {
 	}
 	
 	@PostMapping("/removervehiculo")
-	public void removerVehiculo(@RequestBody String placa){
-		LOG.info("CALL: removerCarro()");
+	public void removerVehiculo(@RequestBody String json){
+		LOG.info("CALL: removerVehiculo()");
+		JsonElement jsonObj = new JsonParser().parse(json);		
+		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
 		vigilanteService.removerVehiculo(placa);
 	}
 	
