@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ import co.com.ceiba.parqueadero.repository.ComprobanteRepository;
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 import co.com.ceiba.parqueadero.service.VigilanteService;
 
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/parqueadero")
 public class VigilanteController {
@@ -57,15 +58,15 @@ public class VigilanteController {
 		vigilanteService.ingresarVehiculo(motoModel);
 	}
 	
-	@PostMapping("/removervehiculo")
+	@PutMapping("/removervehiculo")
 	public void removerVehiculo(@RequestBody String json){
 		LOG.info("CALL: removerVehiculo()");
-		JsonElement jsonObj = new JsonParser().parse(json);		
-		String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
-		vigilanteService.removerVehiculo(placa);
+		//JsonElement jsonObj = new JsonParser().parse(json);		
+		//String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
+		vigilanteService.removerVehiculo(json);
 	}
 	
-	@GetMapping("/consultarvehiculo")
+	@GetMapping("/consultarvehiculo/")
 	public List<ComprobantePagoModel> consultarVehiculos(){
 		LOG.info("CALL: consultarVehiculo()");
 		return vigilanteService.consultarVehiculos();
@@ -77,10 +78,10 @@ public class VigilanteController {
 		return comprobanteRepository.findAll();
 	}
 	
-	@PostMapping("/consultarcomprobante")
-	public ComprobantePagoEntity consultarComprobante(@RequestBody String json){
+	@GetMapping("/consultarcomprobante/{placa}")
+	public ComprobantePagoEntity consultarComprobante(@RequestBody String placa){
 		LOG.info("CALL: consultarComprobante()");
-		VehiculoEntity placaVehiculo = vehiculoRepository.findOne(json);
+		VehiculoEntity placaVehiculo = vehiculoRepository.findOne(placa);
 		return comprobanteRepository.findByPlaca(placaVehiculo);
 	}
 }

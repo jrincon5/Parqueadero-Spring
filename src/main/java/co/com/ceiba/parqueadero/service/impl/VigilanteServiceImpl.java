@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
-import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.FechaModel;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
 import co.com.ceiba.parqueadero.model.VehiculoModel;
@@ -72,6 +71,7 @@ public class VigilanteServiceImpl implements VigilanteService {
 	
 	public List<ComprobantePagoModel> encontrarVehiculos(List<ComprobantePagoModel> comprobantes,
 			List<VehiculoEntity> vehiculos){
+		LOG.info("CALL: encontrarVehiculos()");
 		for (VehiculoEntity vehiculo : vehiculos) {
 			if(comprobanteRepository.findByPlaca(vehiculo).isEstado()) {
 				ComprobantePagoModel comprobante = new ComprobantePagoModel();
@@ -81,7 +81,7 @@ public class VigilanteServiceImpl implements VigilanteService {
 				comprobantes.add(comprobante);	
 			}			
 		}
-		//if (comprobantes.isEmpty()) throw new ParqueaderoException("NO HAY VEHICULOS EN LA BASE DE DATOS"); 
+		LOG.info("RETURNING: encontrarVehiculos()");
 		return comprobantes;
 	}
 
@@ -108,7 +108,6 @@ public class VigilanteServiceImpl implements VigilanteService {
 		LOG.info("CALL: generarCobroCarro()");
 		VehiculoEntity vehiculo = vehiculoRepository.findOne(placa); // Encontrar vehiculo con la clave foranea
 		ComprobantePagoEntity comprobanteEntity = comprobanteRepository.findByPlaca(vehiculo);// Busca el comprobante en la base de datos
-		LOG.info("ESTOY CONTANDOO LAS FACTURASSSS: "+comprobanteEntity.getPlacaFk());
 		FechaModel fechaSalida = parqueaderoModel.getFechaActual();
 		comprobanteEntity.setFechaSalida(fechaSalida.getTime());
 		comprobanteEntity.setEstado(false);

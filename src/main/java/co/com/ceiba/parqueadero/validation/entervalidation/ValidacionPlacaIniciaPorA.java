@@ -2,11 +2,16 @@ package co.com.ceiba.parqueadero.validation.entervalidation;
 
 import java.util.Calendar;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
 import co.com.ceiba.parqueadero.model.VehiculoModel;
 
 public class ValidacionPlacaIniciaPorA implements ValidacionIngresoVehiculo {
+	
+	private static final Log LOG = LogFactory.getLog(ValidacionPlacaIniciaPorA.class);
 
 	@Override
 	public void validar(VehiculoModel vehiculoModel) {
@@ -18,6 +23,7 @@ public class ValidacionPlacaIniciaPorA implements ValidacionIngresoVehiculo {
 
 	public boolean placaIniciaPorAYEsHabil(String placa, int diaSemana) {
 		boolean diaNoHabil=(diaSemana == Calendar.SUNDAY || diaSemana == Calendar.MONDAY);
+		LOG.info("CALL: placaIniciaPorAYEsHabil()");
 		return ( (placa.toUpperCase().startsWith(ParqueaderoModel.VALIDACIONLETRAA)) && diaNoHabil );
 	}
 }

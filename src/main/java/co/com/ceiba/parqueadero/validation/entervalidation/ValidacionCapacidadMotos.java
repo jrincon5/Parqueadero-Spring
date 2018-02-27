@@ -1,5 +1,8 @@
 package co.com.ceiba.parqueadero.validation.entervalidation;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.MotoModel;
 import co.com.ceiba.parqueadero.model.ParqueaderoModel;
@@ -7,6 +10,8 @@ import co.com.ceiba.parqueadero.model.VehiculoModel;
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 
 public class ValidacionCapacidadMotos implements ValidacionIngresoVehiculo {
+	
+	private static final Log LOG = LogFactory.getLog(ValidacionCapacidadMotos.class);
 
 	VehiculoRepository vehiculoRepository;
 
@@ -22,6 +27,7 @@ public class ValidacionCapacidadMotos implements ValidacionIngresoVehiculo {
 	}
 
 	public boolean validarEspacioMotos() {
+		LOG.info("CALL: validarEspacioMotos()");
 		return vehiculoRepository.countByVehiculos("Moto", true) < ParqueaderoModel.LIMITEMOTOS;
 	}
 }

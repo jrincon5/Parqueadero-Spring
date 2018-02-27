@@ -1,5 +1,7 @@
 package co.com.ceiba.parqueadero.validation.entervalidation;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -10,6 +12,8 @@ import co.com.ceiba.parqueadero.model.VehiculoModel;
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 
 public class ValidacionCapacidadCarros implements ValidacionIngresoVehiculo{
+	
+	private static final Log LOG = LogFactory.getLog(ValidacionCapacidadCarros.class);
 	
 	@Autowired
 	@Qualifier("vehiculoRepository")
@@ -27,6 +31,7 @@ public class ValidacionCapacidadCarros implements ValidacionIngresoVehiculo{
 	}
 	
 	public boolean validarEspacioCarros() {
+		LOG.info("CALL: validarEspacioCarros()");
 		return vehiculoRepository.countByVehiculos("Carro", true) < ParqueaderoModel.LIMITECARROS;
 	}
 

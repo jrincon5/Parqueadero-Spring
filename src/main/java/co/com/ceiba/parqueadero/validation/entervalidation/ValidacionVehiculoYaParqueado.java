@@ -28,11 +28,10 @@ public class ValidacionVehiculoYaParqueado implements ValidacionIngresoVehiculo{
 	}
 	
 	public boolean validarIsParqueado(String placa) {
-		LOG.info("CALL: removerVehiculo()");
+		LOG.info("CALL: validarIsParqueado()");
 		if(vehiculoRepository.exists(placa)) {
 			return vehiculoRepository.findOne(placa).isParqueado();	
 		}
 		return false;
 	}
-
 }

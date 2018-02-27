@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionCapacidadCarros;
 import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionCapacidadMotos;
@@ -13,7 +15,7 @@ import co.com.ceiba.parqueadero.validation.entervalidation.ValidacionVehiculoYaP
 import co.com.ceiba.parqueadero.validation.exitvalidation.ValidacionPlacaValida;
 import co.com.ceiba.parqueadero.validation.exitvalidation.ValidacionSalidaVehiculo;
 
-@org.springframework.context.annotation.Configuration
+@Configuration
 public class ConfigurationBean {
 	
 	@Bean
