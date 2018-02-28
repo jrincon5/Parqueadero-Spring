@@ -18,7 +18,7 @@ public class ValidacionPlacaValida implements ValidacionSalidaVehiculo{
 
 	@Override
 	public void validar(String placa) {
-		if(!placaExistente(placa)) {
+		if(!placaExistente(placa.toUpperCase())) {
 			throw new ParqueaderoException("LA PLACA INGRESADA NO SE ENCUENTRA UBICADA EN EL PARQUEADERO");
 		}
 	}
