@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
 import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.exception.ParqueaderoException;
 import co.com.ceiba.parqueadero.model.CarroModel;
@@ -82,9 +83,15 @@ public class VigilanteTest {
 	@Test(expected = ParqueaderoException.class)
 	public void ingresarCarroSobreCupoTest() {
 		for (int i=0;i<=10;i++) {
-			vigilanteService.ingresarVehiculo(new CarroModel("AAA11"+i,true));
-			vigilanteService.ingresarVehiculo(new CarroModel("AAA12"+i,true));
+			vigilanteService.ingresarVehiculo(new CarroModel("BAA11"+i,true));
+			vigilanteService.ingresarVehiculo(new CarroModel("BAA12"+i,true));
 		}
+	}
+	
+	@Test(expected = ParqueaderoException.class)
+	public void ingresarCarroYaPArqueadoTest() {
+		vigilanteService.ingresarVehiculo(new CarroModel("BAA111",true));
+		vigilanteService.ingresarVehiculo(new CarroModel("BAA111",true));
 	}
 	
 	@Test
@@ -96,8 +103,8 @@ public class VigilanteTest {
 	@Test(expected = ParqueaderoException.class)
 	public void ingresarMotoSobreCupoTest() {
 		for (int i=0;i<=5;i++) {
-			vigilanteService.ingresarVehiculo(new MotoModel("AAA11"+i,true,100));
-			vigilanteService.ingresarVehiculo(new MotoModel("AAA12"+i,true,100));
+			vigilanteService.ingresarVehiculo(new MotoModel("BAA11"+i,true,100));
+			vigilanteService.ingresarVehiculo(new MotoModel("BAA12"+i,true,100));
 		}
 	}
 	
@@ -233,23 +240,24 @@ public class VigilanteTest {
 				(entrada,salida,ParqueaderoModel.VALORDIAMOTO,ParqueaderoModel.VALORHORAMOTO));
 	}
 	
-	@Test//(expected=ParqueaderoException.class)
+	@Test(expected=ParqueaderoException.class)
 	public void picoYPlacaDomingo() {
 		ValidacionPlacaIniciaPorA validacionPlacaIniciaPorA = new ValidacionPlacaIniciaPorA();
 		carro = new CarroModel("AAA111", true);
 		validacionPlacaIniciaPorA.validar(carro);
 	}
 	
-	@Test
+	@Test(expected=ParqueaderoException.class)
 	public void picoYPlacaLunes() {
 		ValidacionPlacaIniciaPorA validacionPlacaIniciaPorA = new ValidacionPlacaIniciaPorA();
-		assertTrue(validacionPlacaIniciaPorA.placaIniciaPorAYEsHabil("AAA111", 2));
+		carro = new CarroModel("AAA111", true);
+		validacionPlacaIniciaPorA.validar(carro);
 	}
 	
 	@Test
 	public void picoYPlacaDiaHabil() {
 		ValidacionPlacaIniciaPorA validacionPlacaIniciaPorA = new ValidacionPlacaIniciaPorA();
-		assertFalse(validacionPlacaIniciaPorA.placaIniciaPorAYEsHabil("AAA111", 4));
+		assertTrue(validacionPlacaIniciaPorA.placaIniciaPorAYEsHabil("AAA111", 4));
 	}
 	
 	@Test
@@ -261,24 +269,7 @@ public class VigilanteTest {
 	public void noGenerarAumentoMotosAltoCilindrajeTest() {
 		assertEquals(0, vigilanteServiceImpl.generarAumentoMotosAltoCilindraje(400));
 	}
-
-	/*
-	@Test
-	public void generarCobroVehiculosCarroTest() {
-		vigilanteService.ingresarVehiculo(carro);
-		vigilanteService.removerVehiculo(carro.getPlaca());
-		VehiculoEntity vehiculo = vehiculoRepository.findOne(carro.getPlaca());
-		assertEquals(1000, comprobanteRepository.findByPlaca(vehiculo).getTotalPagar());
-	}
 	
-	@Test
-	public void generarCobroVehiculosMotoTest() {
-		vigilanteService.ingresarVehiculo(moto);
-		vigilanteService.removerVehiculo("WSW04D");
-		VehiculoEntity vehiculo = vehiculoConverter.establecerVehiculoAGuardar(moto);
-		assertEquals(500, comprobanteRepository.findByPlaca(vehiculo).getTotalPagar());
-	}
-	*/
 	@Test
 	public void crearMotoModelSinDatosTest() {
 		assertNotNull(new MotoModel());
@@ -309,5 +300,37 @@ public class VigilanteTest {
 		ComprobantePagoModel comprobante = new ComprobantePagoModel();
 		comprobante.setFechaEntrada(new Date());
 		assertNotNull(comprobante.getFechaEntrada());
+	}
+	
+	@Test
+	public void getFechaSalidaTest() {
+		VehiculoEntity vehiculo = new VehiculoEntity();
+		vehiculo.setPlaca("SSS111");
+		ComprobantePagoEntity comprobante = new ComprobantePagoEntity(new Date(), new Date(), 2, 2500, true, vehiculo);
+		assertNotNull(comprobante.getFechaSalida());
+	}
+	
+	@Test
+	public void getTotalHorasTest() {
+		VehiculoEntity vehiculo = new VehiculoEntity();
+		vehiculo.setPlaca("SSS111");
+		ComprobantePagoEntity comprobante = new ComprobantePagoEntity(new Date(), new Date(), 2, 2500, true, vehiculo);
+		assertNotNull(comprobante.getTotalHoras());
+	}
+	
+	@Test
+	public void getTotalPagarTest() {
+		VehiculoEntity vehiculo = new VehiculoEntity();
+		vehiculo.setPlaca("SSS111");
+		ComprobantePagoEntity comprobante = new ComprobantePagoEntity(new Date(), new Date(), 2, 2500, true, vehiculo);
+		assertNotNull(comprobante.getTotalPagar());
+	}
+	
+	@Test
+	public void getPlacaFkTest() {
+		VehiculoEntity vehiculo = new VehiculoEntity();
+		vehiculo.setPlaca("SSS111");
+		ComprobantePagoEntity comprobante = new ComprobantePagoEntity(new Date(), new Date(), 2, 2500, true, vehiculo);
+		assertNotNull(comprobante.getPlacaFk());
 	}
 }

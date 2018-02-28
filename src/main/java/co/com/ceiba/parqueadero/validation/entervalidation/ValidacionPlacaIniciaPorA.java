@@ -22,8 +22,10 @@ public class ValidacionPlacaIniciaPorA implements ValidacionIngresoVehiculo {
 	}
 
 	public boolean placaIniciaPorAYEsHabil(String placa, int diaSemana) {
-		boolean diaNoHabil=(diaSemana == Calendar.SUNDAY || diaSemana == Calendar.MONDAY);
+		boolean diaHabil=true;
+		if(diaSemana==Calendar.SUNDAY) diaHabil = false;
+		if(diaSemana==Calendar.MONDAY) diaHabil = false;
 		LOG.info("CALL: placaIniciaPorAYEsHabil()");
-		return ( (placa.toUpperCase().startsWith(ParqueaderoModel.VALIDACIONLETRAA)) && diaNoHabil );
+		return ( (placa.toUpperCase().startsWith(ParqueaderoModel.VALIDACIONLETRAA)) && diaHabil);
 	}
 }

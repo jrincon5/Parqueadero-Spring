@@ -14,11 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
 import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
-import co.com.ceiba.parqueadero.entity.VehiculoEntity;
 import co.com.ceiba.parqueadero.model.CarroModel;
 import co.com.ceiba.parqueadero.model.ComprobantePagoModel;
 import co.com.ceiba.parqueadero.model.MotoModel;
@@ -59,29 +55,15 @@ public class VigilanteController {
 	}
 	
 	@PutMapping("/removervehiculo")
-	public void removerVehiculo(@RequestBody String json){
+	public ComprobantePagoEntity removerVehiculo(@RequestBody String json){
 		LOG.info("CALL: removerVehiculo()");
-		//JsonElement jsonObj = new JsonParser().parse(json);		
-		//String placa = jsonObj.getAsJsonObject().get("placa").getAsString();
 		vigilanteService.removerVehiculo(json);
+		return comprobanteRepository.findByPlaca(vehiculoRepository.findOne(json));
 	}
 	
-	@GetMapping("/consultarvehiculo/")
+	@GetMapping("/consultarvehiculo")
 	public List<ComprobantePagoModel> consultarVehiculos(){
 		LOG.info("CALL: consultarVehiculo()");
 		return vigilanteService.consultarVehiculos();
-	}
-	
-	@GetMapping("/consultarcomprobantes")
-	public List<ComprobantePagoEntity> consultarComprobantes(){
-		LOG.info("CALL: consultarComprobantes()");
-		return comprobanteRepository.findAll();
-	}
-	
-	@GetMapping("/consultarcomprobante/{placa}")
-	public ComprobantePagoEntity consultarComprobante(@RequestBody String placa){
-		LOG.info("CALL: consultarComprobante()");
-		VehiculoEntity placaVehiculo = vehiculoRepository.findOne(placa);
-		return comprobanteRepository.findByPlaca(placaVehiculo);
 	}
 }
