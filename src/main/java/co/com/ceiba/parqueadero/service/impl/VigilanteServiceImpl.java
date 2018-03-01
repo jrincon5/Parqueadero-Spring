@@ -96,10 +96,10 @@ public class VigilanteServiceImpl implements VigilanteService {
 	@Override
 	public void removerVehiculo(String placa) {
 		LOG.info("CALL: removerVehiculo()");
-		validacionesSalida.stream().forEach(validacion -> validacion.validar(placa));
-		VehiculoEntity vehiculoEntity = vehiculoRepository.findOne(placa);
+		validacionesSalida.stream().forEach(validacion -> validacion.validar(placa.toUpperCase()));
+		VehiculoEntity vehiculoEntity = vehiculoRepository.findOne(placa.toUpperCase());
 		vehiculoEntity.setParqueado(false);
-		generarCobro(placa);
+		generarCobro(placa.toUpperCase());
 		vehiculoRepository.save(vehiculoEntity);
 		LOG.info("RETURNING: removerVehiculo()");
 	}
