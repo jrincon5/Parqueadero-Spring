@@ -1,14 +1,14 @@
 package co.com.ceiba.parqueadero.model;
 
-public class CarroModel extends VehiculoModel {
+public class Carro extends Vehiculo {
 	
 	private static final String TIPOVEHICULO="Carro"; 
 
-	public CarroModel(String placa, boolean parqueado) {
-		super(placa, parqueado);
+	public Carro(String placa) {
+		super(placa);
 	}
 	
-	public CarroModel() {
+	public Carro() {
 	}
 
 	@Override

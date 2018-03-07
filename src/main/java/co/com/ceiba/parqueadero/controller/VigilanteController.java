@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.com.ceiba.parqueadero.entity.ComprobantePagoEntity;
-import co.com.ceiba.parqueadero.model.CarroModel;
-import co.com.ceiba.parqueadero.model.ComprobantePagoModel;
-import co.com.ceiba.parqueadero.model.MotoModel;
+import co.com.ceiba.parqueadero.model.Carro;
+import co.com.ceiba.parqueadero.model.ComprobantePago;
+import co.com.ceiba.parqueadero.model.DatosEntrada;
+import co.com.ceiba.parqueadero.model.Moto;
 import co.com.ceiba.parqueadero.repository.ComprobanteRepository;
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 import co.com.ceiba.parqueadero.service.VigilanteService;
@@ -43,26 +43,25 @@ public class VigilanteController {
 	
 		
 	@PostMapping("/agregarcarro")
-	public void agregarCarro(@RequestBody CarroModel carroModel) {
+	public void agregarCarro(@RequestBody Carro carro) {
 		LOG.info("CALL: agregarcarro()");
-		vigilanteService.ingresarVehiculo(carroModel);
+		vigilanteService.ingresarVehiculo(carro);
 	}
 	
 	@PostMapping("/agregarmoto")
-	public void agregarMoto(@RequestBody MotoModel motoModel) {
+	public void agregarMoto(@RequestBody Moto moto) {
 		LOG.info("CALL: agregarmoto()");
-		vigilanteService.ingresarVehiculo(motoModel);
+		vigilanteService.ingresarVehiculo(moto);
 	}
 	
 	@PutMapping("/removervehiculo")
-	public ComprobantePagoEntity removerVehiculo(@RequestBody String json){
+	public ComprobantePago removerVehiculo(@RequestBody String json){
 		LOG.info("CALL: removerVehiculo()");
-		vigilanteService.removerVehiculo(json);
-		return comprobanteRepository.findByPlaca(vehiculoRepository.findOne(json));
+		return vigilanteService.removerVehiculo(json);
 	}
 	
 	@GetMapping("/consultarvehiculo")
-	public List<ComprobantePagoModel> consultarVehiculos(){
+	public List<DatosEntrada> consultarVehiculos(){
 		LOG.info("CALL: consultarVehiculo()");
 		return vigilanteService.consultarVehiculos();
 	}

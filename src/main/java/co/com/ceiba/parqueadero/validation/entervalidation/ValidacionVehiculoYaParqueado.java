@@ -5,7 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import co.com.ceiba.parqueadero.exception.ParqueaderoException;
-import co.com.ceiba.parqueadero.model.VehiculoModel;
+import co.com.ceiba.parqueadero.model.Vehiculo;
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 
 public class ValidacionVehiculoYaParqueado implements ValidacionIngresoVehiculo{
@@ -21,7 +21,7 @@ public class ValidacionVehiculoYaParqueado implements ValidacionIngresoVehiculo{
 	}
 
 	@Override
-	public void validar(VehiculoModel vehiculoModel) {
+	public void validar(Vehiculo vehiculoModel) {
 		if(validarIsParqueado(vehiculoModel.getPlaca())) {
 			throw new ParqueaderoException("LA PLACA YA SE ENCUENTRA PARQUEADA");
 		}

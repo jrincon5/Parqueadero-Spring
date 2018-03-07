@@ -1,16 +1,16 @@
 package co.com.ceiba.parqueadero.model;
 
-public class MotoModel extends VehiculoModel{
+public class Moto extends Vehiculo{
 	
 	private static final String TIPOVEHICULO="Moto";
 	private int cilindraje;
 
-	public MotoModel(String placa, boolean parqueado, int cilindraje) {
-		super(placa, parqueado);
+	public Moto(String placa, int cilindraje) {
+		super(placa);
 		this.cilindraje = cilindraje;
 	}
 	
-	public MotoModel() {
+	public Moto() {
 	}
 	
 	public int getCilindraje() {

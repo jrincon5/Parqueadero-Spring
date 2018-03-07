@@ -2,23 +2,20 @@ package co.com.ceiba.parqueadero.model;
 
 import javax.validation.constraints.NotNull;
 
-public abstract class VehiculoModel {
+public abstract class Vehiculo {
 
 	@NotNull
 	private String placa;
-	@NotNull
-	private boolean parqueado;
 
 	public String getPlaca() {
 		return placa;
 	}
 
-	public VehiculoModel(String placa, boolean parqueado) {
+	public Vehiculo(String placa) {
 		this.placa = placa;
-		this.parqueado = parqueado;
 	}
 	
-	public VehiculoModel() {
+	public Vehiculo() {
 	}
 
 	public abstract String getTipoVehiculo();

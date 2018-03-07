@@ -93,6 +93,14 @@ public class ComprobantePagoEntity {
 		this.estado = estado;
 		this.placaFk = placaFk;
 	}
+	
+	public void setFechaEntrada(Date fechaEntrada) {
+		this.fechaEntrada = fechaEntrada;
+	}
+
+	public void setPlacaFk(VehiculoEntity placaFk) {
+		this.placaFk = placaFk;
+	}
 
 	public ComprobantePagoEntity() {
 		super();

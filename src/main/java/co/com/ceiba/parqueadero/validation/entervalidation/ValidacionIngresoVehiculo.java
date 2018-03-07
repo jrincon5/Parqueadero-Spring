@@ -1,9 +1,9 @@
 package co.com.ceiba.parqueadero.validation.entervalidation;
 
-import co.com.ceiba.parqueadero.model.VehiculoModel;
+import co.com.ceiba.parqueadero.model.Vehiculo;
 
 public interface ValidacionIngresoVehiculo {
 	
-	void validar(VehiculoModel vehiculoModel);
+	void validar(Vehiculo vehiculoModel);
 
 }

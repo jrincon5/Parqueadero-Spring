@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import co.com.ceiba.parqueadero.exception.ParqueaderoException;
-import co.com.ceiba.parqueadero.model.CarroModel;
-import co.com.ceiba.parqueadero.model.ParqueaderoModel;
-import co.com.ceiba.parqueadero.model.VehiculoModel;
+import co.com.ceiba.parqueadero.model.Carro;
+import co.com.ceiba.parqueadero.model.Parqueadero;
+import co.com.ceiba.parqueadero.model.Vehiculo;
 import co.com.ceiba.parqueadero.repository.VehiculoRepository;
 
 public class ValidacionCapacidadCarros implements ValidacionIngresoVehiculo{
@@ -24,15 +24,15 @@ public class ValidacionCapacidadCarros implements ValidacionIngresoVehiculo{
 	}
 
 	@Override
-	public void validar(VehiculoModel vehiculoModel) {
-		if (!validarEspacioCarros() && (vehiculoModel instanceof CarroModel)) { // Validar espacio
+	public void validar(Vehiculo vehiculoModel) {
+		if (!validarEspacioCarros() && (vehiculoModel instanceof Carro)) { // Validar espacio
 			throw new ParqueaderoException("NO HAY MAS CUPOS DISPONIBLES PARA INGRESAR MAS CARROS");
 		}		
 	}
 	
 	public boolean validarEspacioCarros() {
 		LOG.info("CALL: validarEspacioCarros()");
-		return vehiculoRepository.countByVehiculos("Carro", true) < ParqueaderoModel.LIMITECARROS;
+		return vehiculoRepository.countByVehiculos("Carro", true) < Parqueadero.LIMITECARROS;
 	}
 
 }

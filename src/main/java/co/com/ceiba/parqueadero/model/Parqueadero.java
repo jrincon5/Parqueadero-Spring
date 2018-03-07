@@ -2,7 +2,7 @@ package co.com.ceiba.parqueadero.model;
 
 import java.util.Calendar;
 
-public class ParqueaderoModel{
+public class Parqueadero{
 	public static final int CILINDRAJEREGLAMOTO = 500;
 	public static final int AUMENTOCILINDRAJE = 2000;
 	public static final int HORASMINIMASDELDIA = 9;
@@ -18,7 +18,7 @@ public class ParqueaderoModel{
     public static final int MINUTOS=60;
     public static final String 	VALIDACIONLETRAA = "A";
     
-    public FechaModel getFechaActual() {
+    public FechaCalendario getFechaActual() {
     	Calendar calendar = Calendar.getInstance();
     	int year=calendar.get(Calendar.YEAR);
     	int mes=calendar.get(Calendar.MONTH);
@@ -26,6 +26,6 @@ public class ParqueaderoModel{
     	int horaDia=calendar.get(Calendar.HOUR_OF_DAY);
     	int minuto=calendar.get(Calendar.MINUTE);
     	int second=calendar.get(Calendar.SECOND);
-    	return new FechaModel(year,mes,diaMes,horaDia,minuto,second);
+    	return new FechaCalendario(year,mes,diaMes,horaDia,minuto,second);
     }
 }

@@ -2,12 +2,12 @@ package co.com.ceiba.parqueadero.model;
 
 import java.util.Date;
 
-public class ComprobantePagoModel {
+public class DatosEntrada {
 	private String placa;
 	private String tipoVehiculo;
 	private Date fechaEntrada;
 	
-	public ComprobantePagoModel() {
+	public DatosEntrada() {
 		super();
 	}
 	
